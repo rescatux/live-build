@@ -60,6 +60,16 @@ Restore_cache cache/packages.binary
 Install_package
 
 # Local functions
+Grub_live_entry_commands ()
+{
+	KERNEL="${1}"
+	INITRD="${2}"
+	APPEND="${3}"
+
+	LINUX_LIVE="${LINUX_LIVE}\nlinux\t\t/${KERNEL} ${INITFS:+boot=${INITFS} }config LB_BOOTAPPEND_LIVE ${APPEND}"
+	LINUX_LIVE="${LINUX_LIVE}\ninitrd\t\t/${INITRD}"
+}
+
 Grub_live_entry ()
 {
 	LABEL="${1}"
@@ -68,8 +78,25 @@ Grub_live_entry ()
 	APPEND="${4}"
 
 	LINUX_LIVE="${LINUX_LIVE}\nmenuentry \"Debian GNU/Linux - ${LABEL}\" {"
-	LINUX_LIVE="${LINUX_LIVE}\nlinux\t\t/${KERNEL} ${INITFS:+boot=${INITFS} }config LB_BOOTAPPEND_LIVE ${APPEND}"
-	LINUX_LIVE="${LINUX_LIVE}\ninitrd\t\t/${INITRD}"
+	Grub_live_entry_commands "${KERNEL}" "${INITRD}" "${APPEND}"
+	LINUX_LIVE="${LINUX_LIVE}\n}"
+}
+
+Grub_live_autodetect_entry ()
+{
+	LABEL="${1}"
+	AMD64_KERNEL="${2}"
+	AMD64_INITRD="${3}"
+	_486_KERNEL="${4}"
+	_486_INITRD="${5}"
+	APPEND="${6}"
+
+	LINUX_LIVE="${LINUX_LIVE}\nmenuentry \"Debian GNU/Linux - ${LABEL}\" {"
+	LINUX_LIVE="${LINUX_LIVE}\nif cpuid -l ; then"
+	Grub_live_entry_commands "${AMD64_KERNEL}" "${AMD64_INITRD}" "${APPEND}"
+	LINUX_LIVE="${LINUX_LIVE}\nelse"
+	Grub_live_entry_commands "${_486_KERNEL}" "${_486_INITRD}" "${APPEND}"
+	LINUX_LIVE="${LINUX_LIVE}\nfi"
 	LINUX_LIVE="${LINUX_LIVE}\n}"
 }
 
@@ -152,6 +179,29 @@ fi
 LB_BOOTAPPEND_LIVE="$(echo ${LB_BOOTAPPEND_LIVE} | sed -e 's|  ||')"
 
 # Assembling kernel configuration
+
+_AMD64_486_NUMBER="0"
+
+for _FLAVOUR in ${LB_LINUX_FLAVOURS}
+do
+	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "486" ] ; then
+		_AMD64_486_NUMBER="$((${_AMD64_486_NUMBER} + 1))"
+	fi
+done
+
+if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
+	# Default entries
+	AMD64_KERNEL="$(basename chroot/boot/vmlinuz-*amd64)"
+	AMD64_INITRD="initrd.img-$(echo ${AMD64_KERNEL} | sed -e 's|vmlinuz-||')"
+	_486_KERNEL="$(basename chroot/boot/vmlinuz-*486)"
+	_486_INITRD="initrd.img-$(echo ${_486_KERNEL} | sed -e 's|vmlinuz-||')"
+
+	Grub_live_autodetect_entry "live (autodetect)" \
+		"$(basename ${DESTDIR_LIVE})/${AMD64_KERNEL}" \
+		"$(basename ${DESTDIR_LIVE})/${AMD64_INITRD}" \
+		"$(basename ${DESTDIR_LIVE})/${_486_KERNEL}" \
+		"$(basename ${DESTDIR_LIVE})/${_486_INITRD}"
+fi
 
 # Default entries
 DEFAULT_FLAVOUR="$(echo ${LB_LINUX_FLAVOURS} | awk '{ print $1 }')"
