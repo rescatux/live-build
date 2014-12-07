@@ -233,6 +233,12 @@ case "${LB_BUILD_WITH_CHROOT}" in
 		;;
 esac
 
+# Copy necessary syslinux modules
+for module in ifcpu64.c32
+do
+	cp "chroot/usr/lib/syslinux/modules/bios/${module}" "${_TARGET}/"
+done
+
 # Configuring files
 if [ -e "${_TARGET}/live.cfg.in" ]
 then
@@ -255,6 +261,22 @@ then
 			;;
 
 		*)
+			_AMD64_486_NUMBER="0"
+
+			for _FLAVOUR in ${LB_LINUX_FLAVOURS}
+			do
+				if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "486" ] ; then
+					_AMD64_486_NUMBER="$((${_AMD64_486_NUMBER} + 1))"
+				fi
+			done
+
+			if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
+				_AMD64_LABEL=$(cat "${_TARGET}/live.cfg.in" | grep "^label" | grep -v "failsafe" | sed 's/label //g' | sed -e "s|@FLAVOUR@|""amd64""|g")
+				_486_LABEL=$(cat "${_TARGET}/live.cfg.in" | grep "^label" | grep -v "failsafe" | sed 's/label //g' | sed -e "s|@FLAVOUR@|""486""|g")
+				_AUTO_LABEL=$(cat "${_TARGET}/live.cfg.in" | grep "^label" | grep -v "failsafe" | sed 's/label //g' | sed -e "s|@FLAVOUR@|""autodetect""|g")
+				_AUTO_MENU_LABEL=$(cat "${_TARGET}/live.cfg.in" | grep "menu label" | grep -v "failsafe" | sed 's/.*menu label //g' | sed -e "s|@FLAVOUR@|""auto""|g")
+			fi
+
 			_NUMBER="0"
 
 			for _FLAVOUR in ${LB_LINUX_FLAVOURS}
@@ -269,7 +291,22 @@ then
 					echo "" >> "${_TARGET}/live.cfg"
 					grep -v 'menu default' "${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
 				else
-					cat "${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
+					if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
+						cat << EOF >> "${_TARGET}/live.cfg"
+label ${_AUTO_LABEL}
+	menu label ${_AUTO_MENU_LABEL}
+	com32 ifcpu64.c32
+	append ${_AMD64_LABEL} -- ${_486_LABEL} -- ${_486_LABEL}
+
+EOF
+					fi
+
+
+					if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
+						grep -v 'menu default' "${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
+					else
+						cat "${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
+					fi
 				fi
 
 				sed -i -e "s|@FLAVOUR@|${_FLAVOUR}|g" \
