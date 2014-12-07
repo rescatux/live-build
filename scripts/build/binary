@@ -64,6 +64,7 @@ lb binary_debian-installer ${@}
 lb binary_memtest ${@}
 lb binary_grub ${@}
 lb binary_grub2 ${@}
+lb binary_loopback_cfg ${@}
 lb binary_syslinux ${@}
 lb binary_yaboot ${@}
 lb binary_silo ${@}
