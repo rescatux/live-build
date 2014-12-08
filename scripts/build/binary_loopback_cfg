@@ -91,41 +91,63 @@ case "${LB_INITRAMFS}" in
 		INITFS="casper"
 		;;
 
-	live-boot)
+	*)
 		INITFS="live"
 		;;
 
-	*)
-		INITFS=""
-		;;
 esac
 
-# Setting destination directory
+# Assembling image specifics
 case "${LIVE_IMAGE_TYPE}" in
-	iso*|tar)
-		case "${LB_INITRAMFS}" in
-			casper)
-				DESTDIR_LIVE="binary/casper"
-				;;
+	iso*)
+		_BOOTLOADER="isolinux"
 
-			live-boot)
-				DESTDIR_LIVE="binary/live"
+		case "${LB_MODE}" in
+			progress-linux)
+				_TARGET="binary/boot"
 				;;
 
 			*)
-				DESTDIR_LIVE="binary/live"
+				_TARGET="binary/isolinux"
 				;;
 		esac
-
-		DESTDIR_INSTALL="binary/install"
 		;;
 
-	hdd*|netboot)
-		Echo_warning "Bootloader in this image type not yet supported by live-build."
-		Echo_warning "This would produce a not bootable image, aborting (FIXME)."
-		exit 1
-	;;
+	netboot)
+		_BOOTLOADER="pxelinux"
+		_TARGET="tftpboot"
+		;;
+
+	hdd*|*)
+		case ${LB_BINARY_FILESYSTEM} in
+			fat*|ntfs)
+				_BOOTLOADER=syslinux
+
+				case "${LB_MODE}" in
+					progress-linux)
+						_TARGET="binary/boot"
+						;;
+
+					*)
+						_TARGET="binary/syslinux"
+						;;
+				esac
+				;;
+
+			ext[234]|btrfs)
+				_BOOTLOADER=extlinux
+				_TARGET="binary/boot/extlinux"
+				;;
+			*)
+				Echo_error "syslinux/extlinux doesn't support ${LB_BINARY_FILESYSTEM}"
+				exit 1
+				;;
+		esac
+		;;
 esac
+
+DESTDIR_LIVE="${_TARGET}"
+BOOT_DIR="$(echo ${DESTDIR_LIVE} | sed 's,^[^/]*/,,')"
 
 Check_multiarchitectures
 
@@ -170,10 +192,10 @@ then
 		_486_INITRD="initrd.img-$(echo ${_486_KERNEL} | sed -e 's|vmlinuz-||')"
 
 		Grub_live_autodetect_entry "live (autodetect)" \
-			"$(basename ${DESTDIR_LIVE})/${AMD64_KERNEL}" \
-			"$(basename ${DESTDIR_LIVE})/${AMD64_INITRD}" \
-			"$(basename ${DESTDIR_LIVE})/${_486_KERNEL}" \
-			"$(basename ${DESTDIR_LIVE})/${_486_INITRD}"
+			"${BOOT_DIR}/${AMD64_KERNEL}" \
+			"${BOOT_DIR}/${AMD64_INITRD}" \
+			"${BOOT_DIR}/${_486_KERNEL}" \
+			"${BOOT_DIR}/${_486_INITRD}"
 	fi
 
 	# Default entries
@@ -181,19 +203,19 @@ then
 	DEFAULT_KERNEL="$(basename chroot/boot/vmlinuz-*${DEFAULT_FLAVOUR})"
 	DEFAULT_INITRD="initrd.img-$(echo ${DEFAULT_KERNEL} | sed -e 's|vmlinuz-||')"
 
-	Grub_live_entry "live" "$(basename ${DESTDIR_LIVE})/${DEFAULT_KERNEL}" "$(basename ${DESTDIR_LIVE})/${DEFAULT_INITRD}"
+	Grub_live_entry "live" "${BOOT_DIR}/${DEFAULT_KERNEL}" "${BOOT_DIR}/${DEFAULT_INITRD}"
 
 	if [ "${LB_BOOTAPPEND_FAILSAFE}" != "none" ]
 	then
-		Grub_live_entry "live (fail-safe mode)" "$(basename ${DESTDIR_LIVE})/${DEFAULT_KERNEL}" "$(basename ${DESTDIR_LIVE})/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_FAILSAFE}"
+		Grub_live_entry "live (fail-safe mode)" "${BOOT_DIR}/${DEFAULT_KERNEL}" "${BOOT_DIR}/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_FAILSAFE}"
 	fi
 
 	for KERNEL in chroot/boot/vmlinuz-*
 	do
 		VERSION="$(basename ${KERNEL} | sed -e 's|vmlinuz-||')"
 
-		Grub_live_entry "live, kernel ${VERSION}" "$(basename ${DESTDIR_LIVE})/$(basename ${KERNEL})" "$(basename ${DESTDIR_LIVE})/initrd.img-${VERSION}"
-		Grub_live_entry "live, kernel ${VERSION} (fail-safe mode)" "$(basename ${DESTDIR_LIVE})/$(basename ${KERNEL})" "$(basename ${DESTDIR_LIVE})/initrd.img-${VERSION}" "${LB_BOOTAPPEND_FAILSAFE}"
+		Grub_live_entry "live, kernel ${VERSION}" "${BOOT_DIR}/$(basename ${KERNEL})" "${BOOT_DIR}/initrd.img-${VERSION}"
+		Grub_live_entry "live, kernel ${VERSION} (fail-safe mode)" "${BOOT_DIR}/$(basename ${KERNEL})" "${BOOT_DIR}/initrd.img-${VERSION}" "${LB_BOOTAPPEND_FAILSAFE}"
 	done
 else # LB_BOOTLOADER = syslinux
 # If Bootloader is syslinux that means
@@ -207,8 +229,8 @@ else # LB_BOOTLOADER = syslinux
 
 		case "${_FLAVOURS}" in
 			1)
-				Grub_live_entry "live (${LB_LINUX_FLAVOURS})" "$(basename ${DESTDIR_LIVE})/vmlinuz" "$(basename ${DESTDIR_LIVE})/initrd.img" "${LB_BOOTAPPEND_LIVE}"
-				Grub_live_entry "live (${LB_LINUX_FLAVOURS}) (failsafe mode)" "$(basename ${DESTDIR_LIVE})/vmlinuz" "$(basename ${DESTDIR_LIVE})/initrd.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+				Grub_live_entry "live (${LB_LINUX_FLAVOURS})" "${BOOT_DIR}/vmlinuz" "${BOOT_DIR}/initrd.img" "${LB_BOOTAPPEND_LIVE}"
+				Grub_live_entry "live (${LB_LINUX_FLAVOURS}) (failsafe mode)" "${BOOT_DIR}/vmlinuz" "${BOOT_DIR}/initrd.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
 			;;
 
 			*)
@@ -244,21 +266,21 @@ else # LB_BOOTLOADER = syslinux
 
 					if [ "${_NUMBER}" -gt 1 ]
 					then
-						Grub_live_entry "live (${_FLAVOUR})" "$(basename ${DESTDIR_LIVE})/vmlinuz${_NUMBER}" "$(basename ${DESTDIR_LIVE})/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE}"
-						Grub_live_entry "live (${_FLAVOUR}) (failsafe mode)" "$(basename ${DESTDIR_LIVE})/vmlinuz${_NUMBER}" "$(basename ${DESTDIR_LIVE})/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+						Grub_live_entry "live (${_FLAVOUR})" "${BOOT_DIR}/vmlinuz${_NUMBER}" "${BOOT_DIR}/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE}"
+						Grub_live_entry "live (${_FLAVOUR}) (failsafe mode)" "${BOOT_DIR}/vmlinuz${_NUMBER}" "${BOOT_DIR}/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
 
 					else
 						if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
 
 							Grub_live_autodetect_entry "live (autodetect)" \
-								"$(basename ${DESTDIR_LIVE})/${AMD64_KERNEL}" \
-								"$(basename ${DESTDIR_LIVE})/${AMD64_INITRD}" \
-								"$(basename ${DESTDIR_LIVE})/${_486_KERNEL}" \
-								"$(basename ${DESTDIR_LIVE})/${_486_INITRD}"
+								"${BOOT_DIR}/${AMD64_KERNEL}" \
+								"${BOOT_DIR}/${AMD64_INITRD}" \
+								"${BOOT_DIR}/${_486_KERNEL}" \
+								"${BOOT_DIR}/${_486_INITRD}"
 						fi
 
-						Grub_live_entry "live (${_FLAVOUR})" "$(basename ${DESTDIR_LIVE})/vmlinuz${_NUMBER}" "$(basename ${DESTDIR_LIVE})/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE}"
-						Grub_live_entry "live (${_FLAVOUR}) (failsafe mode)" "$(basename ${DESTDIR_LIVE})/vmlinuz${_NUMBER}" "$(basename ${DESTDIR_LIVE})/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+						Grub_live_entry "live (${_FLAVOUR})" "${BOOT_DIR}/vmlinuz${_NUMBER}" "${BOOT_DIR}/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE}"
+						Grub_live_entry "live (${_FLAVOUR}) (failsafe mode)" "${BOOT_DIR}/vmlinuz${_NUMBER}" "${BOOT_DIR}/initrd${_NUMBER}.img" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
 					fi
 
 				done
@@ -273,7 +295,7 @@ LINUX_LIVE="$(/bin/echo ${LINUX_LIVE} | sed -e 's|binary||g' -e 's|//|/|g')"
 if [ -f "${DESTDIR_LIVE}"/memtest ]
 then
 	MEMTEST="#\t \"Other\"\n"
-	MEMTEST="${MEMTEST}\nmenuentry\t\"${LB_MEMTEST}\" {\nlinux16\t$(basename ${DESTDIR_LIVE})/memtest\n}"
+	MEMTEST="${MEMTEST}\nmenuentry\t\"${LB_MEMTEST}\" {\nlinux16\t${BOOT_DIR}/memtest\n}"
 	MEMTEST="$(/bin/echo ${MEMTEST} | sed -e 's|//|/|g')"
 fi
 
