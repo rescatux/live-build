@@ -161,7 +161,9 @@ fi
 LB_BOOTAPPEND_LIVE="$(echo ${LB_BOOTAPPEND_LIVE} | sed -e 's|  ||')"
 
 # Assembling kernel configuration
-
+# If Bootloader is not syslinux that means
+# binary_syslinux it's not going to rename kernel filenames in a later stage.
+# We will use binary_grub2 algorithm which does not rename kernel filenames.
 if [ "${LB_BOOTLOADER}" != "syslinux" ]
 then
 
@@ -208,7 +210,10 @@ then
 		Grub_live_entry "live, kernel ${VERSION} (fail-safe mode)" "$(basename ${DESTDIR_LIVE})/$(basename ${KERNEL})" "$(basename ${DESTDIR_LIVE})/initrd.img-${VERSION}" "${LB_BOOTAPPEND_FAILSAFE}"
 	done
 else # LB_BOOTLOADER = syslinux
-
+# If Bootloader is syslinux that means
+# binary_syslinux it's going to rename kernel filenames.
+# We will use binary_syslinux algorithm but without renaming kernel filenames.
+# That will ensure binary_syslinux will find the original kernel filenames.
 	#if [ -e "${_TARGET}/live.cfg.in" ]
 	#then
 		# This is all rather suboptimal.. needs prettifying at some point
