@@ -101,7 +101,7 @@ case "${LB_INITRAMFS}" in
 esac
 
 # Setting destination directory
-case "${LB_BINARY_IMAGES}" in
+case "${LIVE_IMAGE_TYPE}" in
 	iso*|tar)
 		case "${LB_INITRAMFS}" in
 			casper)
@@ -142,11 +142,6 @@ if [ -n "${LB_NET_COW_PATH}" ]
 then
 	Echo_error "Net cow not yet supported on grub"
 	exit 1
-fi
-
-if [ "${LB_EXPOSED_ROOT}" != "false" ]
-then
-	LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} exposedroot"
 fi
 
 LB_BOOTAPPEND_LIVE="$(echo ${LB_BOOTAPPEND_LIVE} | sed -e 's|  ||')"
