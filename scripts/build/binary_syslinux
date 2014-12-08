@@ -236,7 +236,7 @@ esac
 # Copy necessary syslinux modules
 for module in ifcpu64.c32
 do
-	cp "chroot/usr/lib/syslinux/${module}" "${_TARGET}/"
+	cp "chroot/usr/lib/syslinux/modules/bios/${module}" "${_TARGET}/"
 done
 
 # Configuring files
