@@ -145,6 +145,10 @@ then
 
 	for SECTION in ${POOL}/*
 	do
+		if [ ! -d "${SECTION}" ]; then
+			break # Do nothing if the package lists were empty...
+		fi
+
 		SECTION="$(basename ${SECTION})"
 
 		mkdir -p ${DISTS}/${LB_PARENT_DISTRIBUTION}/${SECTION}/binary-${LB_ARCHITECTURES}
