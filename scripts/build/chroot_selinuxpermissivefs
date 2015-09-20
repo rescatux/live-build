@@ -1,0 +1,90 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2006-2015 Daniel Baumann <mail@daniel-baumann.ch>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+# Including common functions
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+# Setting static variables
+DESCRIPTION="$(Echo 'mount permissive /sys/fs/selinux')"
+HELP=""
+USAGE="${PROGRAM} {install|remove} [--force]"
+
+Arguments "${@}"
+
+# Reading configuration files
+Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
+Set_defaults
+
+# Requiring stage file
+Require_stagefile .build/config .build/bootstrap
+
+# TODO: Add a switch to enable SELinux on the Live CD
+# TODO: With the current implementation it always tries to add it even if you do not want it.
+
+case "${1}" in
+	install)
+		if [ -e /sys/fs/selinux/enforce ] && [ "$(cat /sys/fs/selinux/enforce)" = "0" ]
+		then
+			Echo_message "Begin mounting permissive /sys/fs/selinux..."
+
+			# Checking stage file
+			Check_stagefile .build/chroot_selinuxpermissivefs
+
+			# Checking lock file
+			Check_lockfile .lock
+
+			# Creating lock file
+			Create_lockfile .lock
+
+			# Create mountpoint
+			mkdir -p chroot/sys/fs/selinux
+
+			# Mounting /sys/fs/selinux
+			mount selinuxfs-live -t selinuxfs chroot/sys/fs/selinux
+
+			# Make sure the chroot has its SElinux permissions ok
+			mount --bind /dev/null chroot/sys/fs/selinux/load
+			# Avoid package installation problems
+			mount -o remount,ro,bind /sys/fs/selinux chroot/sys/fs/selinux
+			setfiles -F -r chroot /etc/selinux/default/contexts/files/file_contexts chroot
+			chcon -u system_u chroot/proc
+			chcon -u system_u chroot/sys
+
+			# Creating stage file
+			Create_stagefile .build/chroot_selinuxpermissivefs
+		fi
+		;;
+
+	remove)
+		Echo_message "Begin unmounting permissive /sys/fs/selinux..."
+
+		# Checking lock file
+		Check_lockfile .lock
+
+		# Creating lock file
+		Create_lockfile .lock
+
+		# Unmounting /sys/fs/selinux
+		if [ -e chroot/sys/fs/selinux/enforce ]
+		then
+			umount chroot/sys/fs/selinux/load
+			umount chroot/sys/fs/selinux
+		fi
+
+		# Removing stage file
+		rm -f .build/chroot_selinuxpermissivefs
+		;;
+
+	*)
+		Usage
+		;;
+esac
