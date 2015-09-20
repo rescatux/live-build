@@ -612,6 +612,26 @@ Set_defaults ()
 			;;
 	esac
 
+	# Add SELinux boot parametres
+	case "${LB_SELINUX}" in
+		enforced)
+			LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=1"
+		;;
+
+		permissive)
+			LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=0"
+		;;
+
+		#auto)
+		#
+		#;;
+		#
+		#disable)
+		#
+		#;;
+
+	esac
+
 	if [ -n "${LB_DEBIAN_INSTALLER_PRESEEDFILE}" ]
 	then
 		case "${LIVE_IMAGE_TYPE}" in
@@ -786,6 +806,9 @@ Set_defaults ()
 
 	# Setting UEFI Secure Boot
 	LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT:-auto}"
+
+	# Setting SELinux
+	LB_SELINUX="${LB_SELINUX:-auto}"
 
 	## config/source
 
