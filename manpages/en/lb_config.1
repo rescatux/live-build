@@ -211,6 +211,8 @@
 .br
 	[\fB\-\-security\fR true|false]
 .br
+	[\fB\-\-selinux\fR \fIauto|enforced|permissive|disable\fR]
+.br
 	[\fB\-\-source\fR true|false]
 .br
 	[\-s|\fB\-\-source\-images\fR iso|netboot|tar|hdd]
@@ -448,6 +450,8 @@ defines which package archive areas of a debian packages archive should be used 
 defines the archive areas for derivatives of the resulting live system.
 .IP "\fB\-\-security\fR true|false" 4
 defines if the security repositories specified in the security mirror options should be used or not.
+.IP "\fB\-\-selinux\fR \fIauto|enforced|permissive|disable\fR" 4
+enables with enforcing or not Secure Enhanced Linux (SELinux). By default, this is set to auto, which means it is disabled.
 .IP "\fB\-\-source\fR true|false" 4
 defines if a corresponding source image to the binary image should be build. By default this is false because most people do not require this and would require to download quite a few source packages. However, once you start distributing your live image, you should make sure you build it with a source image alongside.
 .IP "\-s|\fB\-\-source\-images\fR iso|netboot|tar|hdd" 4
