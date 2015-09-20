@@ -111,6 +111,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--archive-areas ARCHIVE_AREA|\"ARCHIVE_AREAS\"]\n\
 \t    [--parent-archive-areas ARCHIVE_AREA|\"ARCHIVE_AREAS\"]\n\
 \t    [--security true|false]\n\
+\t    [--selinux auto|enforced|permissive|disable]\n\
 \t    [--source true|false]\n\
 \t    [-s|--source-images iso|netboot|tar|hdd]\n\
 \t    [--firmware-binary true|false]\n\
@@ -142,7 +143,7 @@ Local_arguments ()
 		mirror-binary-security:,mirror-debian-installer:,
 		archive-areas:,parent-archive-areas:,chroot-filesystem:,
 		gzip-options:,image-name:,interactive:,keyring-packages:,linux-flavours:,linux-packages:,
-		security:,updates:,backports:,binary-filesystem:,binary-images:,
+		security:,selinux:,updates:,backports:,binary-filesystem:,binary-images:,
 		apt-indices:,bootappend-install:,bootappend-live:,bootappend-live-failsafe:,bootloader:,bootloaders:,checksums:,compression:,config:,zsync:,build-with-chroot:,
 		debian-installer:,debian-installer-distribution:,debian-installer-preseedfile:,debian-installer-gui:,
 		grub-splash:,isohybrid-options:,hdd-label:,hdd-size:,hdd-partition-start:,iso-application:,iso-preparer:,iso-publisher:,
@@ -464,6 +465,11 @@ Local_arguments ()
 
 			--security)
 				LB_SECURITY="${2}"
+				shift 2
+				;;
+
+			--selinux)
+				LB_SELINUX="${2}"
 				shift 2
 				;;
 
@@ -1338,6 +1344,10 @@ LB_SWAP_FILE_SIZE="${LB_SWAP_FILE_SIZE}"
 # \$LB_UEFI_SECURE_BOOT: enable/disable UEFI secure boot
 # (Default: ${LB_UEFI_SECURE_BOOT})
 LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT}"
+
+# \$LB_SELINUX: enforce/disable SELinux
+# (Default: ${LB_SELINUX})
+LB_SELINUX="${LB_SELINUX}"
 EOF
 
 # Creating lb_source_* configuration
