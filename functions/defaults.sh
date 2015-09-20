@@ -787,6 +787,9 @@ Set_defaults ()
 	# Setting UEFI Secure Boot
 	LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT:-auto}"
 
+	# Setting SELinux
+	LB_SELINUX="${LB_SELINUX:-auto}"
+
 	## config/source
 
 	# Setting source option
