@@ -144,6 +144,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					rm -f .lock
 					mv chroot/chroot chroot.tmp
 
+					lb chroot_selinux remove ${@}
 					lb chroot_archives binary remove ${@}
 					lb chroot_apt remove ${@}
 					lb chroot_hostname remove ${@}
@@ -172,6 +173,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					lb chroot_hostname install ${@}
 					lb chroot_apt install ${@}
 					lb chroot_archives binary install ${@}
+					lb chroot_selinux install ${@}
 
 					touch .lock
 				else
@@ -232,6 +234,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					rm -f .lock
 					mv chroot/chroot chroot.tmp
 
+					lb chroot_selinux remove ${@}
 					lb chroot_archives binary remove ${@}
 					lb chroot_apt remove ${@}
 					lb chroot_hostname remove ${@}
@@ -260,6 +263,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					lb chroot_hostname install ${@}
 					lb chroot_apt install ${@}
 					lb chroot_archives binary install ${@}
+					lb chroot_selinux install ${@}
 
 					touch .lock
 				else
@@ -299,6 +303,22 @@ case "${LB_CHROOT_FILESYSTEM}" in
 	squashfs)
 		# Checking depends
 		Check_package chroot /usr/share/doc/squashfs-tools squashfs-tools
+		case "${LB_SELINUX}" in
+			enforced|permissive)
+				Check_package chroot /usr/bin/chcon coreutils
+				Check_package chroot /sbin/setfiles policycoreutils
+				Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
+			;;
+
+			#auto)
+			#
+			#;;
+			#
+			#disable)
+			#
+			#;;
+
+		esac
 
 		# Restoring cache
 		Restore_cache cache/packages.binary
@@ -341,6 +361,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 		fi
 
 		MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -comp xz"
+		MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -xattrs"
 
 		case "${LB_BUILD_WITH_CHROOT}" in
 			true)
@@ -350,6 +371,21 @@ case "${LB_CHROOT_FILESYSTEM}" in
 
 					MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -wildcards -ef /excludes"
 				fi
+
+				case "${LB_SELINUX}" in
+					enforced|permissive)
+						setfiles -F -r chroot/chroot /etc/selinux/default/contexts/files/file_contexts chroot/chroot
+					;;
+
+					#auto)
+					#
+					#;;
+					#
+					#disable)
+					#
+					#;;
+
+				esac
 
 				# Create image
 				Chroot chroot "nice -n 19 mksquashfs chroot filesystem.squashfs ${MKSQUASHFS_OPTIONS}"
@@ -367,6 +403,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					rm -f .lock
 					mv chroot/chroot chroot.tmp
 
+					lb chroot_selinux remove ${@}
 					lb chroot_archives binary remove ${@}
 					lb chroot_apt remove ${@}
 					lb chroot_hostname remove ${@}
@@ -385,6 +422,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 
 					lb chroot_devpts install ${@}
 					lb chroot_proc install ${@}
+
 					lb chroot_selinuxfs install ${@}
 					lb chroot_sysfs install ${@}
 					lb chroot_debianchroot install ${@}
@@ -395,6 +433,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 					lb chroot_hostname install ${@}
 					lb chroot_apt install ${@}
 					lb chroot_archives binary install ${@}
+					lb chroot_selinux install ${@}
 
 					touch .lock
 				else
@@ -412,6 +451,21 @@ case "${LB_CHROOT_FILESYSTEM}" in
 				then
 					MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -wildcards -ef config/rootfs/excludes"
 				fi
+
+				case "${LB_SELINUX}" in
+					enforced|permissive)
+						setfiles -F -r chroot /etc/selinux/default/contexts/files/file_contexts chroot
+					;;
+
+					#auto)
+					#
+					#;;
+					#
+					#disable)
+					#
+					#;;
+
+				esac
 
 				nice -n 19 mksquashfs chroot binary/${INITFS}/filesystem.squashfs ${MKSQUASHFS_OPTIONS}
 

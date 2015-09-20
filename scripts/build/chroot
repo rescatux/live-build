@@ -49,6 +49,7 @@ lb chroot_resolv install ${@}
 lb chroot_hostname install ${@}
 lb chroot_apt install ${@}
 lb chroot_archives chroot install ${@}
+lb chroot_selinux install ${@}
 
 # Customizing chroot
 lb chroot_linux-image ${@}
@@ -74,6 +75,7 @@ lb chroot_interactive ${@}
 Chroot chroot "dpkg-query -W" > chroot.packages.live
 
 # Deconfiguring chroot
+lb chroot_selinux remove ${@}
 lb chroot_archives chroot remove ${@}
 lb chroot_apt remove ${@}
 lb chroot_hostname remove ${@}
