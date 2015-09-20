@@ -39,6 +39,7 @@ then
 	# Configuring chroot
 	lb chroot_devpts install ${@}
 	lb chroot_proc install ${@}
+	lb chroot_selinux install ${@}
 	lb chroot_selinuxfs install ${@}
 	lb chroot_sysfs install ${@}
 	lb chroot_debianchroot install ${@}
