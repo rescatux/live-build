@@ -206,6 +206,8 @@
 .br
 	[\fB\-\-security\fR true|false]
 .br
+	[\fB\-\-selinux\fR \fIauto|enforced|permissive|disable\fR]
+.br
 	[\fB\-\-source\fR true|false]
 .br
 	[\fB\-s\fR|\fB\-\-source\-images\fR iso|netboot|tar|hdd|"\fIIMAGES\fR"]
@@ -438,6 +440,8 @@ sets the location of the mirror that will be used to fetch the debian installer 
 reduces the verbosity of messages output by \fBlb build\fR.
 .IP "\fB\-\-security\fR true|false" 4
 defines if the security repositories specified in the security mirror options should be used or not.
+.IP "\fB\-\-selinux\fR \fIauto|enforced|permissive|disable\fR" 4
+enables with enforcing or not Secure Enhanced Linux (SELinux). By default, this is set to auto, which means it is disabled.
 .IP "\fB\-\-source\fR true|false" 4
 defines if a corresponding source image to the binary image should be built. By default this is false because most people do not require this and it involves downloading quite a few source packages. However, if you distribute your live image to others, you should make sure you build it with a source image alongside to help enable you to comply with licensing terms.
 .IP "\fB\-s\fR|\fB\-\-source\-images\fR iso|netboot|tar|hdd" 4
