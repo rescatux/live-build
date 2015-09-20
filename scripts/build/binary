@@ -50,6 +50,7 @@ then
 	lb chroot_sysv-rc install ${@}
 	lb chroot_apt install-binary ${@}
 	lb chroot_archives chroot install ${@}
+	lb chroot_selinux install ${@}
 fi
 
 # Building root filesystem
@@ -76,6 +77,7 @@ if [ "${LB_BUILD_WITH_CHROOT}" != "true" ]
 then
 	lb chroot_devpts install ${@}
 	lb chroot_proc install ${@}
+	lb chroot_selinux install ${@}
 	lb chroot_selinuxfs install ${@}
 	lb chroot_sysfs install ${@}
 fi
