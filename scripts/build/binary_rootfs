@@ -299,6 +299,9 @@ case "${LB_CHROOT_FILESYSTEM}" in
 	squashfs)
 		# Checking depends
 		Check_package chroot /usr/share/doc/squashfs-tools squashfs-tools
+		Check_package chroot /usr/bin/chcon coreutils
+		Check_package chroot /sbin/setfiles policycoreutils
+		Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
 
 		# Restoring cache
 		Restore_cache cache/packages.binary
@@ -341,6 +344,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 		fi
 
 		MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -comp xz"
+		MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -xattrs"
 
 		case "${LB_BUILD_WITH_CHROOT}" in
 			true)
@@ -350,6 +354,8 @@ case "${LB_CHROOT_FILESYSTEM}" in
 
 					MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -wildcards -ef /excludes"
 				fi
+
+				setfiles -F -r chroot/chroot /etc/selinux/default/contexts/files/file_contexts chroot/chroot
 
 				# Create image
 				Chroot chroot "nice -n 19 mksquashfs chroot filesystem.squashfs ${MKSQUASHFS_OPTIONS}"
@@ -412,6 +418,8 @@ case "${LB_CHROOT_FILESYSTEM}" in
 				then
 					MKSQUASHFS_OPTIONS="${MKSQUASHFS_OPTIONS} -wildcards -ef config/rootfs/excludes"
 				fi
+
+				setfiles -F -r chroot /etc/selinux/default/contexts/files/file_contexts chroot
 
 				nice -n 19 mksquashfs chroot binary/${INITFS}/filesystem.squashfs ${MKSQUASHFS_OPTIONS}
 

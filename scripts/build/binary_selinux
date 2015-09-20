@@ -1,0 +1,64 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2006-2015 Daniel Baumann <mail@daniel-baumann.ch>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+# Including common functions
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+# Setting static variables
+DESCRIPTION="$(Echo 'Set SELinux boot parametres')"
+HELP=""
+USAGE="${PROGRAM} {install|remove} [--force]"
+
+Arguments "${@}"
+
+# Reading configuration files
+Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
+Set_defaults
+
+# Requiring stage file
+Require_stagefile .build/config .build/bootstrap
+
+Echo_message "Begin adding SELinux boot parametres..."
+
+# Checking stage file
+Check_stagefile .build/binary_selinux
+
+# Checking lock file
+Check_lockfile .lock
+
+# Creating lock file
+Create_lockfile .lock
+
+case "${LB_SELINUX}" in
+    enforced)
+        # Add SELinux boot parametres
+        LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=1"
+    ;;
+
+    permissive)
+        # Add SELinux boot parametres
+        LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=0"
+    ;;
+
+    #auto)
+    #
+    #;;
+    #
+    #disable)
+    #
+    #;;
+
+esac
+
+# Creating stage file
+Create_stagefile .build/binary_selinux
+
