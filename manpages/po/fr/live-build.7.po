@@ -1,15 +1,15 @@
-# Japanese translations for live-build package
-# Copyright (C) 2014 victory <victory.deb@gmail.com>
-# This file is distributed under the same license as the live-build package.
+# French translation of the live-build manpage
+# Copyright (C) 2015 Olivier Humbert <trebmuh@tuxfamily.org>.
+# This file is distributed under the same license as the live-images package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: live-build\n"
+"Project-Id-Version: live-build 5.0~a11-1\n"
 "POT-Creation-Date: 2015-10-21 02:21+0200\n"
-"PO-Revision-Date: 2014-08-28 02:52+0900\n"
-"Last-Translator: victory <victory.deb@gmail.com>\n"
+"PO-Revision-Date: 2015-09-20 14:53+0200\n"
+"Last-Translator: Olivier Humbert <trebmuh@tuxfamily.org>\n"
 "Language-Team: none\n"
-"Language: ja\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,17 +26,17 @@ msgstr "LIVE-BUILD"
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
 #: en/lb_chroot.1:1 en/lb_clean.1:1 en/lb_config.1:1 en/lb_source.1:1
 #: en/live-build.7:1
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "2015-10-21"
-msgstr "2015-02-07"
+msgstr "21.10.2015"
 
 #. type: TH
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
 #: en/lb_chroot.1:1 en/lb_clean.1:1 en/lb_config.1:1 en/lb_source.1:1
 #: en/live-build.7:1
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "5.0~a11-1"
-msgstr "5.0~a3-1"
+msgstr "5.0~a11-1"
 
 #. type: TH
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
@@ -44,7 +44,7 @@ msgstr "5.0~a3-1"
 #: en/live-build.7:1
 #, no-wrap
 msgid "Live Systems Project"
-msgstr "Live システムプロジェクト"
+msgstr "Projet Live Systems"
 
 #. type: SH
 #: en/lb.1:3 en/lb_binary.1:3 en/lb_bootstrap.1:3 en/lb_build.1:3
@@ -52,7 +52,7 @@ msgstr "Live システムプロジェクト"
 #: en/live-build.7:3
 #, no-wrap
 msgid "NAME"
-msgstr "名前"
+msgstr "NOM"
 
 #. type: SH
 #: en/lb.1:6 en/lb_binary.1:6 en/lb_bootstrap.1:6 en/lb_build.1:6
@@ -60,7 +60,7 @@ msgstr "名前"
 #: en/live-build.7:6
 #, no-wrap
 msgid "SYNOPSIS"
-msgstr "概要"
+msgstr "SYNOPSIS"
 
 #. type: SH
 #: en/lb.1:11 en/lb_binary.1:9 en/lb_bootstrap.1:9 en/lb_build.1:9
@@ -68,7 +68,7 @@ msgstr "概要"
 #: en/live-build.7:11
 #, no-wrap
 msgid "DESCRIPTION"
-msgstr "説明"
+msgstr "DESCRIPTION"
 
 #. type: SH
 #: en/lb.1:16 en/lb_binary.1:14 en/lb_bootstrap.1:14 en/lb_build.1:14
@@ -76,7 +76,7 @@ msgstr "説明"
 #: en/live-build.7:20
 #, no-wrap
 msgid "OPTIONS"
-msgstr "オプション"
+msgstr "OPTIONS"
 
 #. type: SH
 #: en/lb.1:19 en/lb_binary.1:17 en/lb_bootstrap.1:17 en/lb_build.1:17
@@ -84,7 +84,7 @@ msgstr "オプション"
 #: en/live-build.7:213
 #, no-wrap
 msgid "FILES"
-msgstr "ファイル"
+msgstr "FICHIERS"
 
 #. type: SH
 #: en/lb.1:22 en/lb_binary.1:20 en/lb_bootstrap.1:20 en/lb_build.1:22
@@ -92,14 +92,14 @@ msgstr "ファイル"
 #: en/live-build.7:217
 #, no-wrap
 msgid "SEE ALSO"
-msgstr "関連項目"
+msgstr "VOIR AUSSI"
 
 #. type: Plain text
 #: en/lb.1:26 en/lb_binary.1:24 en/lb_bootstrap.1:24 en/lb_build.1:26
 #: en/lb_chroot.1:24 en/lb_clean.1:47 en/lb_config.1:477 en/lb_source.1:24
 #: en/live-build.7:223
 msgid "This program is a part of live-build."
-msgstr "このプログラムは live-build の一部です。"
+msgstr "Ce programme est une partie de live-build."
 
 #. type: SH
 #: en/lb.1:27 en/lb_binary.1:25 en/lb_bootstrap.1:25 en/lb_build.1:27
@@ -107,7 +107,7 @@ msgstr "このプログラムは live-build の一部です。"
 #: en/live-build.7:224
 #, no-wrap
 msgid "HOMEPAGE"
-msgstr "ホームページ"
+msgstr "PAGE D'ACCUEIL"
 
 #. type: Plain text
 #: en/lb.1:29 en/lb_binary.1:27 en/lb_bootstrap.1:27 en/lb_build.1:29
@@ -118,9 +118,9 @@ msgid ""
 "on the homepage at E<lt>I<http://live-systems.org/>E<gt> and in the manual "
 "at E<lt>I<http://live-systems.org/manual/>E<gt>."
 msgstr ""
-"live-build 及び Live システムプロジェクトについてのさらなる情報は、"
-"E<lt>I<http://live-systems.org/>E<gt> のホームページや E<lt>I<http://live-"
-"systems.org/manual/>E<gt> のマニュアルにあります。"
+"Davantage d'informations à propos de live-build et du projet Live Systems "
+"peuvent être trouvées sur la page d'accueil à E<lt>I<http://live-systems.org/"
+">E<gt> et dans le manuel à E<lt>I<http://live-systems.org/manual/>E<gt>."
 
 #. type: SH
 #: en/lb.1:30 en/lb_binary.1:28 en/lb_bootstrap.1:28 en/lb_build.1:30
@@ -128,7 +128,7 @@ msgstr ""
 #: en/live-build.7:227
 #, no-wrap
 msgid "BUGS"
-msgstr "バグ"
+msgstr "BOGUES"
 
 #. type: Plain text
 #: en/lb.1:32 en/lb_binary.1:30 en/lb_bootstrap.1:30 en/lb_build.1:32
@@ -140,10 +140,10 @@ msgid ""
 "writing a mail to the Live Systems mailing list at E<lt>I<debian-live@lists."
 "debian.org>E<gt>."
 msgstr ""
-"バグは E<lt>I<http://bugs.debian.org/>E<gt> にあるバグ追跡システムに live-"
-"build パッケージのバグ報告として提出するか、E<lt>I<debian-live@lists.debian."
-"org>E<gt> にある Live システムのメーリングリスト宛てにメールを書くことにより"
-"報告できます。"
+"Les bogues peuvent être signalés en soumettant un rapport de bogue pour le "
+"paquet live-build dans le BTS à E<lt>I<http://bugs.debian.org/>E<gt> ou par "
+"l'écriture d'un courriel à la liste de diffusion Live Systems à "
+"E<lt>I<debian-live@lists.debian.org>E<gt>."
 
 #. type: SH
 #: en/lb.1:33 en/lb_binary.1:31 en/lb_bootstrap.1:31 en/lb_build.1:33
@@ -151,7 +151,7 @@ msgstr ""
 #: en/live-build.7:230
 #, no-wrap
 msgid "AUTHOR"
-msgstr "作者"
+msgstr "AUTEUR"
 
 #. type: Plain text
 #: en/lb.1:34 en/lb_binary.1:32 en/lb_bootstrap.1:32 en/lb_build.1:34
@@ -160,8 +160,8 @@ msgstr "作者"
 msgid ""
 "live-build was written by Daniel Baumann E<lt>I<mail@daniel-baumann.ch>E<gt>."
 msgstr ""
-"live-build は Daniel Baumann さん E<lt>I<mail@daniel-baumann.ch>E<gt> により"
-"書かれました。"
+"live-images a été écrit par Daniel Baumann E<lt>I<mail@daniel-baumann."
+"ch>E<gt>."
 
 #. type: IP
 #: en/lb_config.1:302 en/live-build.7:36
@@ -200,7 +200,7 @@ msgstr "I<live-config>(7)"
 #. type: Plain text
 #: en/live-build.7:5
 msgid "B<live-build> - the live systems tool suite"
-msgstr "B<live-build> - Live システムツール集"
+msgstr "B<live-build> - la suite d'outils live systems"
 
 #.  FIXME
 #.  FIXME
@@ -211,7 +211,7 @@ msgid ""
 "breakpoints>] [B<--conffile>] [B<--debug>] [B<--force>] [B<--quiet>] [B<--"
 "verbose>]"
 msgstr ""
-"B<lb >I<コマンド> [B<-h|--help>] [B<-u|--usage>] [B<-v|--version>] [B<--"
+"B<lb >I<COMMAND> [B<-h|--help>] [B<-u|--usage>] [B<-v|--version>] [B<--"
 "breakpoints>] [B<--conffile>] [B<--debug>] [B<--force>] [B<--quiet>] [B<--"
 "verbose>]"
 
@@ -223,14 +223,15 @@ msgid ""
 "live-build is a tool suite that uses a configuration directory to completely "
 "automate and customize all aspects of building a Live image."
 msgstr ""
-"live-build は Live システムのイメージをビルドするためのスクリプト集です。"
-"live-build の背景となる考え方は、設定ディレクトリを使って Live イメージのビル"
-"ドに関するあらゆる面を完全に自動化、独自化するツール集ということです。"
+"live-build est un ensemble de scripts pour construire des images de système "
+"live. L'idée derrière live-build est une suite d'outils qui utilise un "
+"répertoire de configuration pour automatiser complètement et personnaliser "
+"tous les aspects de la construction d'une image Live."
 
 #. type: Plain text
 #: en/live-build.7:16
 msgid "The I<COMMAND> is a name of a live-build command (see below)."
-msgstr "I<コマンド>は live-build コマンドの名前です (以下参照)。"
+msgstr "La I<COMMANDE> est un nom d'une commande live-build (voir ci-dessous)."
 
 #.  FIXME
 #. type: Plain text
@@ -240,24 +241,24 @@ msgid ""
 "individual manpages for each helper and in the manual at E<lt>I<http://live-"
 "systems.org/manual/>E<gt>."
 msgstr ""
-"live-build 及び Live システムプロジェクトについてのさらなる情報は、それぞれ"
-"の man ページや E<lt>I<http://live-systems.org/manual/>E<gt> のマニュアルにあ"
-"ります。"
+"Davantage de documentation à propos de la façon d'utiliser live-build est "
+"disponible dans les pages de manuel individuelles de chaque assistant ainsi "
+"que dans le manual à E<lt>I<http://live-systems.org/manual/>E<gt>."
 
 #.  FIXME
 #. type: SS
 #: en/live-build.7:22
 #, no-wrap
 msgid "Shared live-build options"
-msgstr "live-build 共有オプション"
+msgstr "Options live-build partagées"
 
 #. type: Plain text
 #: en/live-build.7:24
 msgid ""
 "The following command line options are supported by all live-build programs."
 msgstr ""
-"以下のコマンドラインオプションは全 live-build プログラムでサポートされていま"
-"す。"
+"Les options en ligne de commande suivantes sont supportées par l'ensemble "
+"des programmes live-build."
 
 #. type: IP
 #: en/live-build.7:24
@@ -268,7 +269,7 @@ msgstr "B<-h, --help>"
 #. type: Plain text
 #: en/live-build.7:26
 msgid "display help and exit."
-msgstr "ヘルプを表示して終了します。"
+msgstr "affiche l'aide et quitte"
 
 #. type: IP
 #: en/live-build.7:26
@@ -279,7 +280,7 @@ msgstr "B<-u, --usage>"
 #. type: Plain text
 #: en/live-build.7:28
 msgid "show usage and exit."
-msgstr "使用方法を表示して終了します。"
+msgstr "affiche l'utilisation et quitte"
 
 #. type: IP
 #: en/live-build.7:28
@@ -290,13 +291,13 @@ msgstr "B<-v, --version>"
 #. type: Plain text
 #: en/live-build.7:30
 msgid "output version information and exit."
-msgstr "バージョン情報を表示して終了します。"
+msgstr "affiche les informations de version et quitte"
 
 #. type: SS
 #: en/live-build.7:30
 #, no-wrap
 msgid "Common live-build options"
-msgstr "live-build 共通オプション"
+msgstr "Options live-build communes"
 
 #. type: Plain text
 #: en/live-build.7:32
@@ -305,9 +306,9 @@ msgid ""
 "programs. See the man page of each program for a complete explanation of "
 "what each option does."
 msgstr ""
-"以下のコマンドラインオプションはほとんどの live-build プログラムでサポートさ"
-"れています。各オプションの完全な説明については各プログラムの man ページを見て"
-"ください。"
+"Les options de lignes de commandes suivantes sont supportées par la plupart "
+"des programmes live-build. Voir la page de manuel de chaque programme pour "
+"une explication complète de ce que chaque option fait."
 
 #. type: IP
 #: en/live-build.7:32
@@ -318,7 +319,7 @@ msgstr "B<--breakpoints>"
 #. type: Plain text
 #: en/live-build.7:34
 msgid "run with breakpoints."
-msgstr "ブレークポイントをたどります。"
+msgstr "lance avec des points d'arrêt (breakpoints)."
 
 #. type: IP
 #: en/live-build.7:34
@@ -329,34 +330,34 @@ msgstr "B<--conffile>"
 #. type: Plain text
 #: en/live-build.7:36
 msgid "use custom configuration file."
-msgstr "独自の設定ファイルを使います。"
+msgstr "utilise un fichier de configuration personnalisé."
 
 #. type: Plain text
 #: en/live-build.7:38
 msgid "show debug information."
-msgstr "デバッグ情報を表示します。"
+msgstr "affiche des informations de déboguage."
 
 #. type: Plain text
 #: en/live-build.7:40
 msgid "force helper execution, even if stage file exists."
-msgstr "段階ファイルが存在する場合でも強制的にヘルパーを実行します。"
+msgstr "force l'exécution d'un assistant, même si le fichier de stage existe."
 
 #. type: Plain text
 #: en/live-build.7:42
 msgid "be quiet."
-msgstr "出力するメッセージを少なくします。"
+msgstr "soit discret."
 
 #.  FIXME
 #. type: Plain text
 #: en/live-build.7:45
 msgid "be verbose."
-msgstr "出力するメッセージを多くします。"
+msgstr "soit verbeux."
 
 #. type: SH
 #: en/live-build.7:46
 #, no-wrap
 msgid "LIVE-BUILD COMMANDS"
-msgstr "LIVE-BUILD コマンド"
+msgstr "COMMANDES LIVE-BUILD"
 
 #.  FIXME
 #. type: Plain text
@@ -365,8 +366,8 @@ msgid ""
 "We divide live-build into high level (\"porcelain\") commands and low level "
 "(\"plumbing\") commands."
 msgstr ""
-"live-build は高レベル (「porcelain」) コマンドと低レベル (「plumbing」) コマ"
-"ンドに分割されています。"
+"Nous divisons live-build entre des commandes de haut-niveau (\"porcelaine\") "
+"et de bas-niveau (\"plomberie\")."
 
 #.  FIXME
 #. type: Plain text
@@ -375,14 +376,15 @@ msgid ""
 "Here is the complete list of all available live-build commands. See their "
 "man pages for additional documentation."
 msgstr ""
-"利用可能な全 live-build コマンドの一覧です。詳しくはそれぞれの man ページを見"
-"てください。"
+"Voici une liste complète de toutes les commandes live-build disponibles. "
+"Consultez leurs pages de manuel pour obtenir de la documentation "
+"additionnelle."
 
 #. type: SH
 #: en/live-build.7:54
 #, no-wrap
 msgid "HIGH-LEVEL COMMANDS (PORCELAIN)"
-msgstr "高レベルコマンド (PORCELAIN)"
+msgstr "COMMANDES HAUT-NIVEAU (PORCELAINE)"
 
 #.  FIXME
 #. type: Plain text
@@ -391,14 +393,14 @@ msgid ""
 "We separate the porcelain commands into the main commands and some ancillary "
 "user utilities."
 msgstr ""
-"高レベルコマンドは主要コマンドといくらかの副次的なユーザ向けユーティリティに"
-"分けられています。"
+"Nous séparons les commandes porcelaine en commandes principales et en "
+"utilitaires utilisateur auxiliaires."
 
 #. type: SS
 #: en/live-build.7:57
 #, no-wrap
 msgid "Main porcelain commands"
-msgstr "主要コマンド"
+msgstr "Commandes porcelaine principales"
 
 #. type: IP
 #: en/live-build.7:58
@@ -409,7 +411,7 @@ msgstr "B<lb_config>(1)"
 #. type: Plain text
 #: en/live-build.7:60
 msgid "create configuration for live-build"
-msgstr "live-build の設定ファイルを作成します"
+msgstr "crée une configuration pour live-build"
 
 #. type: IP
 #: en/live-build.7:60
@@ -420,7 +422,7 @@ msgstr "B<lb_bootstrap>(1)"
 #. type: Plain text
 #: en/live-build.7:62
 msgid "create the first stage by bootstrapping a basic debian system"
-msgstr "第1の段階で基本的な debian システムのパッケージ収集を行います"
+msgstr "crée le premier stage en amorçant un système debian basique"
 
 #. type: IP
 #: en/live-build.7:62
@@ -431,7 +433,7 @@ msgstr "B<lb_chroot>(1)"
 #. type: Plain text
 #: en/live-build.7:64
 msgid "create the second stage by customizing the chroot"
-msgstr "第2の段階で chroot の独自化を行います"
+msgstr "crée un deuxième stage en personnalisant le chroot"
 
 #. type: IP
 #: en/live-build.7:64
@@ -442,7 +444,7 @@ msgstr "B<lb_binary>(1)"
 #. type: Plain text
 #: en/live-build.7:66
 msgid "create the third stage by generating a binary image"
-msgstr "第3の段階でバイナリイメージの生成を行います"
+msgstr "crée le troisième stage en générant une image binaire"
 
 #. type: IP
 #: en/live-build.7:66
@@ -453,7 +455,7 @@ msgstr "B<lb_source>(1)"
 #. type: Plain text
 #: en/live-build.7:68
 msgid "create the optional fourth stage by generating a source image"
-msgstr "オプションの第4の段階でソースイメージの生成を行います"
+msgstr "crée le quatrième stage optionel en générant une image source"
 
 #. type: IP
 #: en/live-build.7:68
@@ -464,13 +466,13 @@ msgstr "B<lb_clean>(1)"
 #. type: Plain text
 #: en/live-build.7:70
 msgid "clean up system build directories"
-msgstr "システムのビルド用ディレクトリを掃除します"
+msgstr "nettoie les répertoires de construction du système"
 
 #. type: SS
 #: en/live-build.7:70
 #, no-wrap
 msgid "Ancillary Commands"
-msgstr "副次的なコマンド"
+msgstr "Commandes auxiliaires"
 
 #. type: IP
 #: en/live-build.7:71
@@ -481,7 +483,7 @@ msgstr "B<lb>(1)"
 #. type: Plain text
 #: en/live-build.7:73
 msgid "generic live-build wrapper"
-msgstr "live-build の包括的なラッパー"
+msgstr "emballage live-build générique"
 
 #. type: IP
 #: en/live-build.7:73
@@ -492,7 +494,7 @@ msgstr "B<lb_build>(1)"
 #. type: Plain text
 #: en/live-build.7:75
 msgid "alias for all stages"
-msgstr "全段階のラッパーです"
+msgstr "alias pour tous les stages"
 
 #. type: IP
 #: en/live-build.7:75
@@ -503,7 +505,7 @@ msgstr "B<lb_local>(1)"
 #. type: Plain text
 #: en/live-build.7:77
 msgid "helper for using a local live-build"
-msgstr "ローカルの live-build を利用する支援コマンド"
+msgstr "assistant pour l'utilisation d'un live-build local"
 
 #. type: IP
 #: en/live-build.7:77
@@ -515,13 +517,13 @@ msgstr "B<lb_testroot>(1)"
 #. type: Plain text
 #: en/live-build.7:80
 msgid "ensure that a system is built as root"
-msgstr "システムが root により構成されていることを確認します"
+msgstr "s'assure que le système est construit en tant qu'administrateur (root)"
 
 #. type: SH
 #: en/live-build.7:81
 #, no-wrap
 msgid "LOW-LEVEL COMMANDS (PLUMBING)"
-msgstr "低レベルコマンド (PLUMBING)"
+msgstr "COMMANDES BAS-NIVEAU (PLOMBERIE)"
 
 #.  FIXME
 #. type: Plain text
@@ -534,11 +536,13 @@ msgid ""
 "live-build commands in your own scripts, then the plumbings might be of "
 "interest for you."
 msgstr ""
-"live-build の実際の作業は低レベルコマンドにより実装されています。低レベルコマ"
-"ンドはエンドユーザが直接実行することは想定していません。高レベルの主要コマン"
-"ドに操作させることにより、様々な低レベルコマンドを必ず正しい順で実行するよう"
-"にしています。しかし、live-build コマンドを自分のスクリプトで再利用したい場合"
-"はこの低レベルコマンドが対象となるかもしれません。"
+"Le travail réel de live-build est implémenté dans les commandes bas-niveau, "
+"appelées plomberie. Elles ne sont pas supposées être utilisées par les "
+"utilisateurs finaux, ils devraient rester avec les porcelaines puisqu'elles "
+"s'assurent que toutes les différentes commandes de plomberie sont exécutées "
+"dans le bon ordre. Toutefois, si vous prévoyez de ré-utiliser les commandes "
+"live-build dans vos propres scripts, alors les plomberies pourraient vous "
+"intéresser."
 
 #. type: Plain text
 #: en/live-build.7:86
@@ -548,16 +552,17 @@ msgid ""
 "commands. The interface to Porcelain commands on the other hand are subject "
 "to change in order to improve the end user experience."
 msgstr ""
-"この低レベルコマンドへのインターフェイス (オプション群やセマンティクス) は高"
-"レベルの主要コマンドよりもはるかに安定していることが求められることに注意して"
-"ください。それに対して高レベルの主要コマンドへのインターフェイスは、エンド"
-"ユーザの使い勝手改善のために変更される対象となります。"
+"Notez que l'interface (ensemble des options et des semantiques) de ces "
+"commandes bas-niveau sont pensées pour être beaucoup plus stables que les "
+"commandes de niveau Porcelaine. D'un autre côté, l'interface des commandes "
+"Porcelaine sont sujettes à changement afin d'améliorer l'expérience de "
+"l'utilisateur final."
 
 #. type: SS
 #: en/live-build.7:86
 #, no-wrap
 msgid "Bootstrap commands"
-msgstr "パッケージ収集用のコマンド"
+msgstr "Commandes d'amorçage"
 
 #. type: IP
 #: en/live-build.7:87
@@ -568,7 +573,7 @@ msgstr "B<lb_bootstrap_cache>(1)"
 #. type: Plain text
 #: en/live-build.7:89
 msgid "cache bootstrap stage"
-msgstr "パッケージ収集段階をキャッシュします"
+msgstr "stage d'amorçage cache"
 
 #. type: IP
 #: en/live-build.7:89
@@ -579,13 +584,13 @@ msgstr "B<lb_bootstrap_debootstrap>(1)"
 #. type: Plain text
 #: en/live-build.7:91
 msgid "bootstrap a Debian system with debootstrap(8)"
-msgstr "debootstrap(8) により Debian システムのパッケージ収集を行います"
+msgstr "amorçcer un système Debian avec debootstrap(8)"
 
 #. type: SS
 #: en/live-build.7:91
 #, no-wrap
 msgid "Chroot commands"
-msgstr "chroot コマンド"
+msgstr "Commandes chroot"
 
 #. type: IP
 #: en/live-build.7:92
@@ -596,7 +601,7 @@ msgstr "B<lb_chroot_apt>(1)"
 #. type: Plain text
 #: en/live-build.7:94
 msgid "manage /etc/apt/apt.conf"
-msgstr "/etc/apt/apt.conf の管理"
+msgstr "gère /etc/apt/apt.conf"
 
 #. type: IP
 #: en/live-build.7:94
@@ -607,7 +612,7 @@ msgstr "B<lb_chroot_cache>(1)"
 #. type: Plain text
 #: en/live-build.7:96
 msgid "cache chroot stage"
-msgstr "chroot 段階をキャッシュします"
+msgstr "stage de chroot cache"
 
 #. type: IP
 #: en/live-build.7:96
@@ -618,7 +623,7 @@ msgstr "B<lb_chroot_debianchroot>(1)"
 #. type: Plain text
 #: en/live-build.7:98
 msgid "manage /etc/debian_chroot"
-msgstr "/etc/debian_chroot の管理"
+msgstr "gère /etc/debian_chroot"
 
 #. type: IP
 #: en/live-build.7:98
@@ -629,7 +634,7 @@ msgstr "B<lb_chroot_devpts>(1)"
 #. type: Plain text
 #: en/live-build.7:100
 msgid "mount /dev/pts"
-msgstr "/dev/pts をマウントします。"
+msgstr "monte /dev/pts"
 
 #. type: IP
 #: en/live-build.7:100
@@ -640,7 +645,7 @@ msgstr "B<lb_chroot_dpkg>(1)"
 #. type: Plain text
 #: en/live-build.7:102
 msgid "manage /sbin/dpkg"
-msgstr "/sbin/dpkg の管理"
+msgstr "gère /sbin/dpkg"
 
 #. type: IP
 #: en/live-build.7:102
@@ -651,7 +656,7 @@ msgstr "B<lb_chroot_hacks>(1)"
 #. type: Plain text
 #: en/live-build.7:104
 msgid "execute hacks in chroot"
-msgstr "hacks (応急的な操作を行うスクリプト) を chroot で実行します"
+msgstr "exécute les hacks dans le chroot"
 
 #. type: IP
 #: en/live-build.7:104
@@ -662,7 +667,7 @@ msgstr "B<lb_chroot_hostname>(1)"
 #. type: Plain text
 #: en/live-build.7:106
 msgid "manage /bin/hostname"
-msgstr "/bin/hostname の管理"
+msgstr "gère /bin/hostname"
 
 #. type: IP
 #: en/live-build.7:106
@@ -673,7 +678,7 @@ msgstr "B<lb_chroot_hosts>(1)"
 #. type: Plain text
 #: en/live-build.7:108
 msgid "manage /etc/hosts"
-msgstr "/etc/hosts の管理"
+msgstr "gère /etc/hosts"
 
 #. type: IP
 #: en/live-build.7:108
@@ -684,7 +689,7 @@ msgstr "B<lb_chroot_install-packages>(1)"
 #. type: Plain text
 #: en/live-build.7:110
 msgid "install queued packages into chroot"
-msgstr "キューにあるパッケージを chroot にインストールします"
+msgstr "installe les paquets en attente dans le chroot"
 
 #. type: IP
 #: en/live-build.7:110
@@ -695,7 +700,7 @@ msgstr "B<lb_chroot_interactive>(1)"
 #. type: Plain text
 #: en/live-build.7:112
 msgid "make build interactive"
-msgstr "対話的にビルドします"
+msgstr "rend la construction intéractive"
 
 #. type: IP
 #: en/live-build.7:112
@@ -706,7 +711,7 @@ msgstr "B<lb_chroot_linux-image>(1)"
 #. type: Plain text
 #: en/live-build.7:114
 msgid "manage /etc/kernel-img.conf"
-msgstr "/etc/kernel-img.conf の管理"
+msgstr "gère /etc/kernel-img.conf"
 
 #. type: IP
 #: en/live-build.7:114
@@ -717,7 +722,7 @@ msgstr "B<lb_chroot_hooks>(1)"
 #. type: Plain text
 #: en/live-build.7:116
 msgid "execute local hooks in chroot"
-msgstr "ローカルフックを chroot で実行します"
+msgstr "exécute les hooks locaux dans le chroot"
 
 #. type: IP
 #: en/live-build.7:116
@@ -728,7 +733,7 @@ msgstr "B<lb_chroot_local-includes>(1)"
 #. type: Plain text
 #: en/live-build.7:118
 msgid "copy local files into chroot"
-msgstr "ローカルファイルを chroot にコピーします"
+msgstr "copie les fichiers locaux dans le chroot"
 
 #. type: IP
 #: en/live-build.7:118
@@ -739,7 +744,7 @@ msgstr "B<lb_chroot_packages>(1)"
 #. type: Plain text
 #: en/live-build.7:120
 msgid "queue install of packages into chroot"
-msgstr "chroot にインストールするパッケージをキューに追加します"
+msgstr "met en attente l'installation des paquets dans le chroot"
 
 #. type: IP
 #: en/live-build.7:120
@@ -750,7 +755,7 @@ msgstr "B<lb_chroot_local-patches>(1)"
 #. type: Plain text
 #: en/live-build.7:122
 msgid "apply local patches against chroot"
-msgstr "ローカルのパッチを chroot に適用させます"
+msgstr "appliques les rustines locales dans le chroot"
 
 #. type: IP
 #: en/live-build.7:122
@@ -761,7 +766,7 @@ msgstr "B<lb_chroot_local-preseed>(1)"
 #. type: Plain text
 #: en/live-build.7:124
 msgid "use debconf local preseeding file"
-msgstr "ローカルにある debconf の preseed 用ファイルを利用します"
+msgstr "utilise un fichier de pré-configuration local debconf"
 
 #. type: IP
 #: en/live-build.7:124
@@ -772,7 +777,7 @@ msgstr "B<lb_chroot_packagelists>(1)"
 #. type: Plain text
 #: en/live-build.7:126
 msgid "queue install of package lists into chroot"
-msgstr "chroot にインストールするパッケージ一覧をキューに追加します"
+msgstr "met en attente l'installation des listes de paquets dans le chroot"
 
 #. type: IP
 #: en/live-build.7:126
@@ -783,7 +788,7 @@ msgstr "B<lb_chroot_proc>(1)"
 #. type: Plain text
 #: en/live-build.7:128
 msgid "mount /proc"
-msgstr "/proc をマウントします。"
+msgstr "monte /proc"
 
 #. type: IP
 #: en/live-build.7:128
@@ -794,7 +799,7 @@ msgstr "B<lb_chroot_resolv>(1)"
 #. type: Plain text
 #: en/live-build.7:130
 msgid "manage /etc/resolv.conf"
-msgstr "/etc/resolv.conf の管理"
+msgstr "gère /etc/resolv.conf"
 
 #. type: IP
 #: en/live-build.7:130
@@ -805,7 +810,7 @@ msgstr "B<lb_chroot_selinuxfs>(1)"
 #. type: Plain text
 #: en/live-build.7:132
 msgid "mount /selinux"
-msgstr "/selinux をマウントします。"
+msgstr "monte /selinux"
 
 #. type: IP
 #: en/live-build.7:132
@@ -816,7 +821,7 @@ msgstr "B<lb_chroot_archives>(1)"
 #. type: Plain text
 #: en/live-build.7:134
 msgid "manage /etc/apt/sources.list"
-msgstr "/etc/apt/sources.list の管理"
+msgstr "gère /etc/apt/sources.list"
 
 #. type: IP
 #: en/live-build.7:134
@@ -827,7 +832,7 @@ msgstr "B<lb_chroot_sysfs>(1)"
 #. type: Plain text
 #: en/live-build.7:136
 msgid "mount /sys"
-msgstr "/sys をマウントします。"
+msgstr "gère /sys"
 
 #. type: IP
 #: en/live-build.7:136
@@ -838,7 +843,7 @@ msgstr "B<lb_chroot_sysv-rc>(1)"
 #. type: Plain text
 #: en/live-build.7:138
 msgid "manage /usr/sbin/policy-rc.d"
-msgstr "/usr/sbin/policy-rc.d の管理"
+msgstr "gère /usr/sbin/policy-rc.d"
 
 #. type: IP
 #: en/live-build.7:138
@@ -849,13 +854,13 @@ msgstr "B<lb_chroot_task-lists>(1)"
 #. type: Plain text
 #: en/live-build.7:140
 msgid "install task lists into chroot"
-msgstr "タスク一覧を chroot にインストールします"
+msgstr "installe les listes de tâches dans le chroot"
 
 #. type: SS
 #: en/live-build.7:140
 #, no-wrap
 msgid "Binary commands"
-msgstr "バイナリコマンド"
+msgstr "Commandes binaires"
 
 #. type: IP
 #: en/live-build.7:141
@@ -866,7 +871,7 @@ msgstr "B<lb_binary_chroot>(1)"
 #. type: Plain text
 #: en/live-build.7:143
 msgid "copy chroot into chroot"
-msgstr "chroot を chroot にコピーします"
+msgstr "copie le chroot dans le chroot"
 
 #. type: IP
 #: en/live-build.7:143
@@ -877,7 +882,7 @@ msgstr "B<lb_binary_debian-installer>(1)"
 #. type: Plain text
 #: en/live-build.7:145
 msgid "install debian-installer into binary"
-msgstr "debian-installer をバイナリにインストールします"
+msgstr "installe debian-installer dans le binaire"
 
 #. type: IP
 #: en/live-build.7:145
@@ -888,7 +893,7 @@ msgstr "B<lb_binary_disk>(1)"
 #. type: Plain text
 #: en/live-build.7:147
 msgid "install disk information into binary"
-msgstr "ディスク情報をバイナリにインストールします"
+msgstr "installe les informations de disque dans le binaire"
 
 #. type: IP
 #: en/live-build.7:147
@@ -899,7 +904,7 @@ msgstr "B<lb_binary_grub>(1)"
 #. type: Plain text
 #: en/live-build.7:149
 msgid "installs grub into binary"
-msgstr "grub をバイナリにインストールします"
+msgstr "installe grub dans le binaire"
 
 #. type: IP
 #: en/live-build.7:149
@@ -910,7 +915,7 @@ msgstr "B<lb_binary_grub2>(1)"
 #. type: Plain text
 #: en/live-build.7:151
 msgid "installs grub2 into binary"
-msgstr "grub2 をバイナリにインストールします"
+msgstr "installe grub2 dans le binaire"
 
 #. type: IP
 #: en/live-build.7:151
@@ -921,7 +926,7 @@ msgstr "B<lb_binary_includes>(1)"
 #. type: Plain text
 #: en/live-build.7:153 en/live-build.7:161
 msgid "copy files into binary"
-msgstr "ファイルをバイナリにコピーします"
+msgstr "copie les fichiers dans le binaire"
 
 #. type: IP
 #: en/live-build.7:153
@@ -932,7 +937,7 @@ msgstr "B<lb_binary_iso>(1)"
 #. type: Plain text
 #: en/live-build.7:155
 msgid "build iso binary image"
-msgstr "ISOバイナリイメージをビルドします"
+msgstr "construit l'image binaire iso"
 
 #. type: IP
 #: en/live-build.7:155
@@ -943,7 +948,7 @@ msgstr "B<lb_binary_linux-image>(1)"
 #. type: Plain text
 #: en/live-build.7:157
 msgid "install linux-image into binary"
-msgstr "linux-image をバイナリにインストールします"
+msgstr "installe linux-image dans le binaire"
 
 #. type: IP
 #: en/live-build.7:157
@@ -954,7 +959,7 @@ msgstr "B<lb_binary_local-hooks>(1)"
 #. type: Plain text
 #: en/live-build.7:159
 msgid "execute local hooks in binary"
-msgstr "ローカルフックをバイナリで実行します"
+msgstr "exécute les hooks locaux dans le binaire"
 
 #. type: IP
 #: en/live-build.7:159
@@ -971,7 +976,7 @@ msgstr "B<lb_binary_local-packagelists>(1)"
 #. type: Plain text
 #: en/live-build.7:163
 msgid "install local package lists into binary"
-msgstr "ローカルパッケージ一覧をバイナリにインストールします"
+msgstr "installe les listes de paquets locaux dans le binaire"
 
 #. type: IP
 #: en/live-build.7:163
@@ -982,7 +987,7 @@ msgstr "B<lb_binary_manifest>(1)"
 #. type: Plain text
 #: en/live-build.7:165
 msgid "create manifest"
-msgstr "名簿ファイルを作成します"
+msgstr "crée le manifeste"
 
 #. type: IP
 #: en/live-build.7:165
@@ -993,7 +998,7 @@ msgstr "B<lb_binary_checksums>(1)"
 #. type: Plain text
 #: en/live-build.7:167
 msgid "create binary checksums (md5, sha1, and/or sha256)"
-msgstr "バイナリのチェックサム (md5、sha1、sha256 のどれか) を作成します"
+msgstr "crée les sommes de vérification binaires (md5, sha1, et/ou sha256)"
 
 #. type: IP
 #: en/live-build.7:167
@@ -1004,7 +1009,7 @@ msgstr "B<lb_binary_memtest>(1)"
 #. type: Plain text
 #: en/live-build.7:169
 msgid "installs a memtest into binary"
-msgstr "memtest をバイナリにインストールします"
+msgstr "installe memtest dans le binaire"
 
 #. type: IP
 #: en/live-build.7:169
@@ -1015,7 +1020,7 @@ msgstr "B<lb_binary_net>(1)"
 #. type: Plain text
 #: en/live-build.7:171
 msgid "build netboot binary image"
-msgstr "ネットワークブート用バイナリイメージをビルドします"
+msgstr "construit l'image binaire netboot"
 
 #. type: IP
 #: en/live-build.7:171
@@ -1026,7 +1031,7 @@ msgstr "B<lb_binary_rootfs>(1)"
 #. type: Plain text
 #: en/live-build.7:173
 msgid "build rootfs image"
-msgstr "rootfs イメージをビルドします"
+msgstr "construit l'image rootfs"
 
 #. type: IP
 #: en/live-build.7:173
@@ -1037,7 +1042,7 @@ msgstr "B<lb_binary_syslinux>(1)"
 #. type: Plain text
 #: en/live-build.7:175
 msgid "installs syslinux into binary"
-msgstr "syslinux をバイナリにインストールします"
+msgstr "installe syslinux dans le binaire"
 
 #. type: IP
 #: en/live-build.7:175
@@ -1048,7 +1053,7 @@ msgstr "B<lb_binary_tar>(1)"
 #. type: Plain text
 #: en/live-build.7:177
 msgid "build harddisk binary image"
-msgstr "ハードディスクバイナリイメージをビルドします"
+msgstr "construit une image binaire pour disque dur"
 
 #. type: IP
 #: en/live-build.7:177
@@ -1059,7 +1064,7 @@ msgstr "B<lb_binary_hdd>(1)"
 #. type: Plain text
 #: en/live-build.7:179
 msgid "build binary hdd image"
-msgstr "バイナリhddイメージをビルドします"
+msgstr "construit une image binaire hdd"
 
 #. type: IP
 #: en/live-build.7:179
@@ -1070,13 +1075,13 @@ msgstr "B<lb_binary_win32-loader>(1)"
 #. type: Plain text
 #: en/live-build.7:181
 msgid "installs win32-loader into binary"
-msgstr "win32-loader をバイナリにインストールします"
+msgstr "installe win32-loader dans le binaire"
 
 #. type: SS
 #: en/live-build.7:181
 #, no-wrap
 msgid "Source commands"
-msgstr "ソースコマンド"
+msgstr "Commandes source"
 
 #. type: IP
 #: en/live-build.7:182
@@ -1087,7 +1092,7 @@ msgstr "B<lb_source_debian>(1)"
 #. type: Plain text
 #: en/live-build.7:184
 msgid "download sources"
-msgstr "ソースをダウンロードします"
+msgstr "télécharge les sources"
 
 #. type: IP
 #: en/live-build.7:184
@@ -1098,7 +1103,7 @@ msgstr "B<lb_source_debian-live>(1)"
 #. type: Plain text
 #: en/live-build.7:186
 msgid "copy debian-live config into source"
-msgstr "debian-live の設定をソースにコピーします。"
+msgstr "copie la configuration debian-live dans la source"
 
 #. type: IP
 #: en/live-build.7:186
@@ -1109,7 +1114,7 @@ msgstr "B<lb_source_disk>(1)"
 #. type: Plain text
 #: en/live-build.7:188
 msgid "install disk information into source"
-msgstr "ディスク情報をソースにインストールします"
+msgstr "installe les informations de disque dans la source"
 
 #. type: IP
 #: en/live-build.7:188
@@ -1120,7 +1125,7 @@ msgstr "B<lb_source_iso>(1)"
 #. type: Plain text
 #: en/live-build.7:190
 msgid "build iso source image"
-msgstr "ISOソースイメージをビルドします"
+msgstr "construit l'image source iso"
 
 #. type: IP
 #: en/live-build.7:190
@@ -1131,7 +1136,7 @@ msgstr "B<lb_source_checksums>(1)"
 #. type: Plain text
 #: en/live-build.7:192
 msgid "create source checksums (md5, sha1, and/or sha256)"
-msgstr "ソースのチェックサム (md5、sha1、sha256 のどれか) を作成します"
+msgstr "crée les sommes de vérification binaires (md5, sha1, et/ou sha256)"
 
 #. type: IP
 #: en/live-build.7:192
@@ -1142,7 +1147,7 @@ msgstr "B<lb_source_net>(1)"
 #. type: Plain text
 #: en/live-build.7:194
 msgid "build source net image"
-msgstr ""
+msgstr "construit l'image net source"
 
 #. type: IP
 #: en/live-build.7:194
@@ -1153,7 +1158,7 @@ msgstr "B<lb_source_tar>(1)"
 #. type: Plain text
 #: en/live-build.7:196
 msgid "build source tarball"
-msgstr "ソースの tar アーカイブをビルドします"
+msgstr "construit le tarball source"
 
 #. type: IP
 #: en/live-build.7:196
@@ -1165,13 +1170,13 @@ msgstr "B<lb_source_hdd>(1)"
 #. type: Plain text
 #: en/live-build.7:199
 msgid "build source hdd image"
-msgstr "ソースhddイメージをビルドします"
+msgstr "construit l'image hdd source"
 
 #. type: SH
 #: en/live-build.7:200
 #, no-wrap
 msgid "CONFIG FILES"
-msgstr "設定ファイル"
+msgstr "FICHIERS DE CONFIGURATION"
 
 #.  FIXME
 #. type: Plain text
@@ -1185,12 +1190,14 @@ msgid ""
 "with the name of the stage that they belong to, and \"helper\" with the name "
 "of the helper)."
 msgstr ""
-"例えば lb_bootstrap_debootstrap は利用するオプションを読み取るのに config/"
-"bootstrap 及び config/bootstrap_debootstrap という名のファイルを使います。利"
-"用するファイルの名前やフォーマットの詳細については個々のコマンドの man ページ"
-"を見てください。こういったファイルには一般的に、変数とそれに指定する値を1行に"
-"1件ずつ収録します。live-build の一部のプログラムでは組にした値や、変数の指定"
-"にわずかに複雑な方法を採っているものがあります。"
+"Plusieurs commandes live-build utilisent des fichiers dans le répertoire "
+"I<config/> pour contrôler ce qu'elles font. En plus du I<config/common> "
+"commun, qui est utilisé par toutes les commandes live-build, plusieurs "
+"fichiers additionels peuvent être utilisés pour configurer le comportement "
+"de commandes live-build spécifiques. Ces fichiers sont typiquement nommés "
+"config/stage ou config/stage_assistant (où \"stage\" est évidemment remplacé "
+"par le nom du stage auquel il appartient, \"assistant\" par le nom de "
+"l'assistant)."
 
 #. type: Plain text
 #: en/live-build.7:205
@@ -1202,12 +1209,14 @@ msgid ""
 "assigned, one variable per line. Some programs in live-build use pairs of "
 "values or slightly more complicated variable assignments."
 msgstr ""
-"例えば lb_bootstrap_debootstrap は利用するオプションを読み取るのに config/"
-"bootstrap 及び config/bootstrap_debootstrap という名のファイルを使います。利"
-"用するファイルの名前やフォーマットの詳細については個々のコマンドの man ページ"
-"を見てください。こういったファイルには一般的に、変数とそれに指定する値を1行に"
-"1件ずつ収録します。live-build の一部のプログラムでは組にした値や、変数の指定"
-"にわずかに複雑な方法を採っているものがあります。"
+"Par exemple, lb_bootstrap_debootstrap utilise des fichiers nommés config/"
+"bootstrap et config/bootstrap_debootstrap pour lire les options qu'il "
+"utilisera. Voir les pages des commandes individuelles de manuel pour des "
+"détails à propos des noms et des formats de fichiers qu'ils utilisent. "
+"Généralement, ces fichiers contiennent des variables avec des valeurs "
+"assignées, une variable par ligne. Plusieurs programmes dans live-build "
+"utilisent des paires de valeur ou des assignations de variables légèrement "
+"plus compliquées."
 
 #. type: Plain text
 #: en/live-build.7:207
@@ -1219,11 +1228,13 @@ msgid ""
 "variable can be found and thus is unset, live-build will automatically set "
 "it to the default value."
 msgstr ""
-"live-build は実行中のシェルに存在する環境変数を尊重することに注意してくださ"
-"い。変数が設定ファイルから読み取れる場合にはそれが環境変数より優先され、コマ"
-"ンドラインオプションで指定された場合にはそれが設定ファイルの値より優先されま"
-"す。ある変数が見つからない、つまり値がセットされていない場合は live-build が"
-"自動的にデフォルト値をセットします。"
+"Notez que live-build respectera les variables d'environment présentes dans "
+"le contexte du shell lancé. Si les variables peuvent être lues depuis les "
+"fichiers de configuration, alors elles prennent le pas sur les variables "
+"d'environement, et si les options en ligne de commande sont utilisées, elles "
+"sont prioritaires sur les fichiers de configuration. Si pour une variable "
+"donnée, aucune valeur ne peut être trouvée et donc, est non-paramétrèe, live-"
+"build la paramètrera automatiquement à la valeur par défaut."
 
 #. type: Plain text
 #: en/live-build.7:209
@@ -1236,14 +1247,13 @@ msgid ""
 "target distribution, then they will be used in preference to other, more "
 "general files."
 msgstr ""
-"一部のまれな状況で、そういったファイルにアーキテクチャやディストリビューショ"
-"ンにより異なるものを使いたいことがあるかもしれません。「config/段階.アーキテ"
-"クチャ」または「config/段階_補助.アーキテクチャ」、それと「config/段階.ディス"
-"トリビューション」または「config/段階_補助.ディストリビューション」(「アーキ"
-"テクチャ」には「dpkg --print-architecture」の出力と同じもの、「ディストリ"
-"ビューション」には対象ディストリビューションのコード名と同じものが入ります) "
-"という名のファイルが存在する場合には他のそれよりも一般的な名前のファイルに優"
-"先してそのファイルが利用されます。"
+"Dans de rares cas, vous pourriez vouloir avoir différentes versions de ces "
+"fichiers pour différentes architectures ou distributions. Si des fichiers "
+"nommés config/stage.arch ou config/stage_assistant.arch, et config/stage."
+"dist ou config/stage_assistant.dist existent, où \"arch\" est équivalent à "
+"la sortie de \"dpkg --print-architecture\" et \"dist\" équivalent au nom de "
+"code de la distribution cible, alors ils seront utilisés en priorité aux "
+"autres fichier plus généraux."
 
 #.  FIXME
 #. type: Plain text
@@ -1253,10 +1263,10 @@ msgid ""
 "program. That means they have to follow the normal shell syntax. You can "
 "also put comments in these files; lines beginning with \"#\" are ignored."
 msgstr ""
-"設定ファイルは全て、live-build プログラムにより作成されたシェルスクリプトで"
-"す。それはつまり、通常のシェル構文に従う必要があるということです。また、設定"
-"ファイルにはコメントを残しておくこともできます。「#」で始まる行は無視されま"
-"す。"
+"Tous les fichiers de configuration sont des scripts shell qui sont sourcés "
+"par un programme live-build. Ceci signifie qu'ils doivent suivre la syntaxe "
+"de shell normale. Vous pouvez également mettre des commentaires dans ces "
+"fichiers; les lignes commençant par des \"#\" sont ignorées."
 
 #. type: IP
 #: en/live-build.7:214
