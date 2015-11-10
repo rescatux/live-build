@@ -413,7 +413,7 @@ Set_defaults ()
 		armel)
 			# armel will have special images: one rootfs image and many additional kernel images.
 			# therefore we default to all available armel flavours
-			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-ixp4xx kirkwood orion5x versatile}"
+			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-kirkwood orion5x versatile}"
 			;;
 
 		armhf)
