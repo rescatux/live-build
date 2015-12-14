@@ -427,15 +427,7 @@ Set_defaults ()
 			;;
 
 		i386)
-			case "${LB_MODE}" in
-				progress-linux)
-					LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-686-pae}"
-					;;
-
-				*)
-					LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-586}"
-					;;
-			esac
+                        LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-686-pae}"
 			;;
 
 		ia64)
