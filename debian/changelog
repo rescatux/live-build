@@ -1,3 +1,43 @@
+live-build (1:20151215) unstable; urgency=medium
+
+  * QA Upload.
+
+  [ Carlos Zuferri ]
+  * Adding missing file extension to hdd images.
+
+  [ Adrian Gibanel Lopez ]
+  * Multi bootloader support.
+  * loopback.cfg support in the GRUB setup.
+
+  [ Maximilian Mehnert ]
+  * force link creation when diverting flash-kernel.
+  * Old BIOS: start partition at specific place.
+  * scripts/build/binary_hdd:
+   - Fix code style.
+
+  [ Carlos Zuferri ]
+  * Using 'Live Systems Project' as default project in .pot files.
+
+  [ trebmuh ]
+  * Update French translation for manpages.
+
+  [ Ben Armstrong ]
+  * Remove 586 flavour for i386 architecture. (Closes: #807972)
+
+  [ Iain R. Learmonth ]
+  * Changing to native source format
+  * debian/control:
+   - Change maintainer to QA Group.
+   - Updated Homepage and Vcs-* fields.
+
+ -- Iain R. Learmonth <irl@debian.org>  Tue, 15 Dec 2015 14:20:44 +0000
+
+live-build (5.0~a11-2) unstable; urgency=low
+
+  * Removing myself from uploaders, lost trust in Debian (#804315).
+
+ -- Daniel Baumann <mail@daniel-baumann.ch>  Fri, 20 Nov 2015 13:04:24 +0100
+
 live-build (5.0~a11-1) unstable; urgency=low
 
   [ Daniel Baumann ]
