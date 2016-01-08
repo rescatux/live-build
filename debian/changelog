@@ -3,6 +3,9 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Better handle empty package lists.
   * Drop ixp4xx from available armel flavors, the image has been gone since
     linux 3.17.
+  * Add symlinks for libgpl.c32 and libmenu.c32 which are required by
+    the "Hardware Detection Tool (HDT)" menu entry that live-build adds
+    in the advanced menu.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 18:03:44 +0100
 
