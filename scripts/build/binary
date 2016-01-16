@@ -69,7 +69,7 @@ lb binary_loadlin ${@}
 lb binary_win32-loader ${@}
 lb binary_includes ${@}
 lb binary_hooks ${@}
-lb binary_efi ${@} # After includes/hooks because it copies in efi.img
+lb binary_syslinux-efi ${@} # After includes/hooks because it copies in efi.img
 		   # files that can be overriden by binary_includes and
 		   # modified by binary_hooks
 lb binary_checksums ${@}

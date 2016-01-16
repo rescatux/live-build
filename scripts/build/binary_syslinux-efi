@@ -14,7 +14,7 @@ set -e
 [ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
 
 # Setting static variables
-DESCRIPTION="$(Echo 'prepares and installs EFI support into binary')"
+DESCRIPTION="$(Echo 'prepares and installs Syslinux based EFI support into binary')"
 HELP=""
 USAGE="${PROGRAM} [--force]"
 
@@ -35,7 +35,7 @@ Echo_message "Begin preparing EFI support..."
 Require_stagefile .build/config .build/bootstrap
 
 # Checking stage file
-Check_stagefile .build/binary_efi
+Check_stagefile .build/binary_syslinux-efi
 
 # Checking lock file
 Check_lockfile .lock
@@ -279,4 +279,4 @@ case "${LB_BUILD_WITH_CHROOT}" in
 esac
 
 # Creating stage file
-Create_stagefile .build/binary_efi
+Create_stagefile .build/binary_syslinux-efi
