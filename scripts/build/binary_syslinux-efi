@@ -43,7 +43,7 @@ if [ -z ${FOUND_MYSELF} ] ; then
         exit 0
 fi
 
-Echo_message "Begin preparing EFI support..."
+Echo_message "Begin preparing Syslinux based EFI support..."
 
 # Requiring stage file
 Require_stagefile .build/config .build/bootstrap
