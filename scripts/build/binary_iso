@@ -178,6 +178,32 @@ if [ ! -z ${FOUND_SYSLINUX_EFI} ] ; then
 	fi
 fi
 
+FOUND_GRUB_EFI=""
+OLDIFS="$IFS"
+IFS=","
+for BOOTLOADER in ${LB_BOOTLOADERS}
+do
+
+       case ${BOOTLOADER} in
+               "grub-efi" )
+                       FOUND_GRUB_EFI="True"
+                       break ;;
+       esac
+
+done
+IFS="$OLDIFS"
+
+if [ ! -z ${FOUND_GRUB_EFI} ] ; then
+	if [ ! ${LB_PRIMARY_BOOTLOADER} == "grub-efi" ] ; then
+		if [ -e binary/boot/efi.img ]; then
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+		else
+			Echo "No EFI boot code to include in the ISO"
+		fi
+	fi
+fi
+
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
 #	XORRISO_OPTIONS="${XORRISO_OPTIONS} -m ${XORRISO_EXCLUDE}"
