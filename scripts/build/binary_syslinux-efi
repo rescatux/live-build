@@ -131,11 +131,11 @@ case "${LB_BUILD_WITH_CHROOT}" in
 		_SYSLINUX_EFI_DIR="chroot/usr/lib/SYSLINUX.EFI/$_EFI_TYPE"
 		_SYSLINUX_COMMON_DIR="chroot/usr/lib/syslinux/modules/$_EFI_TYPE"
 
-		Check_package chroot/usr/bin/syslinux syslinux
-		Check_package chroot/usr/lib/syslinux syslinux-common
-		Check_package chroot/usr/lib/SYSLINUX.EFI syslinux-efi
-		Check_package chroot/usr/bin/mcopy mtools
-		Check_package chroot/sbin/mkfs.msdos dosfstools
+		Check_package chroot /usr/bin/syslinux syslinux
+		Check_package chroot /usr/lib/syslinux syslinux-common
+		Check_package chroot /usr/lib/SYSLINUX.EFI syslinux-efi
+		Check_package chroot /usr/bin/mcopy mtools
+		Check_package chroot /sbin/mkfs.msdos dosfstools
 		;;
 
 	false)
