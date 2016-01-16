@@ -71,23 +71,6 @@ fi
 # Handle xorriso generic options
 XORRISO_OPTIONS="-R -r -J -joliet-long -l -cache-inodes -iso-level 3"
 
-case "${LB_BUILD_WITH_CHROOT}" in
-	true)
-		XORRISO_VER=$(Chroot chroot xorriso --version 2>&1 | awk '
-		    /^xorriso version/ {
-			 split($4, ver, ".")
-			 print ver[1]*10000+ver[2]*100+ver[3]
-		    }')
-		;;
-	false)
-		XORRISO_VER=$(xorriso --version 2>&1 | awk '
-		    /^xorriso version/ {
-			 split($4, ver, ".")
-			 print ver[1]*10000+ver[2]*100+ver[3]
-		    }')
-		;;
-esac
-
 # Handle xorriso live-build specific options
 if [ "${LIVE_IMAGE_TYPE}" = "iso-hybrid" ]
 then
@@ -164,21 +147,14 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 esac
 
 if [ -e binary/boot/efi.img ]; then
-	#if [ "$XORRISO_VER" -le 10202 ]; then
-		# 1.2.2 shipping in wheezy
-		Echo "Using older EFI command line for xorriso $XORRISO_VER"
-		# Tell xorriso to create a secondary ElTorito boot record for the
-		# EFI bootloader
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot --efi-boot boot/efi.img"
-		# Add the efi image as a FAT partition too, so our CD image will
-		# also boot on a USB key (like isohybrid, just implemented
-		# differently)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -append_partition 2 0x01 binary/boot/efi.img"
-	#else
-	#	Echo "Using newer EFI support in xorriso $XORRISO_VER"
-	#	XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/efi.img -no-emul-boot"
-	#	XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat"
-	#fi
+	Echo "Using older EFI command line for xorriso $XORRISO_VER"
+	# Tell xorriso to create a secondary ElTorito boot record for the
+	# EFI bootloader
+	XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot --efi-boot boot/efi.img"
+	# Add the efi image as a FAT partition too, so our CD image will
+	# also boot on a USB key (like isohybrid, just implemented
+	# differently)
+	XORRISO_OPTIONS="${XORRISO_OPTIONS} -append_partition 2 0x01 binary/boot/efi.img"
 else
 	Echo "No EFI boot code to include in the ISO"
 fi
