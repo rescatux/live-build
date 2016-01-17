@@ -234,6 +234,11 @@ case "${LB_BUILD_WITH_CHROOT}" in
 			# Removing depends
 			Remove_package
 			;;
+
+		false)
+			sh binary.sh
+			rm -f binary.sh
+			;;
 esac
 
 # Creating stage file
