@@ -175,6 +175,10 @@ Install_package
 rm -rf binary/boot/efi.img binary/boot/grub/i386-efi/ binary/boot/grub/x86_64-efi
 
 #####
+cat >binary.sh <<END
+#!/bin/sh
+
+set -e
 
 PRE_EFI_IMAGE_PATH="${PATH}"
 if [ ! -e "${LIVE_BUILD}" ] ; then
@@ -183,14 +187,14 @@ else
 	LIVE_BUILD_PATH="${LIVE_BUILD}/scripts/build"
 fi
 
-PATH="${PATH}:${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it was installed in the system
+PATH="${PATH}:\${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it was installed in the system
 
-"${LIVE_BUILD_PATH}/efi-image" "binary/" "x86_64-efi" "x64" "debian-live/amd64"
+"\${LIVE_BUILD_PATH}/efi-image" "binary/" "x86_64-efi" "x64" "debian-live/amd64"
 mkdir -p binary/efi/boot
 mcopy -n -i binary/efi.img '::efi/boot/boot*.efi' binary/efi/boot
 
-"${LIVE_BUILD_PATH}/efi-image" "binary/" "i386-efi" "ia32" "debian-live/i386"
-PATH="${PRE_EFI_IMAGE_PATH}"
+"\${LIVE_BUILD_PATH}/efi-image" "binary/" "i386-efi" "ia32" "debian-live/i386"
+PATH="\${PRE_EFI_IMAGE_PATH}"
 mkdir -p binary/efi/boot
 mcopy -n -i binary/efi.img '::efi/boot/boot*.efi' binary/efi/boot
 
@@ -205,27 +209,31 @@ mcopy -n -i binary/efi.img '::efi/boot/boot*.efi' binary/efi/boot
 
 size=0
 for file in binary/efi/boot/boot*.efi; do
-	size=$(($size + $(stat -c %s "$file")))
+	size=\$((\$size + \$(stat -c %s "\$file")))
 done
 
-blocks=$((($size / 1024 + 55) / 32 * 32 ))
+blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
 
 rm -f binary/boot/grub/efi.img
-mkfs.msdos -C "binary/boot/grub/efi.img" $blocks >/dev/null
+mkfs.msdos -C "binary/boot/grub/efi.img" \$blocks >/dev/null
 mmd -i "binary/boot/grub/efi.img" ::efi
 mmd -i "binary/boot/grub/efi.img" ::efi/boot
 mcopy -o -i "binary/boot/grub/efi.img" binary/efi/boot/boot*.efi \
 	"::efi/boot"
-
+END
 
 case "${LB_BUILD_WITH_CHROOT}" in
         true)
-                # Saving cache
-                Save_cache cache/packages.binary
+			mv binary.sh chroot/
+			Chroot chroot "sh binary.sh"
+			rm -f chroot/binary.sh
 
-                # Removing depends
-                Remove_package
-                ;;
+			# Saving cache
+			Save_cache cache/packages.binary
+
+			# Removing depends
+			Remove_package
+			;;
 esac
 
 # Creating stage file
