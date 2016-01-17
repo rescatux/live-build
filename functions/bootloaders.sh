@@ -38,8 +38,10 @@ Is_Secondary_Bootloader ()
 {
 	EVAL_SECONDARY_BOOTLOADER="${1}"
 
-	if ! Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
+	if Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
 	then
+		return 1
+	else
 		if Is_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
 		then
 			return 0
