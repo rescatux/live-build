@@ -146,61 +146,27 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 		;;
 esac
 
-FOUND_SYSLINUX_EFI=""
-OLDIFS="$IFS"
-IFS=","
-for BOOTLOADER in ${LB_BOOTLOADERS}
-do
-
-       case ${BOOTLOADER} in
-               "syslinux-efi" )
-                       FOUND_SYSLINUX_EFI="True"
-                       break ;;
-       esac
-
-done
-IFS="$OLDIFS"
-
-if [ ! -z ${FOUND_SYSLINUX_EFI} ] ; then
-	if [ ! ${LB_PRIMARY_BOOTLOADER} = "syslinux-efi" ] ; then
-		if [ -e binary/boot/efi.img ]; then
-			Echo "Using older EFI command line for xorriso $XORRISO_VER"
-			# Tell xorriso to create a secondary ElTorito boot record for the
-			# EFI bootloader
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot --efi-boot boot/efi.img"
-			# Add the efi image as a FAT partition too, so our CD image will
-			# also boot on a USB key (like isohybrid, just implemented
-			# differently)
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -append_partition 2 0x01 binary/boot/efi.img"
-		else
-			Echo "No EFI boot code to include in the ISO"
-		fi
+if Is_Secondary_Bootloader "syslinux-efi" ; then
+	if [ -e binary/boot/efi.img ]; then
+		Echo "Using older EFI command line for xorriso $XORRISO_VER"
+		# Tell xorriso to create a secondary ElTorito boot record for the
+		# EFI bootloader
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot --efi-boot boot/efi.img"
+		# Add the efi image as a FAT partition too, so our CD image will
+		# also boot on a USB key (like isohybrid, just implemented
+		# differently)
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -append_partition 2 0x01 binary/boot/efi.img"
+	else
+		Echo "No EFI boot code to include in the ISO"
 	fi
 fi
 
-FOUND_GRUB_EFI=""
-OLDIFS="$IFS"
-IFS=","
-for BOOTLOADER in ${LB_BOOTLOADERS}
-do
-
-       case ${BOOTLOADER} in
-               "grub-efi" )
-                       FOUND_GRUB_EFI="True"
-                       break ;;
-       esac
-
-done
-IFS="$OLDIFS"
-
-if [ ! -z ${FOUND_GRUB_EFI} ] ; then
-	if [ ! ${LB_PRIMARY_BOOTLOADER} = "grub-efi" ] ; then
-		if [ -e binary/boot/grub/efi.img ]; then
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
-		else
-			Echo "No EFI boot code to include in the ISO"
-		fi
+if Is_Secondary_Bootloader "grub-efi" ; then
+	if [ -e binary/boot/grub/efi.img ]; then
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+	else
+		Echo "No EFI boot code to include in the ISO"
 	fi
 fi
 
