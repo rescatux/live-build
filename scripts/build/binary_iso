@@ -162,7 +162,7 @@ done
 IFS="$OLDIFS"
 
 if [ ! -z ${FOUND_SYSLINUX_EFI} ] ; then
-	if [ ! ${LB_PRIMARY_BOOTLOADER} == "syslinux-efi" ] ; then
+	if [ ! ${LB_PRIMARY_BOOTLOADER} = "syslinux-efi" ] ; then
 		if [ -e binary/boot/efi.img ]; then
 			Echo "Using older EFI command line for xorriso $XORRISO_VER"
 			# Tell xorriso to create a secondary ElTorito boot record for the
@@ -194,7 +194,7 @@ done
 IFS="$OLDIFS"
 
 if [ ! -z ${FOUND_GRUB_EFI} ] ; then
-	if [ ! ${LB_PRIMARY_BOOTLOADER} == "grub-efi" ] ; then
+	if [ ! ${LB_PRIMARY_BOOTLOADER} = "grub-efi" ] ; then
 		if [ -e binary/boot/efi.img ]; then
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
