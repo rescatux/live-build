@@ -202,14 +202,16 @@ fi
 
 PATH="${PATH}:\${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it was installed in the system
 
-"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp/" "x86_64-efi" "x64" "debian-live/amd64"
+"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp-x86_64-efi/" "x86_64-efi" "x64" "debian-live/amd64"
 mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp-x86_64-efi/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+cp -r "${_CHROOT_DIR}/grub-efi-temp-x86_64-efi/*" "${_CHROOT_DIR}/grub-efi-temp/"
 
-"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp/" "i386-efi" "ia32" "debian-live/i386"
+"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp-i386-efi/" "i386-efi" "ia32" "debian-live/i386"
 PATH="\${PRE_EFI_IMAGE_PATH}"
 mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp-i386-efi/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+cp -r "${_CHROOT_DIR}/grub-efi-temp-i386-efi/*" "${_CHROOT_DIR}/grub-efi-temp/"
 
 # The code below is adapted from tools/boot/jessie/boot-x86
 # in debian-cd
@@ -256,6 +258,8 @@ esac
 
 mkdir -p binary
 cp -r chroot/grub-efi-temp/* binary/
+rm -rf chroot/grub-efi-temp-x86_64-efi
+rm -rf chroot/grub-efi-temp-i386-efi
 rm -rf chroot/grub-efi-temp
 
 # Creating stage file
