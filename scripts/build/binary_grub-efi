@@ -256,6 +256,10 @@ case "${LB_BUILD_WITH_CHROOT}" in
 			;;
 esac
 
+# Remove unnecessary files
+rm -f chroot/grub-efi-temp/bootnetia32.efi
+rm -f chroot/grub-efi-temp/bootnetx64.efi
+
 mkdir -p binary
 cp -r chroot/grub-efi-temp/* binary/
 rm -rf chroot/grub-efi-temp-x86_64-efi
