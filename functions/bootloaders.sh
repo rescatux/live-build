@@ -11,7 +11,7 @@ Is_Primary_Bootloader ()
 {
 	EVAL_PRIMARY_BOOTLOADER="${1}"
 
-	if [ ${LB_PRIMARY_BOOTLOADER} = "${EVAL_PRIMARY_BOOTLOADER}" ] ; then
+	if [ "${LB_PRIMARY_BOOTLOADER}" = "${EVAL_PRIMARY_BOOTLOADER}" ] ; then
 		return 0;
 	else
 		return 1;
