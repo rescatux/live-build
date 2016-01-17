@@ -24,8 +24,6 @@ Is_Bootloader ()
 {
 	EVAL_BOOTLOADER="${1}"
 
-	OLDIFS="$IFS"
-	IFS=","
 	for BOOTLOADER in ${LB_BOOTLOADERS}
 	do
 		if [ "${BOOTLOADER}" = "${EVAL_BOOTLOADER}" ]
@@ -39,6 +37,7 @@ Is_Bootloader ()
 Is_Secondary_Bootloader ()
 {
 	EVAL_SECONDARY_BOOTLOADER="${1}"
+
 	if ! Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
 	then
 		if Is_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
