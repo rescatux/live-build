@@ -11,10 +11,11 @@ Is_Primary_Bootloader ()
 {
 	EVAL_PRIMARY_BOOTLOADER="${1}"
 
-	if [ "${LB_PRIMARY_BOOTLOADER}" = "${EVAL_PRIMARY_BOOTLOADER}" ] ; then
-		return 0;
+	if [ "${LB_PRIMARY_BOOTLOADER}" = "${EVAL_PRIMARY_BOOTLOADER}" ]
+	then
+		return 0
 	else
-		return 1;
+		return 1
 	fi
 
 }
@@ -27,23 +28,25 @@ Is_Bootloader ()
 	IFS=","
 	for BOOTLOADER in ${LB_BOOTLOADERS}
 	do
-		case ${BOOTLOADER} in
-			"${EVAL_BOOTLOADER}" )
-                return 0;
-       esac
+		if [ "${BOOTLOADER}" = "${EVAL_BOOTLOADER}" ]
+		then
+			return 0
+		fi
 	done
-	return 1;
+	return 1
 }
 
 Is_Secondary_Bootloader ()
 {
 	EVAL_SECONDARY_BOOTLOADER="${1}"
-	if ! Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}" ; then
-		if Is_Bootloader	"${EVAL_SECONDARY_BOOTLOADER}" ; then
-			return 0;
+	if ! Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
+	then
+		if Is_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
+		then
+			return 0
 		fi
 	fi
-	return 1;
+	return 1
 
 }
 
