@@ -266,5 +266,7 @@ rm -rf chroot/grub-efi-temp-x86_64-efi
 rm -rf chroot/grub-efi-temp-i386-efi
 rm -rf chroot/grub-efi-temp
 
+# We rely on: binary_loopback_cfg to generate grub.cfg and other configuration files
+
 # Creating stage file
 Create_stagefile .build/binary_grub-efi
