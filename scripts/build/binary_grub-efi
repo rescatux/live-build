@@ -241,5 +241,8 @@ case "${LB_BUILD_WITH_CHROOT}" in
 			;;
 esac
 
+mkdir -p binary/boot
+mv chroot/boot/* binary/boot/
+
 # Creating stage file
 Create_stagefile .build/binary_grub-efi
