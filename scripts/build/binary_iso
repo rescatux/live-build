@@ -195,7 +195,7 @@ IFS="$OLDIFS"
 
 if [ ! -z ${FOUND_GRUB_EFI} ] ; then
 	if [ ! ${LB_PRIMARY_BOOTLOADER} = "grub-efi" ] ; then
-		if [ -e binary/boot/efi.img ]; then
+		if [ -e binary/boot/grub/efi.img ]; then
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
 		else
