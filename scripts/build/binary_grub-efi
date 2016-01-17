@@ -24,22 +24,7 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
-FOUND_MYSELF=""
-OLDIFS="$IFS"
-IFS=","
-for BOOTLOADER in ${LB_BOOTLOADERS}
-do
-
-       case ${BOOTLOADER} in
-               "grub-efi" )
-                       FOUND_MYSELF="True"
-                       break ;;
-       esac
-
-done
-IFS="$OLDIFS"
-
-if [ -z ${FOUND_MYSELF} ] ; then
+if ! Is_Secondary_Bootloader "grub-efi" ; then
         exit 0
 fi
 
