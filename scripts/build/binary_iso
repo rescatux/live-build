@@ -146,8 +146,10 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 		;;
 esac
 
-if Is_Secondary_Bootloader "syslinux-efi" ; then
-	if [ -e binary/boot/efi.img ]; then
+if Is_Secondary_Bootloader "syslinux-efi"
+then
+	if [ -e binary/boot/efi.img ]
+	then
 		Echo "Using older EFI command line for xorriso $XORRISO_VER"
 		# Tell xorriso to create a secondary ElTorito boot record for the
 		# EFI bootloader
@@ -161,8 +163,10 @@ if Is_Secondary_Bootloader "syslinux-efi" ; then
 	fi
 fi
 
-if Is_Secondary_Bootloader "grub-efi" ; then
-	if [ -e binary/boot/grub/efi.img ]; then
+if Is_Secondary_Bootloader "grub-efi"
+then
+	if [ -e binary/boot/grub/efi.img ]
+	then
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
 	else

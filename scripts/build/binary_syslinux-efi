@@ -24,7 +24,8 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
-if ! Is_Secondary_Bootloader "syslinux-efi" ; then
+if ! Is_Secondary_Bootloader "syslinux-efi" 
+then
         exit 0
 fi
 
