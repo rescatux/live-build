@@ -140,7 +140,7 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 		;;
 
 	*)
-		Echo_warning "Bootloader on your architecture not yet supported by live-build."
+		Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
 		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
 		sleep 5
 		;;
