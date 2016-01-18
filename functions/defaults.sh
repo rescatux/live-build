@@ -537,6 +537,8 @@ Set_defaults ()
 		esac
 	fi
 
+	LB_PRIMARY_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
+
 	# Setting checksums
 	case "${LB_MODE}" in
 		progress-linux)
@@ -844,9 +846,6 @@ Check_defaults ()
 			Echo_warning "You have selected values of LB_CACHE, LB_CACHE_PACKAGES, LB_CACHE_STAGES and LB_DEBIAN_INSTALLER which will result in 'bootstrap' packages not being cached. This configuration is potentially unsafe as the bootstrap packages are re-used when integrating the Debian Installer."
 		fi
 	fi
-
-
-	LB_PRIMARY_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
 
 	if [ "${LB_PRIMARY_BOOTLOADER}" = "syslinux" ]
 	then
