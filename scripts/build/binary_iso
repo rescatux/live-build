@@ -151,6 +151,15 @@ do
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
 			;;
 
+		grub-efi)
+			if [ -e binary/boot/grub/efi.img ]
+			then
+				XORRISO_OPTIONS="${XORRISO_OPTIONS} -e boot/grub/efi.img -no-emul-boot"
+				XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+			else
+				Echo "No EFI boot code to include in the ISO"
+			fi
+			;;
 
 		*)
 			Echo_warning "Bootloader on your architecture not yet supported by live-build."
