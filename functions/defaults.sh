@@ -532,7 +532,7 @@ Set_defaults ()
 	then
 		case "${LB_ARCHITECTURES}" in
 			amd64|i386)
-				LB_BOOTLOADERS="syslinux"
+				LB_BOOTLOADERS="syslinux,grub-efi"
 				;;
 		esac
 	fi
