@@ -23,14 +23,17 @@ Is_Primary_Bootloader ()
 Is_Bootloader ()
 {
 	EVAL_BOOTLOADER="${1}"
-
+	OLDIFS="$IFS"
+	IFS=","
 	for BOOTLOADER in ${LB_BOOTLOADERS}
 	do
 		if [ "${BOOTLOADER}" = "${EVAL_BOOTLOADER}" ]
 		then
+			IFS="$OLDIFS"
 			return 0
 		fi
 	done
+	IFS="$OLDIFS"
 	return 1
 }
 
