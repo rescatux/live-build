@@ -157,6 +157,23 @@ then
 	fi
 fi
 
+if Is_Secondary_Bootloader "syslinux-efi"
+then
+	if [ -e binary/boot/efi.img ]
+	then
+		Echo "Using older EFI command line for xorriso $XORRISO_VER"
+		# Tell xorriso to create a secondary ElTorito boot record for the
+		# EFI bootloader
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot --efi-boot boot/efi.img"
+		# Add the efi image as a FAT partition too, so our CD image will
+		# also boot on a USB key (like isohybrid, just implemented
+		# differently)
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -append_partition 2 0x01 binary/boot/efi.img"
+	else
+		Echo "No EFI boot code to include in the ISO"
+	fi
+fi
+
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
 #	XORRISO_OPTIONS="${XORRISO_OPTIONS} -m ${XORRISO_EXCLUDE}"

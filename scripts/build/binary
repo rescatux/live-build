@@ -70,6 +70,7 @@ lb binary_win32-loader ${@}
 lb binary_includes ${@}
 lb binary_hooks ${@}
 lb binary_grub-efi ${@}
+lb binary_syslinux-efi ${@}
 lb binary_checksums ${@}
 
 if [ "${LB_BUILD_WITH_CHROOT}" != "true" ]

@@ -1,0 +1,284 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2014 Raphaël Hertzog <buxy@kali.org>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+# Including common functions
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+# Setting static variables
+DESCRIPTION="$(Echo 'prepares and installs Syslinux based EFI support into binary')"
+HELP=""
+USAGE="${PROGRAM} [--force]"
+
+Arguments "${@}"
+
+# Reading configuration files
+Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
+Set_defaults
+
+if Is_Secondary_Bootloader "syslinux-efi"
+then
+	:
+else
+	exit 0
+fi
+
+Echo_message "Begin preparing Syslinux based EFI support..."
+
+# Requiring stage file
+Require_stagefile .build/config .build/bootstrap
+
+# Checking stage file
+Check_stagefile .build/binary_syslinux-efi
+
+# Checking lock file
+Check_lockfile .lock
+
+# Creating lock file
+Create_lockfile .lock
+
+# Check architecture
+Check_architectures amd64 i386
+Check_crossarchitectures
+
+case "${LB_ARCHITECTURES}" in
+	amd64)
+		_EFI_TYPE=efi64
+		;;
+	i386)
+		_EFI_TYPE=efi32
+		;;
+	*)
+		echo "ERROR: can't provide EFI boot support to architecture ${LB_ARCHITECTURES}" >&2
+		exit 1
+		;;
+esac
+
+# Assembling image specifics
+case "${LIVE_IMAGE_TYPE}" in
+	iso*)
+		_BOOTLOADER="isolinux"
+
+		case "${LB_MODE}" in
+			progress-linux)
+				_CONFDIR="binary/boot"
+				;;
+
+			*)
+				_CONFDIR="binary/isolinux"
+				;;
+		esac
+		;;
+
+	netboot)
+		_BOOTLOADER="pxelinux"
+		_CONFDIR="tftpboot"
+		;;
+
+	hdd*|*)
+		case ${LB_BINARY_FILESYSTEM} in
+			fat*|ntfs)
+				_BOOTLOADER=syslinux
+
+				case "${LB_MODE}" in
+					progress-linux)
+						_CONFDIR="binary/boot"
+						;;
+
+					*)
+						_CONFDIR="binary/syslinux"
+						;;
+				esac
+				;;
+
+			ext[234]|btrfs)
+				_BOOTLOADER=extlinux
+				_CONFDIR="binary/boot/extlinux"
+				;;
+
+			*)
+				Echo_error "syslinux/extlinux doesn't support ${LB_BINARY_FILESYSTEM}"
+				exit 1
+				;;
+		esac
+		;;
+esac
+
+# Checking depends
+case "${LB_BUILD_WITH_CHROOT}" in
+	true)
+		_CHROOT_DIR=""
+		_SYSLINUX_EFI_DIR="chroot/usr/lib/SYSLINUX.EFI/$_EFI_TYPE"
+		_SYSLINUX_COMMON_DIR="chroot/usr/lib/syslinux/modules/$_EFI_TYPE"
+
+		Check_package chroot /usr/bin/syslinux syslinux
+		Check_package chroot /usr/lib/syslinux syslinux-common
+		Check_package chroot /usr/lib/SYSLINUX.EFI syslinux-efi
+		Check_package chroot /usr/bin/mcopy mtools
+		Check_package chroot /sbin/mkfs.msdos dosfstools
+		;;
+
+	false)
+		_CHROOT_DIR="chroot"
+		_SYSLINUX_EFI_DIR="/usr/lib/syslinux/$_EFI_TYPE"
+		_SYSLINUX_COMMON_DIR="/usr/lib/syslinux/modules/$_EFI_TYPE"
+
+		if [ ! -e /usr/bin/syslinux ]
+		then
+			# syslinux
+			Echo_error "/usr/bin/syslinux - no such file."
+			exit 1
+		fi
+
+		if [ ! -e /usr/lib/syslinux ]
+		then
+			# syslinux-common
+			Echo_error "/usr/lib/syslinux - no such directory"
+			exit 1
+		fi
+
+		if [ ! -e /usr/lib/SYSLINUX.EFI ]
+		then
+			# syslinux-efi
+			Echo_error "/usr/lib/SYSLINUX.EFI - no such directory"
+			exit 1
+		fi
+
+		if [ ! -e /usr/bin/mcopy ]
+		then
+			# mtools
+			Echo_error "/usr/bin/mcopy - no such file."
+			exit 1
+		fi
+
+		if [ ! -e /sbin/mkfs.msdos ]
+		then
+			# dosfstools
+			Echo_error "/sbin/mkfs.msdos - no such file."
+			exit 1
+		fi
+		;;
+esac
+
+# Restoring cache
+Restore_cache cache/packages.binary
+
+# Installing depends
+Install_package
+
+# Abort if we don't have the required EFI files
+if [ ! -e $_SYSLINUX_EFI_DIR/syslinux.efi ]; then
+	Echo_warning "$_SYSLINUX_EFI_DIR/syslinux.efi missing, no EFI support included."
+	case "${LB_BUILD_WITH_CHROOT}" in
+		true)
+			# Saving cache
+			Save_cache cache/packages.binary
+
+			# Removing depends
+			Remove_package
+			;;
+	esac
+	exit 0
+fi
+
+# Cleanup files that we generate
+rm -rf chroot/efi-temp chroot/efi.img binary/boot/efi.img
+
+# Copy syslinux and its config files in the temporary EFI image
+mkdir -p chroot/efi-temp/live
+mkdir -p chroot/efi-temp/EFI/BOOT
+for _F in $_CONFDIR/*.cfg $_CONFDIR/*.png $_SYSLINUX_COMMON_DIR/*.*32 $_SYSLINUX_COMMON_DIR/*.*64; do
+	if [ -e $_F ]; then
+		cp $_F chroot/efi-temp/EFI/BOOT/
+	else
+		Echo_warning "No file matching $_F, EFI support might be broken."
+	fi
+done
+cp $_SYSLINUX_EFI_DIR/syslinux.efi chroot/efi-temp/EFI/BOOT/BOOTX64.efi
+cp $_SYSLINUX_EFI_DIR/syslinux.efi chroot/efi-temp/EFI/BOOT/syslinux.efi
+
+# Copy the various kernel images
+cp binary/live/vmlinuz* binary/live/initrd* chroot/efi-temp/live/
+if [ -d binary/install ]; then
+	cp -r binary/install chroot/efi-temp/
+fi
+
+# Edit the menu to differentiate the EFI version
+if [ -e chroot/efi-temp/EFI/BOOT/menu.cfg ]; then
+	sed -i -e "s/^menu title/menu title EFI/" chroot/efi-temp/EFI/BOOT/menu.cfg
+else
+        Echo_warning "No menu.cfg file that can be edited to indicate that we boot on EFI!"
+fi
+
+# Ensure we have a syslinux.cfg
+if [ ! -e chroot/efi-temp/EFI/BOOT/syslinux.cfg ]; then
+	for _F in isolinux.cfg pxelinux.cfg/default extlinux.conf; do
+		if [ -f chroot/efi-temp/EFI/BOOT/$_F ]; then
+			cp chroot/efi-temp/EFI/BOOT/$_F chroot/efi-temp/EFI/BOOT/syslinux.cfg
+			break
+		fi
+	done
+fi
+
+# Define the EFI filesystem size
+_TOTALSIZE=$(du -sk chroot/efi-temp/ | awk '{print $1}')
+# Add 5% safety margin
+_TOTALSIZE=$(( $_TOTALSIZE * 21 / 20 ))
+# Required size rounded to upper 32kb
+_BLOCKS=$(( ($_TOTALSIZE + 31) / 32 * 32 ))
+Echo "EFI boot image needs $_TOTALSIZE Kb, thus allocating $_BLOCKS blocks."
+
+# Script to generate the EFI boot image
+cat >binary.sh <<END
+#!/bin/sh
+
+set -e
+
+mkfs.msdos -C $_CHROOT_DIR/efi.img $_BLOCKS
+mcopy -s -v -i $_CHROOT_DIR/efi.img $_CHROOT_DIR/efi-temp/* ::
+END
+
+# Copying files
+case "${LB_BUILD_WITH_CHROOT}" in
+	true)
+		mv binary.sh chroot/
+		Chroot chroot "sh binary.sh"
+		rm -f chroot/binary.sh
+
+		# Saving cache
+		Save_cache cache/packages.binary
+
+		# Removing depends
+		Remove_package
+		;;
+
+	false)
+		sh binary.sh
+		rm -f binary.sh
+		;;
+esac
+
+mkdir -p binary/boot
+mv chroot/efi.img binary/boot/
+rm -rf chroot/efi-temp
+
+case "${LB_BUILD_WITH_CHROOT}" in
+        true)
+                # Saving cache
+                Save_cache cache/packages.binary
+
+                # Removing depends
+                Remove_package
+                ;;
+esac
+
+# Creating stage file
+Create_stagefile .build/binary_syslinux-efi
