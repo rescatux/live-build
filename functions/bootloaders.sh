@@ -7,11 +7,11 @@
 ## This is free software, and you are welcome to redistribute it
 ## under certain conditions; see COPYING for details.
 
-Is_Primary_Bootloader ()
+Is_First_Bootloader ()
 {
-	EVAL_PRIMARY_BOOTLOADER="${1}"
+	EVAL_FIRST_BOOTLOADER="${1}"
 
-	if [ "${LB_PRIMARY_BOOTLOADER}" = "${EVAL_PRIMARY_BOOTLOADER}" ]
+	if [ "${LB_FIRST_BOOTLOADER}" = "${EVAL_FIRST_BOOTLOADER}" ]
 	then
 		return 0
 	else
@@ -37,15 +37,15 @@ Is_Bootloader ()
 	return 1
 }
 
-Is_Secondary_Bootloader ()
+Is_Extra_Bootloader ()
 {
-	EVAL_SECONDARY_BOOTLOADER="${1}"
+	EVAL_EXTRA_BOOTLOADER="${1}"
 
-	if Is_Primary_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
+	if Is_First_Bootloader "${EVAL_EXTRA_BOOTLOADER}"
 	then
 		return 1
 	else
-		if Is_Bootloader "${EVAL_SECONDARY_BOOTLOADER}"
+		if Is_Bootloader "${EVAL_EXTRA_BOOTLOADER}"
 		then
 			return 0
 		fi
@@ -54,13 +54,13 @@ Is_Secondary_Bootloader ()
 
 }
 
-Check_Non_Primary_Bootloader ()
+Check_Non_First_Bootloader ()
 {
-	NON_PRIMARY_BOOTLOADER="${1}"
+	NON_FIRST_BOOTLOADER="${1}"
 
-	if Is_Primary_Bootloader "${NON_PRIMARY_BOOTLOADER}"
+	if Is_First_Bootloader "${NON_FIRST_BOOTLOADER}"
 	then
-		Echo_error "Bootloader: ${NON_PRIMARY_BOOTLOADER} not supported as a primary bootloader."
+		Echo_error "Bootloader: ${NON_FIRST_BOOTLOADER} not supported as a first bootloader."
 		exit 1
 	else
 		return 0
@@ -68,25 +68,25 @@ Check_Non_Primary_Bootloader ()
 }
 
 
-Check_Non_Secondary_Bootloader ()
+Check_Non_Extra_Bootloader ()
 {
-	NON_SECONDARY_BOOTLOADER="${1}"
+	NON_EXTRA_BOOTLOADER="${1}"
 
-	if Is_Secondary_Bootloader "${NON_SECONDARY_BOOTLOADER}"
+	if Is_Extra_Bootloader "${NON_EXTRA_BOOTLOADER}"
 	then
-		Echo_error "Bootloader: ${NON_SECONDARY_BOOTLOADER} not supported as a secondary bootloader."
+		Echo_error "Bootloader: ${NON_EXTRA_BOOTLOADER} not supported as a extra bootloader."
 		exit 1
 	else
 		return 0
 	fi
 }
 
-Check_Primary_Bootloader_Role ()
+Check_First_Bootloader_Role ()
 {
-	PRIMARY_BOOTLOADER_ROLE="${1}"
-	Check_Non_Secondary_Bootloader "${PRIMARY_BOOTLOADER_ROLE}"
+	FIRST_BOOTLOADER_ROLE="${1}"
+	Check_Non_Extra_Bootloader "${FIRST_BOOTLOADER_ROLE}"
 
-	if Is_Primary_Bootloader "${PRIMARY_BOOTLOADER_ROLE}"
+	if Is_First_Bootloader "${FIRST_BOOTLOADER_ROLE}"
 	then
 		return 0
 	else
@@ -95,12 +95,12 @@ Check_Primary_Bootloader_Role ()
 
 }
 
-Check_Secondary_Bootloader_Role ()
+Check_Extra_Bootloader_Role ()
 {
-	SECONDARY_BOOTLOADER_ROLE="${1}"
-	Check_Non_Primary_Bootloader "${SECONDARY_BOOTLOADER_ROLE}"
+	EXTRA_BOOTLOADER_ROLE="${1}"
+	Check_Non_First_Bootloader "${EXTRA_BOOTLOADER_ROLE}"
 
-	if Is_Secondary_Bootloader "${SECONDARY_BOOTLOADER_ROLE}"
+	if Is_Extra_Bootloader "${EXTRA_BOOTLOADER_ROLE}"
 	then
 		return 0
 	else
@@ -113,12 +113,12 @@ Check_Any_Bootloader_Role ()
 {
 	ANY_BOOTLOADER_ROLE="${1}"
 
-	if Is_Primary_Bootloader "${ANY_BOOTLOADER_ROLE}"
+	if Is_First_Bootloader "${ANY_BOOTLOADER_ROLE}"
 	then
 		return 0
 	fi
 
-	if Is_Secondary_Bootloader "${ANY_BOOTLOADER_ROLE}"
+	if Is_Extra_Bootloader "${ANY_BOOTLOADER_ROLE}"
 	then
 		return 0
 	fi
