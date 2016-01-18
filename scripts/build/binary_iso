@@ -149,7 +149,7 @@ esac
 #	XORRISO_OPTIONS="${XORRISO_OPTIONS} -m ${XORRISO_EXCLUDE}"
 #fi
 
-if [ "${LB_PRIMARY_BOOTLOADER}" = "grub-pc" ]
+if [ "${LB_FIRST_BOOTLOADER}" = "grub-pc" ]
 then
 
 cat > binary.sh << EOF

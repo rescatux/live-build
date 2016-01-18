@@ -537,7 +537,7 @@ Set_defaults ()
 		esac
 	fi
 
-	LB_PRIMARY_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
+	LB_FIRST_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
 
 	# Setting checksums
 	case "${LB_MODE}" in
@@ -847,7 +847,7 @@ Check_defaults ()
 		fi
 	fi
 
-	if [ "${LB_PRIMARY_BOOTLOADER}" = "syslinux" ]
+	if [ "${LB_FIRST_BOOTLOADER}" = "syslinux" ]
 	then
 		# syslinux + fat or ntfs, or extlinux + ext[234] or btrfs
 		case "${LB_BINARY_FILESYSTEM}" in
@@ -861,7 +861,7 @@ Check_defaults ()
 
 	case "${LIVE_IMAGE_TYPE}" in
 		hdd*)
-			case "${LB_PRIMARY_BOOTLOADER}" in
+			case "${LB_FIRST_BOOTLOADER}" in
 				grub)
 					Echo_error "You have selected a combination of bootloader and image type that is currently not supported by live-build. Please use either another bootloader or a different image type."
 					exit 1
