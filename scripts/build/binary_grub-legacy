@@ -24,22 +24,7 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
-FOUND_MYSELF=""
-IFS=","
-for BOOTLOADER in ${LB_BOOTLOADERS}
-do
-
-       case ${BOOTLOADER} in
-               "grub-legacy" )
-                       FOUND_MYSELF="True"
-                       break ;;
-       esac
-
-done
-
-if [ -z ${FOUND_MYSELF} ] ; then
-        exit 0
-fi
+Check_First_Bootloader_Role "grub-legacy"
 
 Echo_message "Begin installing grub-legacy..."
 

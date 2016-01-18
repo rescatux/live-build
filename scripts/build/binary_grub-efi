@@ -24,7 +24,7 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
-Check_Secondary_Bootloader_Role "grub-efi"
+Check_Extra_Bootloader_Role "grub-efi"
 
 Echo_message "Begin preparing Grub based EFI support..."
 

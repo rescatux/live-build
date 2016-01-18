@@ -108,7 +108,7 @@ then
 fi
 
 # Handle xorriso architecture specific options
-case "${LB_PRIMARY_BOOTLOADER}" in
+case "${LB_FIRST_BOOTLOADER}" in
 	grub)
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
@@ -138,7 +138,7 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 		;;
 
 	*)
-		Echo_warning "Bootloader on your architecture not yet supported by live-build."
+		Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
 		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
 		sleep 5
 		;;
@@ -160,7 +160,7 @@ fi
 #	XORRISO_OPTIONS="${XORRISO_OPTIONS} -m ${XORRISO_EXCLUDE}"
 #fi
 
-if [ "${LB_PRIMARY_BOOTLOADER}" = "grub-pc" ]
+if [ "${LB_FIRST_BOOTLOADER}" = "grub-pc" ]
 then
 
 cat > binary.sh << EOF
