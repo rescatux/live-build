@@ -206,7 +206,7 @@ cp $_SYSLINUX_EFI_DIR/syslinux.efi chroot/efi-temp/EFI/BOOT/BOOTX64.efi
 cp $_SYSLINUX_EFI_DIR/syslinux.efi chroot/efi-temp/EFI/BOOT/syslinux.efi
 
 # Copy the various kernel images
-cp binary/live/vmlinuz* binary/live/initrd.img* chroot/efi-temp/live/
+cp binary/live/vmlinuz* binary/live/initrd* chroot/efi-temp/live/
 if [ -d binary/install ]; then
 	cp -r binary/install chroot/efi-temp/
 fi
