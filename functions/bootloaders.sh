@@ -54,3 +54,29 @@ Is_Secondary_Bootloader ()
 
 }
 
+Check_Non_Primary_Bootloader ()
+{
+	NON_PRIMARY_BOOTLOADER="${1}"
+
+	if Is_Primary_Bootloader "${NON_PRIMARY_BOOTLOADER}"
+	then
+		Echo_error "Bootloader: ${NON_PRIMARY_BOOTLOADER} not supported as a primary bootloader."
+		exit 1
+	else
+		return 0
+	fi
+}
+
+
+Check_Non_Secondary_Bootloader ()
+{
+	NON_SECONDARY_BOOTLOADER="${1}"
+
+	if Is_Secondary_Bootloader "${NON_SECONDARY_BOOTLOADER}"
+	then
+		Echo_error "Bootloader: ${NON_SECONDARY_BOOTLOADER} not supported as a secondary bootloader."
+		exit 1
+	else
+		return 0
+	fi
+}
