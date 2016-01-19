@@ -80,3 +80,49 @@ Check_Non_Secondary_Bootloader ()
 		return 0
 	fi
 }
+
+Check_Primary_Bootloader_Role ()
+{
+	PRIMARY_BOOTLOADER_ROLE="${1}"
+	Check_Non_Secondary_Bootloader "${PRIMARY_BOOTLOADER_ROLE}"
+
+	if Is_Primary_Bootloader "${PRIMARY_BOOTLOADER_ROLE}"
+	then
+		return 0
+	else
+		exit 0
+	fi
+
+}
+
+Check_Secondary_Bootloader_Role ()
+{
+	SECONDARY_BOOTLOADER_ROLE="${1}"
+	Check_Non_Primary_Bootloader "${SECONDARY_BOOTLOADER_ROLE}"
+
+	if Is_Secondary_Bootloader "${SECONDARY_BOOTLOADER_ROLE}"
+	then
+		return 0
+	else
+		exit 0
+	fi
+
+}
+
+Check_Any_Bootloader_Role ()
+{
+	ANY_BOOTLOADER_ROLE="${1}"
+
+	if Is_Primary_Bootloader "${ANY_BOOTLOADER_ROLE}"
+	then
+		return 0
+	fi
+
+	if Is_Secondary_Bootloader "${ANY_BOOTLOADER_ROLE}"
+	then
+		return 0
+	fi
+
+	exit 0
+
+}
