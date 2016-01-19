@@ -107,8 +107,6 @@ then
 	XORRISO_OPTIONS="${XORRISO_OPTIONS} -V \"${LB_ISO_VOLUME}\""
 fi
 
-LB_PRIMARY_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
-
 # Handle xorriso architecture specific options
 case "${LB_PRIMARY_BOOTLOADER}" in
 	grub)
