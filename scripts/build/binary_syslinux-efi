@@ -24,12 +24,7 @@ Arguments "${@}"
 Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
 Set_defaults
 
-if Is_Secondary_Bootloader "syslinux-efi"
-then
-	:
-else
-	exit 0
-fi
+Check_Secondary_Bootloader_Role "syslinux-efi"
 
 Echo_message "Begin preparing Syslinux based EFI support..."
 
