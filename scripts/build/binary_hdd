@@ -67,8 +67,6 @@ do
 	esac
 done
 
-LB_PRIMARY_BOOTLOADER=$(echo "${LB_BOOTLOADERS}" | awk -F, '{ print $1 }')
-
 case ${LB_PRIMARY_BOOTLOADER} in
 		syslinux)
 			case ${LB_BINARY_FILESYSTEM} in
