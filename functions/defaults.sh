@@ -854,7 +854,7 @@ Check_defaults ()
 			fat*|ntfs|ext[234]|btrfs)
 				;;
 			*)
-				Echo_warning "You have selected values of LB_BOOTLOADER and LB_BINARY_FILESYSTEM which are incompatible - the syslinux family only support FAT, NTFS, ext[234] or btrfs filesystems."
+				Echo_warning "You have selected values of LB_BOOTLOADERS and LB_BINARY_FILESYSTEM which are incompatible - the syslinux family only support FAT, NTFS, ext[234] or btrfs filesystems."
 				;;
 		esac
 	fi
