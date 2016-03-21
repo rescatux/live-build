@@ -87,6 +87,13 @@ Grub_live_autodetect_entry ()
 	LINUX_LIVE="${LINUX_LIVE}\n}"
 }
 
+Grub_live_video ()
+{
+
+	LINUX_LIVE="${LINUX_LIVE}\ninsmod all_video\n"
+
+}
+
 if [ -e "config/bootloaders/grub-pc" ]
 then
 	# Internal local copy
@@ -200,6 +207,8 @@ do
 
 done
 IFS="$OLDIFS"
+
+Grub_live_video
 
 if [ -z ${FOUND_SYSLINUX} ]
 then
