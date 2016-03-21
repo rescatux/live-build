@@ -248,7 +248,7 @@ then
 	_VERSION="$(. chroot/etc/os-release && echo ${VERSION_ID})"
 fi
 
-_VERSION="${VERSION:-none}"
+_VERSION="${_VERSION:-none}"
 
 _DISTRIBUTION="${LB_DISTRIBUTION}"
 _ARCHITECTURE="${LB_ARCHITECTURES}"
