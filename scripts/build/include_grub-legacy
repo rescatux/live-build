@@ -1,0 +1,58 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016 Adrian Gibanel Lopez <adrian15sgd@gmail.com>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+INCLUDED_PREFIX="grub_legacy"
+
+grub_legacy_check_binary_filesystem()
+
+{
+:
+}
+
+grub_legacy_check_image_type()
+
+{
+	case "${LIVE_IMAGE_TYPE}" in
+		hdd*)
+			case "${LB_FIRST_BOOTLOADER}" in
+				grub)
+					Echo_error "You have selected a combination of bootloader and image type that is currently not supported by live-build. Please use either another bootloader or a different image type."
+					exit 1
+					;;
+			esac
+			;;
+	esac
+}
+
+grub_legacy_xorriso_first_bootloader_architecture_options()
+
+{
+	case "${LB_FIRST_BOOTLOADER}" in
+		grub)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
+			XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
+			;;
+	esac
+}
+
+grub_legacy_xorriso_extra_bootloader_architecture_options()
+
+{
+:
+}
+
+grub_legacy_custom_additional_binary_top_script()
+
+{
+:
+}

@@ -107,90 +107,41 @@ then
 	XORRISO_OPTIONS="${XORRISO_OPTIONS} -V \"${LB_ISO_VOLUME}\""
 fi
 
+PRE_INCLUDE_XORRISO_OPTIONS="${XORRISO_OPTIONS}"
+
 # Handle xorriso architecture specific options
-case "${LB_FIRST_BOOTLOADER}" in
-	grub)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
-		XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
-		;;
+[ -d "${LIVE_BUILD}" ] && INCLUDED_PATH="${LIVE_BUILD}/scripts/build" || INCLUDED_PATH="/usr/lib/live/build"
+for ninclude_file in "${INCLUDED_PATH}"/include_*
+do
+	. "${ninclude_file}"
+	${INCLUDED_PREFIX}_xorriso_first_bootloader_architecture_options
+done
 
-	grub-pc)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
-		XORRISO_EXCLUDE="boot/grub/grub_eltorito"
-		;;
-
-	syslinux)
-		case "${LB_MODE}" in
-			progress-linux)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
-				XORRISO_EXCLUDE="boot/boot.bin"
-				;;
-
-			*)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
-				XORRISO_EXCLUDE="isolinux/isolinux.bin"
-				;;
-		esac
-
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		;;
-
-	*)
-		Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
-		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
-		sleep 5
-		;;
-esac
-
-if Is_Secondary_Bootloader "grub-efi"
+if [ "${PRE_INCLUDE_XORRISO_OPTIONS}" = "${XORRISO_OPTIONS}" ]
 then
-	if [ -e binary/boot/grub/efi.img ]
-	then
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
-	else
-		Echo "No EFI boot code to include in the ISO"
-	fi
+	Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
+	Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
+	sleep 5
 fi
+
+for ninclude_file in "${INCLUDED_PATH}"/include_*
+do
+	. "${ninclude_file}"
+	${INCLUDED_PREFIX}_xorriso_extra_bootloader_architecture_options
+done
 
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
 #	XORRISO_OPTIONS="${XORRISO_OPTIONS} -m ${XORRISO_EXCLUDE}"
 #fi
 
-if [ "${LB_FIRST_BOOTLOADER}" = "grub-pc" ]
-then
+echo "#!/bin/sh" > binary.sh
 
-cat > binary.sh << EOF
-#!/bin/sh
-
-input_dir=/usr/lib/grub/i386-pc
-
-# build core.img
-core_img=\$(mktemp)
-grub-mkimage -d \${input_dir} -o \${core_img} -O i386-pc biosdisk iso9660
-
-# build grub_eltorito image
-cat \${input_dir}/cdboot.img \${core_img} > binary/boot/grub/grub_eltorito
-
-rm -f \${core_img}
-
-for file in \${input_dir}/*.mod \${input_dir}/efiemu??.o \
-	\${input_dir}/command.lst \${input_dir}/moddep.lst \${input_dir}/fs.lst \
-	\${input_dir}/handler.lst \${input_dir}/parttool.lst
+for ninclude_file in "${INCLUDED_PATH}"/include_*
 do
-	if test -f "\$file"
-	then
-		cp -f "\$file" binary/boot/grub/i386-pc
-	fi
+	. "${ninclude_file}"
+	${INCLUDED_PREFIX}_custom_additional_binary_top_script
 done
-EOF
-
-else
-	echo "#!/bin/sh" > binary.sh
-fi
 
 cat >> binary.sh << EOF
 

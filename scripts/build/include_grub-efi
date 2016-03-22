@@ -1,0 +1,61 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016 Adrian Gibanel Lopez <adrian15sgd@gmail.com>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+INCLUDED_PREFIX="grub_efi"
+
+grub_efi_check_binary_filesystem()
+
+{
+:
+}
+
+grub_efi_check_image_type()
+
+{
+:
+}
+
+grub_efi_xorriso_first_bootloader_architecture_options()
+
+{
+	if Is_First_Bootloader "grub-efi"
+	then
+		if [ -e binary/boot/grub/efi.img ]
+		then
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -e boot/grub/efi.img -no-emul-boot"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+		else
+			Echo "No EFI boot code to include in the ISO"
+		fi
+	fi
+}
+
+grub_efi_xorriso_extra_bootloader_architecture_options()
+
+{
+	if Is_Extra_Bootloader "grub-efi"
+	then
+		if [ -e binary/boot/grub/efi.img ]
+		then
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+		else
+			Echo "No EFI boot code to include in the ISO"
+		fi
+	fi
+}
+
+grub_efi_custom_additional_binary_top_script()
+
+{
+:
+}

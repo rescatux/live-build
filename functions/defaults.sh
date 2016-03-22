@@ -847,28 +847,13 @@ Check_defaults ()
 		fi
 	fi
 
-	if [ "${LB_FIRST_BOOTLOADER}" = "syslinux" ]
-	then
-		# syslinux + fat or ntfs, or extlinux + ext[234] or btrfs
-		case "${LB_BINARY_FILESYSTEM}" in
-			fat*|ntfs|ext[234]|btrfs)
-				;;
-			*)
-				Echo_warning "You have selected values of LB_BOOTLOADERS and LB_BINARY_FILESYSTEM which are incompatible - the syslinux family only support FAT, NTFS, ext[234] or btrfs filesystems."
-				;;
-		esac
-	fi
-
-	case "${LIVE_IMAGE_TYPE}" in
-		hdd*)
-			case "${LB_FIRST_BOOTLOADER}" in
-				grub)
-					Echo_error "You have selected a combination of bootloader and image type that is currently not supported by live-build. Please use either another bootloader or a different image type."
-					exit 1
-					;;
-			esac
-			;;
-	esac
+	[ -d "${LIVE_BUILD}" ] && INCLUDED_PATH="${LIVE_BUILD}/scripts/build" || INCLUDED_PATH="/usr/lib/live/build"
+	for ninclude_file in "${INCLUDED_PATH}"/include_*
+	do
+		. "${ninclude_file}"
+		${INCLUDED_PREFIX}_check_binary_filesystem
+		${INCLUDED_PREFIX}_check_image_type
+	done
 
 	if [ "$(echo \"${LB_ISO_APPLICATION}\" | wc -c)" -gt 128 ]
 	then

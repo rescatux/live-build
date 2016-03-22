@@ -1,0 +1,69 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016 Adrian Gibanel Lopez <adrian15sgd@gmail.com>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+INCLUDED_PREFIX="syslinux"
+
+syslinux_check_binary_filesystem()
+
+{
+	if [ "${LB_FIRST_BOOTLOADER}" = "syslinux" ]
+	then
+		# syslinux + fat or ntfs, or extlinux + ext[234] or btrfs
+		case "${LB_BINARY_FILESYSTEM}" in
+			fat*|ntfs|ext[234]|btrfs)
+				;;
+			*)
+				Echo_warning "You have selected values of LB_BOOTLOADERS and LB_BINARY_FILESYSTEM which are incompatible - the syslinux family only support FAT, NTFS, ext[234] or btrfs filesystems."
+				;;
+		esac
+	fi
+}
+
+syslinux_check_image_type()
+
+{
+:
+}
+
+syslinux_xorriso_first_bootloader_architecture_options()
+
+{
+	case "${LB_FIRST_BOOTLOADER}" in
+		syslinux)
+			case "${LB_MODE}" in
+				progress-linux)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
+					XORRISO_EXCLUDE="boot/boot.bin"
+					;;
+
+				*)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
+					XORRISO_EXCLUDE="isolinux/isolinux.bin"
+					;;
+			esac
+
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			;;
+	esac
+}
+
+syslinux_xorriso_extra_bootloader_architecture_options()
+
+{
+:
+}
+
+syslinux_custom_additional_binary_top_script()
+
+{
+:
+}

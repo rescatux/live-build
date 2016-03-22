@@ -1,0 +1,85 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016 Adrian Gibanel Lopez <adrian15sgd@gmail.com>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+INCLUDED_PREFIX="grub_pc"
+
+grub_pc_check_binary_filesystem()
+
+{
+:
+}
+
+grub_pc_check_image_type()
+
+{
+	case "${LIVE_IMAGE_TYPE}" in
+		hdd*)
+			case "${LB_FIRST_BOOTLOADER}" in
+				grub)
+					Echo_error "You have selected a combination of bootloader and image type that is currently not supported by live-build. Please use either another bootloader or a different image type."
+					exit 1
+					;;
+			esac
+			;;
+	esac
+}
+
+grub_pc_xorriso_first_bootloader_architecture_options()
+
+{
+	case "${LB_FIRST_BOOTLOADER}" in
+		grub-pc)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
+			XORRISO_EXCLUDE="boot/grub/grub_eltorito"
+			;;
+	esac
+}
+
+grub_pc_xorriso_extra_bootloader_architecture_options()
+
+{
+:
+}
+
+grub_pc_custom_additional_binary_top_script()
+
+{
+	if [ "${LB_FIRST_BOOTLOADER}" = "grub-pc" ]
+	then
+
+	cat > binary.sh << EOF
+
+	input_dir=/usr/lib/grub/i386-pc
+
+	# build core.img
+	core_img=\$(mktemp)
+	grub-mkimage -d \${input_dir} -o \${core_img} -O i386-pc biosdisk iso9660
+
+	# build grub_eltorito image
+	cat \${input_dir}/cdboot.img \${core_img} > binary/boot/grub/grub_eltorito
+
+	rm -f \${core_img}
+
+	for file in \${input_dir}/*.mod \${input_dir}/efiemu??.o \
+		\${input_dir}/command.lst \${input_dir}/moddep.lst \${input_dir}/fs.lst \
+		\${input_dir}/handler.lst \${input_dir}/parttool.lst
+	do
+		if test -f "\$file"
+		then
+			cp -f "\$file" binary/boot/grub/i386-pc
+		fi
+	done
+EOF
+
+	fi
+}
