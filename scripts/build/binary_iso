@@ -144,7 +144,7 @@ case "${LB_FIRST_BOOTLOADER}" in
 		;;
 esac
 
-if Is_Secondary_Bootloader "grub-efi"
+if Is_Extra_Bootloader "grub-efi"
 then
 	if [ -e binary/boot/grub/efi.img ]
 	then
