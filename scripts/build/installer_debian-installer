@@ -248,7 +248,7 @@ case "${LB_DERIVATIVE}" in
 			LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="sid"
 
 			# Debian Installer daily builds
-			URL="http://d-i.debian.org/daily-images/${LB_ARCHITECTURES}/daily/"
+			URL="https://d-i.debian.org/daily-images/${LB_ARCHITECTURES}/daily/"
 		else
 			URL="${LB_MIRROR_DEBIAN_INSTALLER}/dists/${LB_DEBIAN_INSTALLER_DISTRIBUTION}/main/installer-${LB_ARCHITECTURES}/current/images/"
 		fi
@@ -260,7 +260,7 @@ case "${LB_DERIVATIVE}" in
 			LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="sid"
 
 			# Debian Installer daily builds
-			URL="http://d-i.debian.org/daily-images/${LB_ARCHITECTURES}/daily/"
+			URL="https://d-i.debian.org/daily-images/${LB_ARCHITECTURES}/daily/"
 		else
 			URL="${LB_PARENT_MIRROR_DEBIAN_INSTALLER}/dists/${LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION}/main/installer-${LB_ARCHITECTURES}/current/images/"
 		fi
