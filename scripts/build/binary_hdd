@@ -219,7 +219,7 @@ Losetup $FREELO chroot/binary.img 1
 case "${LB_BINARY_FILESYSTEM}" in
 	ext2|ext3|ext4)
 		MKFS="${LB_BINARY_FILESYSTEM}"
-		MKFS_OPTIONS="-L ${LB_HDD_LABEL} -m 0"
+		MKFS_OPTIONS="-L ${LB_HDD_LABEL} -m 0 -O ^64bit"
 		MOUNT_OPTIONS=""
 		;;
 
