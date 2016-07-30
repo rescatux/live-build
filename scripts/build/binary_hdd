@@ -184,7 +184,7 @@ case "${LB_BUILD_WITH_CHROOT}" in
 
 		if [ "${LB_FIRST_BOOTLOADER}" = "syslinux" ]
 		then
-			dd if=chroot/usr/lib/SYSLINUX/mbr.bin of=${FREELO} bs=440 count=1
+			dd if=chroot/usr/lib/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z])/mbr.bin of=${FREELO} bs=440 count=1
 		fi
 		;;
 
@@ -204,7 +204,7 @@ case "${LB_BUILD_WITH_CHROOT}" in
 
 		if [ "${LB_FIRST_BOOTLOADER}" = "syslinux" ]
 		then
-			dd if=/usr/lib/SYSLINUX/mbr.bin of=${FREELO} bs=440 count=1
+			dd if=/usr/lib/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z])/mbr.bin of=${FREELO} bs=440 count=1
 		fi
 		;;
 esac
@@ -217,7 +217,7 @@ Losetup $FREELO chroot/binary.img 1
 case "${LB_BINARY_FILESYSTEM}" in
 	ext2|ext3|ext4)
 		MKFS="${LB_BINARY_FILESYSTEM}"
-		MKFS_OPTIONS="-L ${LB_HDD_LABEL} -m 0"
+		MKFS_OPTIONS="-L ${LB_HDD_LABEL} -m 0 -O ^64bit"
 		MOUNT_OPTIONS=""
 		;;
 

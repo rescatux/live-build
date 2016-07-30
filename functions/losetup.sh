@@ -61,12 +61,31 @@ Losetup ()
 	fi
 }
 
-Calculate_partition_size ()
+# adapted from lib/ext2fs/mkjournal.c, default block size is 4096 bytes (/etc/mke2fs.conf).
+ext2fs_default_journal_size()
 {
-	ORIGINAL_SIZE="${1}"
-	FILESYSTEM="${2}"
+	SIZE="$1"
+	if [ "${SIZE}" -lt "8" ]; then # 2048*4096
+		echo 0
+	elif [ "${SIZE}" -lt "128" ]; then # 32768*4096
+		echo 4
+	elif [ "${SIZE}" -lt "1024" ]; then # 256*1024*4096
+		echo 16
+	elif [ "${SIZE}" -lt "2048" ]; then # 512*1024*4096
+		echo 32
+	elif [ "${SIZE}" -lt "4096" ]; then # 1024*1024*4096
+		echo 64
+	else
+		echo 128
+	fi
+}
 
-	case "${FILESYSTEM}" in
+Calculate_partition_size_without_journal ()
+{
+	WITHOUT_JOURNAL_ORIGINAL_SIZE="${1}"
+	WITHOUT_JOURNAL_FILESYSTEM="${2}"
+
+	case "${WITHOUT_JOURNAL_FILESYSTEM}" in
 		ext2|ext3|ext4)
 			PERCENT="6"
 			;;
@@ -75,5 +94,26 @@ Calculate_partition_size ()
 			;;
 	esac
 
-	echo $(expr ${ORIGINAL_SIZE} + ${ORIGINAL_SIZE} \* ${PERCENT} / 100 + 1)
+	echo $(expr ${WITHOUT_JOURNAL_ORIGINAL_SIZE} + ${WITHOUT_JOURNAL_ORIGINAL_SIZE} \* ${PERCENT} / 100 + 1)
+}
+
+Calculate_partition_size ()
+{
+	ORIGINAL_SIZE="${1}"
+	FILESYSTEM="${2}"
+
+	case "${FILESYSTEM}" in
+		ext3|ext4)
+			NON_JOURNAL_SIZE=$(Calculate_partition_size_without_journal ${ORIGINAL_SIZE} ${FILESYSTEM})
+			PROJECTED_JOURNAL_SIZE=$(ext2fs_default_journal_size ${NON_JOURNAL_SIZE})
+			PROJECTED_PARTITION_SIZE=$(expr ${ORIGINAL_SIZE} + ${PROJECTED_JOURNAL_SIZE})
+			PRE_FINAL_PARTITION_SIZE=$(Calculate_partition_size_without_journal ${PROJECTED_PARTITION_SIZE} ${FILESYSTEM})
+			JOURNAL_SIZE=$(ext2fs_default_journal_size ${PRE_FINAL_PARTITION_SIZE})
+
+			expr $(Calculate_partition_size_without_journal ${ORIGINAL_SIZE} ${FILESYSTEM}) + ${JOURNAL_SIZE}
+			;;
+		*)
+			Calculate_partition_size_without_journal ${ORIGINAL_SIZE} ${FILESYSTEM}
+			;;
+	esac
 }
