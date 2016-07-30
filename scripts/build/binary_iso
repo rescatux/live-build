@@ -107,42 +107,60 @@ then
 	XORRISO_OPTIONS="${XORRISO_OPTIONS} -V \"${LB_ISO_VOLUME}\""
 fi
 
-# Handle xorriso architecture specific options
-case "${LB_PRIMARY_BOOTLOADER}" in
-	grub)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
-		XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
-		;;
+OLDIFS="$IFS"
+IFS=","
+BOOTLOADER_NUMBER=0
+for BOOTLOADER in ${LB_BOOTLOADERS}
+do
+	BOOTLOADER_NUMBER=$(expr ${BOOTLOADER_NUMBER} + 1)
+	# Handle xorriso architecture specific options
 
-	grub-pc)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
-		XORRISO_EXCLUDE="boot/grub/grub_eltorito"
-		;;
+	# If the bootloader number is greater or equal than 2 it means
+	# we are not the first bootloader and thus we need to tell
+	# mkisosfs to add an additional eltorito entry
+	if [ ${BOOTLOADER_NUMBER} -ge 2 ]
+	then
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot "
+	fi
+	case "${BOOTLOADER}" in
+		grub)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
+			XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
+			;;
 
-	syslinux)
-		case "${LB_MODE}" in
-			progress-linux)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
-				XORRISO_EXCLUDE="boot/boot.bin"
-				;;
+		grub-pc)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
+			XORRISO_EXCLUDE="boot/grub/grub_eltorito"
+			;;
 
-			*)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
-				XORRISO_EXCLUDE="isolinux/isolinux.bin"
-				;;
-		esac
+		syslinux)
+			case "${LB_MODE}" in
+				progress-linux)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
+					XORRISO_EXCLUDE="boot/boot.bin"
+					;;
 
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		;;
+				*)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
+					XORRISO_EXCLUDE="isolinux/isolinux.bin"
+					;;
+			esac
 
-	*)
-		Echo_warning "Bootloader on your architecture not yet supported by live-build."
-		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
-		sleep 5
-		;;
-esac
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			;;
+
+
+		*)
+			Echo_warning "Bootloader on your architecture not yet supported by live-build."
+			Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
+			sleep 5
+			;;
+	esac
+
+done
+IFS="$OLDIFS"
 
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
