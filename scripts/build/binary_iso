@@ -137,6 +137,16 @@ case "${LB_FIRST_BOOTLOADER}" in
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
 		;;
 
+	 grub-efi)
+		if [ -e binary/boot/grub/efi.img ]
+		then
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+		else
+			Echo "No EFI boot code to include in the ISO"
+		fi
+		;;
+
 	*)
 		Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
 		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
@@ -144,16 +154,6 @@ case "${LB_FIRST_BOOTLOADER}" in
 		;;
 esac
 
-if Is_Extra_Bootloader "grub-efi"
-then
-	if [ -e binary/boot/grub/efi.img ]
-	then
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
-	else
-		Echo "No EFI boot code to include in the ISO"
-	fi
-fi
 
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
