@@ -107,8 +107,13 @@ then
 	XORRISO_OPTIONS="${XORRISO_OPTIONS} -V \"${LB_ISO_VOLUME}\""
 fi
 
+OLDIFS="$IFS"
+IFS=","
+for BOOTLOADER in ${LB_BOOTLOADERS}
+do
+
 # Handle xorriso architecture specific options
-case "${LB_PRIMARY_BOOTLOADER}" in
+case "${BOOTLOADER}" in
 	grub)
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
@@ -136,13 +141,15 @@ case "${LB_PRIMARY_BOOTLOADER}" in
 
 		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
 		;;
-
 	*)
 		Echo_warning "Bootloader on your architecture not yet supported by live-build."
 		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
 		sleep 5
 		;;
 esac
+
+done
+IFS="$OLDIFS"
 
 #if [ "${LB_DEBIAN_INSTALLER}" != "live" ]
 #then
