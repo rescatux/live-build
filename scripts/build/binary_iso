@@ -109,10 +109,19 @@ fi
 
 OLDIFS="$IFS"
 IFS=","
+BOOTLOADER_NUMBER=0
 for BOOTLOADER in ${LB_BOOTLOADERS}
 do
-
+	BOOTLOADER_NUMBER=$(expr ${BOOTLOADER_NUMBER} + 1)
 	# Handle xorriso architecture specific options
+
+	# If the bootloader number is greater or equal than 2 it means
+	# we are not the first bootloader and thus we need to tell
+	# mkisosfs to add an additional eltorito entry
+	if [ ${BOOTLOADER_NUMBER} -ge 2 ]
+	then
+		XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot "
+	fi
 	case "${BOOTLOADER}" in
 		grub)
 			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
