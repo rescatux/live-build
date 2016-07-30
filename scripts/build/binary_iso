@@ -112,52 +112,52 @@ IFS=","
 for BOOTLOADER in ${LB_BOOTLOADERS}
 do
 
-# Handle xorriso architecture specific options
-case "${BOOTLOADER}" in
-	grub)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
-		XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
-		;;
+	# Handle xorriso architecture specific options
+	case "${BOOTLOADER}" in
+		grub)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/stage2_eltorito"
+			XORRISO_EXCLUDE="boot/grub/stage2_eltorito"
+			;;
 
-	grub-pc)
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
-		XORRISO_EXCLUDE="boot/grub/grub_eltorito"
-		;;
+		grub-pc)
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/grub/grub_eltorito -J"
+			XORRISO_EXCLUDE="boot/grub/grub_eltorito"
+			;;
 
-	syslinux)
-		case "${LB_MODE}" in
-			progress-linux)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
-				XORRISO_EXCLUDE="boot/boot.bin"
-				;;
+		syslinux)
+			case "${LB_MODE}" in
+				progress-linux)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b boot/boot.bin -c boot/boot.cat"
+					XORRISO_EXCLUDE="boot/boot.bin"
+					;;
 
-			*)
-				XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
-				XORRISO_EXCLUDE="isolinux/isolinux.bin"
-				;;
-		esac
+				*)
+					XORRISO_OPTIONS="${XORRISO_OPTIONS} -b isolinux/isolinux.bin -c isolinux/boot.cat"
+					XORRISO_EXCLUDE="isolinux/isolinux.bin"
+					;;
+			esac
 
-		XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
-		;;
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			;;
 
-	grub-efi)
-		if [ -e binary/boot/grub/efi.img ]
-		then
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
-		else
-			Echo "No EFI boot code to include in the ISO"
-		fi
-		;;
+		grub-efi)
+			if [ -e binary/boot/grub/efi.img ]
+			then
+				XORRISO_OPTIONS="${XORRISO_OPTIONS} -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot"
+				XORRISO_OPTIONS="${XORRISO_OPTIONS} -isohybrid-gpt-basdat -isohybrid-apm-hfsplus"
+			else
+				Echo "No EFI boot code to include in the ISO"
+			fi
+			;;
 
-	*)
-		Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
-		Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
-		sleep 5
-		;;
-esac
+		*)
+			Echo_warning "Bootloader on your architecture not yet supported by live-build as the primary bootloader."
+			Echo_warning "This will produce a most likely not bootable image (Continuing in 5 seconds)."
+			sleep 5
+			;;
+	esac
 
 
 done
