@@ -69,6 +69,24 @@ Grub_live_entry ()
 	LINUX_LIVE="${LINUX_LIVE}\n}"
 }
 
+Grub_install_entry ()
+{
+	LABEL="${1}"
+	KERNEL="${2}"
+	INITRD="${3}"
+	APPEND="${4}"
+
+	if [ "${LABEL}" != "rescue" ] && [ "${LABEL}" != "rescuegui" ]
+	then
+		APPEND="${APPEND} quiet"
+	fi
+
+	LINUX_INSTALL="${LINUX_INSTALL}\nmenuentry \"Debian GNU/Linux - ${LABEL}\" {"
+	LINUX_INSTALL="${LINUX_INSTALL}\nlinux\t\t/${KERNEL} ${APPEND} LB_BOOTAPPEND_INSTALL"
+	LINUX_INSTALL="${LINUX_INSTALL}\ninitrd\t\t/${INITRD}"
+	LINUX_INSTALL="${LINUX_INSTALL}\n}"
+}
+
 Grub_live_autodetect_entry ()
 {
 	local LABEL="${1}"
@@ -329,6 +347,32 @@ else # LB_BOOTLOADERS does not contain syslinux
 fi
 LINUX_LIVE="$(/bin/echo ${LINUX_LIVE} | sed -e 's|binary||g' -e 's|//|/|g')"
 
+# Assembling debian-installer configuration
+if [ "${LB_DEBIAN_INSTALLER}" != "false" ]
+then
+	LINUX_LIVE="#\t \"Live\"\n${LINUX_LIVE}"
+	LINUX_INSTALL="#\t \"Installer\"\n"
+
+	VMLINUZ_DI="install/vmlinuz"
+	INITRD_DI="install/initrd.gz"
+	APPEND_DI="vga=normal"
+
+	VMLINUZ_GI="install/gtk/vmlinuz"
+	INITRD_GI="install/gtk/initrd.gz"
+	APPEND_GI="video=vesa:ywrap,mtrr vga=788"
+
+	Grub_install_entry "install" "${VMLINUZ_DI}" "${INITRD_DI}" "${APPEND_DI}"
+	Grub_install_entry "installgui" "${VMLINUZ_GI}" "${INITRD_GI}" "${APPEND_GI}"
+	Grub_install_entry "expert" "${VMLINUZ_DI}" "${INITRD_DI}" "priority=low ${APPEND_DI}"
+	Grub_install_entry "expertgui" "${VMLINUZ_GI}" "${INITRD_GI}" "priority=low ${APPEND_GI}"
+	Grub_install_entry "rescue" "${VMLINUZ_DI}" "${INITRD_DI}" "rescue/enable=true ${APPEND_DI}"
+	Grub_install_entry "rescuegui" "${VMLINUZ_GI}" "${INITRD_GI}" "rescue/enable=true ${APPEND_GI}"
+	Grub_install_entry "auto" "${VMLINUZ_DI}" "${INITRD_DI}" "auto=true priority=critical ${APPEND_DI}"
+	Grub_install_entry "autogui" "${VMLINUZ_GI}" "${INITRD_GI}" "auto=true priority=critical ${APPEND_GI}"
+fi
+
+LINUX_INSTALL="$(/bin/echo ${LINUX_INSTALL} | sed -e 's|binary||g' -e 's|//|/|g')"
+
 # Assembling memtest configuration
 if [ -f "${DESTDIR_LIVE}"/memtest ]
 then
@@ -341,8 +385,8 @@ fi
 mkdir -p binary/boot/grub
 cp "${_SOURCE}"/grub.cfg binary/boot/grub/grub.cfg
 
-sed -i -e "s|LINUX_LIVE|${LINUX_LIVE}|" -e "s|LINUX_INSTALL||" -e "s|MEMTEST|${MEMTEST}|" binary/boot/grub/grub.cfg
-sed -i -e "s#LB_BOOTAPPEND_INSTALL##" -e "s#LB_BOOTAPPEND_LIVE#${LB_BOOTAPPEND_LIVE}#" binary/boot/grub/grub.cfg
+sed -i -e "s|LINUX_LIVE|${LINUX_LIVE}|" -e "s|LINUX_INSTALL|${LINUX_INSTALL}|" -e "s|MEMTEST|${MEMTEST}|" binary/boot/grub/grub.cfg
+sed -i -e "s#LB_BOOTAPPEND_INSTALL#${LB_BOOTAPPEND_INSTALL}#" -e "s#LB_BOOTAPPEND_LIVE#${LB_BOOTAPPEND_LIVE}#" binary/boot/grub/grub.cfg
 
 sed -i -e 's|\ $||g' binary/boot/grub/grub.cfg
 
