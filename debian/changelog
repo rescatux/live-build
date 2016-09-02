@@ -6,6 +6,8 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Add symlinks for libgpl.c32 and libmenu.c32 which are required by
     the "Hardware Detection Tool (HDT)" menu entry that live-build adds
     in the advanced menu.
+  * Add EFI boot support with grub-efi, thanks to Adrian Gibanel Lopez.
+    Closes: #731709
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 18:03:44 +0100
 
