@@ -30,8 +30,6 @@ Set_defaults
 # Requiring stage file
 Require_stagefile .build/config .build/bootstrap
 
-_LB_LOCAL_KEY_EMAIL="live-build-local-key@invalid"
-
 case "${LB_DERIVATIVE}" in
 	true)
 		_PARENT_FILE="sources.list.d/debian.list"
@@ -280,87 +278,8 @@ EOF
 					-o APT::FTPArchive::Release::Origin=config/packages.chroot \
 					release . > Release" | Chroot chroot sh
 
-				if [ "${LB_APT_SECURE}" = "true" ]
-				then
-					if [ -e chroot/root/.gnupg ]
-					then
-						mv chroot/root/.gnupg chroot/root/.gnupg.orig
-					fi
-
-					# Ensure ~/.gnupg exists
-					mkdir -p chroot/root/.gnupg
-
-					# Temporarily replace /dev/random with /dev/urandom so as not
-					# to block automated image builds; we don't care about the
-					# security of this key anyway.
-					if [ -e chroot/dev/random ]
-					then
-						mv chroot/dev/random chroot/dev/random.orig
-						cp -a chroot/dev/urandom chroot/dev/random
-					fi
-
-					if Find_files cache/local-package-keyring.*
-					then
-						cp cache/local-package-keyring.* chroot/root
-					else
-						# Generate temporary key
-						echo "Key-Type: RSA
-						      Key-Length: 1024
-						      Subkey-Type: ELG-E
-						      Subkey-Length: 1024
-						      Name-Real: live-build local packages key
-						      Name-Email: ${_LB_LOCAL_KEY_EMAIL}
-						      Expire-Date: 0
-						      %secring /root/local-package-keyring.sec
-						      %pubring /root/local-package-keyring.pub
-						      %commit" | Chroot chroot "gpg --batch --gen-key" || _LB_RET=${?}
-
-						case "${_LB_RET}" in
-							""|2)
-								# Gnupg sometimes seems to return with a status of 2 when there was not
-								# enough entropy (and key creation blocks temporarily) even if the
-								# operation was ultimately successful.
-								;;
-							*)
-								Echo_error "GPG exited with error status %s" "${_LB_RET}"
-								exit ${_LB_RET}
-								;;
-						esac
-
-						# Save keyrings to avoid regeneration
-						cp chroot/root/local-package-keyring.* cache/
-					fi
-
-					# Sign release
-					Chroot chroot "gpg --no-default-keyring --secret-keyring /root/local-package-keyring.sec \
-						--keyring /root/local-package-keyring.pub -abs -o \
-						/root/packages/Release.gpg /root/packages/Release"
-
-					# Import key
-					Chroot chroot "gpg --no-default-keyring --secret-keyring /root/local-package-keyring.sec \
-						--keyring /root/local-package-keyring.pub --armor \
-						--export ${_LB_LOCAL_KEY_EMAIL}" | Chroot chroot "apt-key add -"
-
-					# Remove temporary keyrings
-					rm chroot/root/local-package-keyring.pub
-					rm chroot/root/local-package-keyring.sec
-
-					# Revert /dev/random
-					if [ -e chroot/dev/random.orig ]
-					then
-						mv chroot/dev/random.orig chroot/dev/random
-					fi
-
-					rm -rf chroot/root/.gnupg
-
-					if [ -e chroot/root/.gnupg.orig ]
-					then
-						mv chroot/root/.gnupg.orig chroot/root/.gnupg
-					fi
-				fi
-
 				# Add to sources.list.d
-				echo "deb file:/root/packages ./" > chroot/etc/apt/sources.list.d/packages.list
+				echo "deb [ trusted=yes ] file:/root/packages ./" > chroot/etc/apt/sources.list.d/packages.list
 
 				# Move top-level sources away, otherwise apt always preferes it (#644148)
 				if [ -e chroot/etc/apt/sources.list ]
@@ -758,12 +677,6 @@ EOF
 		# Remove local package repository
 		rm -f chroot/etc/apt/sources.list.d/packages.list
 		rm -rf chroot/root/packages
-
-		# Remove local packages key if it exists
-		if Chroot chroot apt-key list | grep -q ${_LB_LOCAL_KEY_EMAIL}
-		then
-			Chroot chroot apt-key del ${_LB_LOCAL_KEY_EMAIL}
-		fi
 
 		# Removing stage file
 		rm -f .build/chroot_archives
