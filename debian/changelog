@@ -8,6 +8,11 @@ live-build (1:20160105) UNRELEASED; urgency=medium
     in the advanced menu.
   * Add EFI boot support with grub-efi, thanks to Adrian Gibanel Lopez.
     Closes: #731709
+  * Fix usage of config/packages.chroot/*.deb that has been broken by the
+    switch to GnuPG2 by default by no longer using GnuPG but relying
+    on APT's trusted=yes attribute instead.
+    Thus we no longer have remaining key in /etc/apt/trusted.gpg
+    after building. Closes: #816204
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 18:03:44 +0100
 
