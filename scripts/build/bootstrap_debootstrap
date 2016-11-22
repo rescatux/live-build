@@ -62,6 +62,7 @@ if [ "${LB_ARCHIVE_AREAS}" != "main" ]
 then
 	# Modify archive areas to remove leading/trailing whitespaces and replace other whitepspace with commas
 	DEBOOTSTRAP_OPTIONS="${DEBOOTSTRAP_OPTIONS} --components=$(echo ${LB_ARCHIVE_AREAS} | sed -e 's| |,|g')"
+	FOREIGN_DEBOOTSTRAP_OPTIONS="--components=$(echo ${LB_ARCHIVE_AREAS} | sed -e 's| |,|g')"
 fi
 
 if [ "${_VERBOSE}" = "true" ]
@@ -112,7 +113,7 @@ then
 
 		Echo_message "Running debootstrap second stage under QEMU"
 		cp ${LB_BOOTSTRAP_QEMU_STATIC} chroot/usr/bin
-		Chroot chroot /bin/sh /debootstrap/debootstrap --second-stage
+		Chroot chroot /bin/sh /debootstrap/debootstrap --second-stage ${FOREIGN_DEBOOTSTRAP_OPTIONS}
 	else
 		debootstrap ${DEBOOTSTRAP_OPTIONS} "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}"
 	fi
