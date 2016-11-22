@@ -105,13 +105,6 @@ Grub_live_autodetect_entry ()
 	LINUX_LIVE="${LINUX_LIVE}\n}"
 }
 
-Grub_live_video ()
-{
-
-	LINUX_LIVE="${LINUX_LIVE}\ninsmod all_video\n"
-
-}
-
 if [ -e "config/bootloaders/grub-pc" ]
 then
 	# Internal local copy
@@ -225,8 +218,6 @@ do
 
 done
 IFS="$OLDIFS"
-
-Grub_live_video
 
 if [ -z ${FOUND_SYSLINUX} ]
 then
@@ -383,12 +374,12 @@ fi
 
 # Copying templates
 mkdir -p binary/boot/grub
-cp "${_SOURCE}"/grub.cfg binary/boot/grub/grub.cfg
+cp "${_SOURCE}"/* binary/boot/grub/
 
-sed -i -e "s|LINUX_LIVE|${LINUX_LIVE}|" -e "s|LINUX_INSTALL|${LINUX_INSTALL}|" -e "s|MEMTEST|${MEMTEST}|" binary/boot/grub/grub.cfg
-sed -i -e "s#LB_BOOTAPPEND_INSTALL#${LB_BOOTAPPEND_INSTALL}#" -e "s#LB_BOOTAPPEND_LIVE#${LB_BOOTAPPEND_LIVE}#" binary/boot/grub/grub.cfg
+sed -i -e "s|LINUX_LIVE|${LINUX_LIVE}|" -e "s|LINUX_INSTALL|${LINUX_INSTALL}|" -e "s|MEMTEST|${MEMTEST}|" binary/boot/grub/*.cfg
+sed -i -e "s#LB_BOOTAPPEND_INSTALL#${LB_BOOTAPPEND_INSTALL}#" -e "s#LB_BOOTAPPEND_LIVE#${LB_BOOTAPPEND_LIVE}#" binary/boot/grub/*.cfg
 
-sed -i -e 's|\ $||g' binary/boot/grub/grub.cfg
+sed -i -e 's|\ $||g' binary/boot/grub/*.cfg
 
 echo "source /boot/grub/grub.cfg" > binary/boot/grub/loopback.cfg
 

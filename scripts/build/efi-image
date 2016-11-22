@@ -81,5 +81,6 @@ mcopy -i "$outdir/efi.img" "$workdir/boot$efi_name.efi" \
 	"::efi/boot/boot$efi_name.efi"
 
 grub-cpmodules "$outdir" "$platform"
+cp /usr/share/grub/unicode.pf2 "$outdir/boot/grub/"
 
 exit 0
