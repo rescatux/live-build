@@ -15,6 +15,7 @@ live-build (1:20160105) UNRELEASED; urgency=medium
     Thus we no longer have remaining key in /etc/apt/trusted.gpg
     after building. Closes: #816204
   * Try to reuse /isolinux/splash.png in default grub configuration.
+  * Drop debian/source/{local-options,options} as they are no longer needed.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 18:03:44 +0100
 
