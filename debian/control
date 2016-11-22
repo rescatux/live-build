@@ -1,7 +1,8 @@
 Source: live-build
 Section: misc
 Priority: optional
-Maintainer: Debian QA Group <packages@qa.debian.org>
+Maintainer: Debian Live <debian-live@lists.debian.org>
+Uploaders: Raphaël Hertzog <hertzog@debian.org>
 Build-Depends:
  debhelper (>= 9),
 Standards-Version: 3.9.6

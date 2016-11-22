@@ -1,5 +1,6 @@
 live-build (1:20160105) UNRELEASED; urgency=medium
 
+  * Officially adopt the package. Closes: #808048
   * Better handle empty package lists.
   * Drop ixp4xx from available armel flavors, the image has been gone since
     linux 3.17.
