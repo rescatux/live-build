@@ -11,4 +11,4 @@ override_dh_auto_install:
 
 override_dh_link:
 	# workaround dh_link conversion of absolute symlinks to relative symlinks
-	dh_link -X/bootloaders/
+	dh_link -X.c32 -Xisolinux.bin -Xpxelinux.0
