@@ -1,4 +1,4 @@
-live-build (1:20160105) UNRELEASED; urgency=medium
+live-build (1:20161128) UNRELEASED; urgency=medium
 
   [ Raphaël Hertzog ]
   * Officially adopt the package. Closes: #808048
