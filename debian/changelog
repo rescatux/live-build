@@ -23,6 +23,8 @@ live-build (1:20160105) UNRELEASED; urgency=medium
     Thanks to Erik Cumps <erik.cumps@esaturnus.com> for the patch.
   * Export SOURCE_DATE_EPOCH when running chroot commands. Closes: #832998
     Thanks to Chris Lamb <lamby@debian.org> for the patch.
+  * Set xorriso's "modification time" to SOURCE_DATE_EPOCH. Closes: #831379
+    Thanks to Chris Lamb <lamby@debian.org> for the patch.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
