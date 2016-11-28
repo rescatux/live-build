@@ -51,6 +51,8 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--debian-installer-distribution daily|CODENAME]\n\
 \t    [--debian-installer-preseedfile FILE|URL]\n\
 \t    [--debian-installer-gui true|false]\n\
+\t    [--debootstrap-options OPTIONS]\n\
+\t    [--debootstrap-script SCRIPT]\n\
 \t    [--debug]\n\
 \t    [-d|--distribution CODENAME]\n\
 \t    [--parent-distribution CODENAME]\n\
@@ -126,7 +128,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 
 Local_arguments ()
 {
-	LONG_OPTIONS="apt:,apt-ftp-proxy:,apt-http-proxy:,apt-options:,aptitude-options:,debootstrap-options:,
+	LONG_OPTIONS="apt:,apt-ftp-proxy:,apt-http-proxy:,apt-options:,aptitude-options:,debootstrap-options:,debootstrap-script:,
 		apt-pipeline:,apt-recommends:,apt-secure:,apt-source-archives:,bootstrap:,cache:,cache-indices:,cache-packages:,
 		cache-stages:,debconf-frontend:,debconf-priority:,dump,
 		initramfs:,initramfs-compression:,initsystem:,fdisk:,losetup:,mode:,system:,tasksel:,
@@ -256,6 +258,11 @@ Local_arguments ()
 
 			--debootstrap-options)
 				DEBOOTSTRAP_OPTIONS="${2}"
+				shift 2
+				;;
+
+			--debootstrap-script)
+				DEBOOTSTRAP_SCRIPT="${2}"
 				shift 2
 				;;
 
@@ -996,6 +1003,7 @@ _QUIET="${_QUIET}"
 APT_OPTIONS="${APT_OPTIONS}"
 APTITUDE_OPTIONS="${APTITUDE_OPTIONS}"
 DEBOOTSTRAP_OPTIONS="${DEBOOTSTRAP_OPTIONS}"
+DEBOOTSTRAP_SCRIPT="${DEBOOTSTRAP_SCRIPT}"
 GZIP_OPTIONS="${GZIP_OPTIONS}"
 ISOHYBRID_OPTIONS="${ISOHYBRID_OPTIONS}"
 EOF

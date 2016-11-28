@@ -88,7 +88,7 @@ then
 		fi
 
 		Echo_breakage "Running debootstrap (download-only)... "
-		debootstrap ${DEBOOTSTRAP_OPTIONS} --download-only "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}"
+		debootstrap ${DEBOOTSTRAP_OPTIONS} --download-only "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
 
 		# Removing old cache
 		rm -f cache/packages.bootstrap/*.deb
@@ -109,13 +109,13 @@ then
 		fi
 
 		Echo_message "Bootstrap will be foreign"
-		debootstrap ${DEBOOTSTRAP_OPTIONS} --foreign "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}"
+		debootstrap ${DEBOOTSTRAP_OPTIONS} --foreign "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
 
 		Echo_message "Running debootstrap second stage under QEMU"
 		cp ${LB_BOOTSTRAP_QEMU_STATIC} chroot/usr/bin
 		Chroot chroot /bin/sh /debootstrap/debootstrap --second-stage ${FOREIGN_DEBOOTSTRAP_OPTIONS}
 	else
-		debootstrap ${DEBOOTSTRAP_OPTIONS} "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}"
+		debootstrap ${DEBOOTSTRAP_OPTIONS} "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
 	fi
 
 	# Deconfiguring debootstrap configurations
