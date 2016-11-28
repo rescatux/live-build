@@ -1,0 +1,2 @@
+# Ignore those errors, it's not nice but works currently
+source-contains-unsafe-symlink share/bootloaders/*
