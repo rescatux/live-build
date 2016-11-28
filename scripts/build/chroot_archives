@@ -456,17 +456,6 @@ then
 fi
 
 		# Configure generic indices
-		# Don't do anything if it's not required
-		if [ "${LB_PARENT_MIRROR_CHROOT}" = "${LB_PARENT_MIRROR_BINARY}" ] && \
-		[ "${LB_PARENT_MIRROR_CHROOT_SECURITY}" = "${LB_PARENT_MIRROR_BINARY_SECURITY}" ] && \
-		[ ! -d chroot/root/packages ]
-		then
-			# Removing stage file
-			rm -f .build/chroot_archives
-
-			exit 0
-		fi
-
 		# Cleaning apt list cache
 		rm -rf chroot/var/lib/apt/lists
 		mkdir -p chroot/var/lib/apt/lists/partial
