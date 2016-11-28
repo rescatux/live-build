@@ -19,6 +19,8 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Drop debian/source/{local-options,options} as they are no longer needed.
   * Pass components to debootstrap --second-stage. Closes: #806782
     Thanks to Sjoerd Simons <sjoerd.simons@collabora.co.uk> for the patch.
+  * Fix behaviour of (undocumented) "#nif" conditional test. Closes: #801379
+    Thanks to Erik Cumps <erik.cumps@esaturnus.com> for the patch.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
