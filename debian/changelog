@@ -37,6 +37,7 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Fix Check_installed function when checking against host. Thanks to jnqnfe
     for the report. Closes: #774807
   * Bump debhelper compat level to 10.
+  * Bump Standards-Version to 3.9.8.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
