@@ -37,7 +37,6 @@ Setup_cleanup
 # Bootstrapping system
 lb bootstrap_cache restore ${@}
 lb bootstrap_debootstrap ${@}
-lb bootstrap_archive-keys ${@}
 lb bootstrap_cache save ${@}
 
 # Configuring chroot
