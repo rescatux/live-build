@@ -82,7 +82,7 @@ Check_installed ()
 	else
 		if which dpkg-query > /dev/null 2>&1
 		then
-			if Chroot chroot "dpkg-query -s ${PACKAGE}" 2> /dev/null | grep -qs "Status: install"
+			if dpkg-query -s "${PACKAGE}" 2> /dev/null | grep -qs "Status: install"
 			then
 				INSTALL_STATUS=0
 			else

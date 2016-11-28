@@ -34,6 +34,8 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Drop an optimization in chroot_archives that has undesired side-effects.
     Thanks to jnqnfe for the patch. Closes: #775989 
   * Drop gpgv and debian-keyring from Suggests.
+  * Fix Check_installed function when checking against host. Thanks to jnqnfe
+    for the report. Closes: #774807
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
