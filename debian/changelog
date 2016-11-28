@@ -33,6 +33,7 @@ live-build (1:20160105) UNRELEASED; urgency=medium
   * Get rid of useless bootstrap_archive-keys script. Closes: #773775
   * Drop an optimization in chroot_archives that has undesired side-effects.
     Thanks to jnqnfe for the patch. Closes: #775989 
+  * Drop gpgv and debian-keyring from Suggests.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
