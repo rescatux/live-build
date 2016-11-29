@@ -38,6 +38,8 @@ live-build (1:20161128) UNRELEASED; urgency=medium
     for the report. Closes: #774807
   * Bump debhelper compat level to 10.
   * Bump Standards-Version to 3.9.8.
+  * Use a grub theme that integrates reasonably well with the current
+    background picture.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712

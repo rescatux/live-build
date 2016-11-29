@@ -308,6 +308,13 @@ then
 	rm -f "${_TARGET}/splash.svg"
 fi
 
+# Tweak the grub theme to reuse the syslinux background image
+if [ -e binary/boot/grub/live-theme/theme.txt ]; then
+    sed -i -e 's|^desktop-image:.*|desktop-image: "/isolinux/splash.png"|' \
+	-e 's|^title-text:.*|title-text: ""|' \
+	binary/boot/grub/live-theme/theme.txt
+fi
+
 case "${LB_MODE}" in
 	progress-linux)
 		for _FILE in "${_TARGET}/isolinux.bin" "${_TARGET}/isolinux.cfg" "${_TARGET}/syslinux.cfg"
