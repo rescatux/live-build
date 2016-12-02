@@ -53,32 +53,8 @@ Restore_cache cache/packages.binary
 # Installing depends
 Install_package
 
-case "${LB_INITRAMFS}" in
-	live-boot)
-		INITFS="live"
-		;;
-
-	*)
-		INITFS=""
-		;;
-esac
-
 # Setting destination directory
 case "${LIVE_IMAGE_TYPE}" in
-	iso*|tar)
-		case "${LB_INITRAMFS}" in
-			live-boot)
-				DESTDIR_LIVE="binary/live"
-				;;
-
-			*)
-				DESTDIR_LIVE="binary/live"
-				;;
-		esac
-
-		DESTDIR_INSTALL="binary/install"
-		;;
-
 	hdd*|netboot)
 		Echo_warning "Bootloader in this image type not yet supported by live-build."
 		Echo_warning "This would produce a not bootable image, aborting (FIXME)."
