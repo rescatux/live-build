@@ -164,7 +164,7 @@ Check_multiarchitectures
 mkdir -p "${DESTDIR_LIVE}"
 
 # Setting boot parameters
-if [ "${LB_UNION_FILESYSTEM}" != "aufs" ]
+if [ "${LB_UNION_FILESYSTEM}" != "overlay" ]
 then
 	LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} union=${LB_UNION_FILESYSTEM}"
 fi

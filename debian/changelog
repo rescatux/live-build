@@ -40,6 +40,7 @@ live-build (1:20161128) UNRELEASED; urgency=medium
   * Bump Standards-Version to 3.9.8.
   * Use a grub theme that integrates reasonably well with the current
     background picture.
+  * Default for LB_UNION_FILESYSTEM is now "overlay" just like in live-boot.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712

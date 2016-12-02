@@ -396,7 +396,7 @@ Set_defaults ()
 	LB_CHROOT_FILESYSTEM="${LB_CHROOT_FILESYSTEM:-squashfs}"
 
 	# Setting union filesystem
-	LB_UNION_FILESYSTEM="${LB_UNION_FILESYSTEM:-aufs}"
+	LB_UNION_FILESYSTEM="${LB_UNION_FILESYSTEM:-overlay}"
 
 	# Setting interactive shell/X11/Xnest
 	LB_INTERACTIVE="${LB_INTERACTIVE:-false}"
