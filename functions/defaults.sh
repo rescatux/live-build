@@ -781,44 +781,6 @@ Set_defaults ()
 
 Check_defaults ()
 {
-	if [ -n "${LIVE_BUILD_VERSION}" ]
-	then
-		# We're only checking when we're actually running the checks
-		# that's why the check for emptyness of the version;
-		# however, as live-build always declares LIVE_BUILD_VERSION
-		# internally, this is safe assumption (no cases where it's unset,
-		# except when bootstrapping the functions/defaults etc.).
-
-		CURRENT_CONFIGURATION_VERSION="$(echo ${LIVE_CONFIGURATION_VERSION} | awk -F. ' { print $1 }')"
-
-		if [ -n "${CURRENT_CONFIGURATION_VERSION}" ]
-		then
-			CORRECT_VERSION="$(echo ${LIVE_BUILD_VERSION} | awk -F. '{ print $1 }')"
-			TOO_NEW_VERSION="$((${CORRECT_VERSION} + 1))"
-			TOO_OLD_VERSION="$((${CORRECT_VERSION} - 1))"
-
-			if [ ${CURRENT_CONFIGURATION_VERSION} -ne ${CORRECT_VERSION} ]
-			then
-				if [ ${CURRENT_CONFIGURATION_VERSION} -ge ${TOO_NEW_VERSION} ]
-				then
-					Echo_error "This config tree is too new for live-build (${VERSION})."
-					Echo_error "Aborting build, please update live-build."
-
-					exit 1
-				elif [ ${CURRENT_CONFIGURATION_VERSION} -le ${TOO_OLD_VERSION} ]
-				then
-					Echo_error "This config tree is too old for live-build (${VERSION})."
-					Echo_error "Aborting build, please update the configuration."
-
-					exit 1
-				else
-					Echo_warning "This configuration does not specify a version or has a unknown version."
-					Echo_warning "Continuing build, please correct the configuration."
-				fi
-			fi
-		fi
-	fi
-
 	case "${LB_BINARY_FILESYSTEM}" in
 		ntfs)
 			if [ ! -x "$(which ntfs-3g 2>/dev/null)" ]
