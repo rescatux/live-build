@@ -1,4 +1,4 @@
-live-build (1:20161128) UNRELEASED; urgency=medium
+live-build (1:20161202) unstable; urgency=medium
 
   [ Raphaël Hertzog ]
   * Officially adopt the package. Closes: #808048
@@ -53,7 +53,7 @@ live-build (1:20161128) UNRELEASED; urgency=medium
   * Fix typo in binary_syslinux. Closes: #818916
   * Correct syslinux/extlinux mbr.bin path. Closes: #773833
 
- -- Raphaël Hertzog <hertzog@debian.org>  Tue, 05 Jan 2016 18:03:44 +0100
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 02 Dec 2016 23:33:45 +0100
 
 live-build (1:20151215) unstable; urgency=medium
 
