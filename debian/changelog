@@ -41,6 +41,8 @@ live-build (1:20161128) UNRELEASED; urgency=medium
   * Use a grub theme that integrates reasonably well with the current
     background picture.
   * Default for LB_UNION_FILESYSTEM is now "overlay" just like in live-boot.
+  * Update the way we generate the version of live-build that is displayed by
+    lb --version.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712

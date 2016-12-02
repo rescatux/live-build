@@ -40,7 +40,8 @@ build:
 install:
 	# Installing shared data
 	mkdir -p $(DESTDIR)/usr/share/live/build
-	cp -r data functions VERSION $(DESTDIR)/usr/share/live/build
+	cp -r data functions $(DESTDIR)/usr/share/live/build
+	sed -e 's/.*(\(.*\)).*/\1/; q' debian/changelog >$(DESTDIR)/usr/share/live/build/VERSION
 	cp -r share/* $(DESTDIR)/usr/share/live/build
 
 	# Installing executables
