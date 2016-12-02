@@ -44,26 +44,10 @@ Create_lockfile .lock
 Check_architectures amd64 i386
 Check_crossarchitectures
 
-case "${LB_ARCHITECTURES}" in
-	amd64)
-		_EFI_TYPE=efi64
-		;;
-	i386)
-		_EFI_TYPE=efi32
-		;;
-	*)
-		echo "ERROR: can't provide EFI boot support to architecture ${LB_ARCHITECTURES}" >&2
-		exit 1
-		;;
-esac
-
-
 # Checking depends
 case "${LB_BUILD_WITH_CHROOT}" in
 	true)
 		_CHROOT_DIR=""
-		_SYSLINUX_EFI_DIR="chroot/usr/lib/SYSLINUX.EFI/$_EFI_TYPE"
-		_SYSLINUX_COMMON_DIR="chroot/usr/lib/syslinux/modules/$_EFI_TYPE"
 
 		Check_package chroot /usr/lib/grub/x86_64-efi/configfile.mod grub-efi-amd64-bin
 		Check_package chroot /usr/lib/grub/i386-efi/configfile.mod grub-efi-ia32-bin
@@ -112,35 +96,8 @@ case "${LB_BUILD_WITH_CHROOT}" in
 		;;
 esac
 
-
-
-
-case "${LB_INITRAMFS}" in
-	live-boot)
-		INITFS="live"
-		;;
-
-	*)
-		INITFS=""
-		;;
-esac
-
 # Setting destination directory
 case "${LIVE_IMAGE_TYPE}" in
-	iso*|tar)
-		case "${LB_INITRAMFS}" in
-			live-boot)
-				DESTDIR_LIVE="binary/live"
-				;;
-
-			*)
-				DESTDIR_LIVE="binary/live"
-				;;
-		esac
-
-		DESTDIR_INSTALL="binary/install"
-		;;
-
 	hdd*|netboot)
 		Echo_warning "Bootloader in this image type not yet supported by live-build."
 		Echo_warning "This would produce a not bootable image, aborting (FIXME)."
@@ -222,21 +179,21 @@ END
 
 case "${LB_BUILD_WITH_CHROOT}" in
         true)
-			mv binary.sh chroot/
-			Chroot chroot "sh binary.sh"
-			rm -f chroot/binary.sh
+		mv binary.sh chroot/
+		Chroot chroot "sh binary.sh"
+		rm -f chroot/binary.sh
 
-			# Saving cache
-			Save_cache cache/packages.binary
+		# Saving cache
+		Save_cache cache/packages.binary
 
-			# Removing depends
-			Remove_package
-			;;
+		# Removing depends
+		Remove_package
+		;;
 
-		false)
-			sh binary.sh
-			rm -f binary.sh
-			;;
+	false)
+		sh binary.sh
+		rm -f binary.sh
+		;;
 esac
 
 # Remove unnecessary files
