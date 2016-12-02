@@ -44,6 +44,8 @@ live-build (1:20161128) UNRELEASED; urgency=medium
   * Update the way we generate the version of live-build that is displayed by
     lb --version.
   * Instead of renaming kernel for syslinux, create hardlinks.
+  * Simplify grub configuration code to use only long kernel names. Put
+    advanced options in a submenu. Use distro-agnostic labels.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
