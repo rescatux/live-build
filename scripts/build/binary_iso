@@ -151,7 +151,7 @@ do
 					;;
 			esac
 
-			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table"
+			XORRISO_OPTIONS="${XORRISO_OPTIONS} -no-emul-boot -boot-load-size 4 -boot-info-table --hardlinks"
 			;;
 
 		grub-efi)

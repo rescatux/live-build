@@ -43,6 +43,7 @@ live-build (1:20161128) UNRELEASED; urgency=medium
   * Default for LB_UNION_FILESYSTEM is now "overlay" just like in live-boot.
   * Update the way we generate the version of live-build that is displayed by
     lb --version.
+  * Instead of renaming kernel for syslinux, create hardlinks.
 
   [ Kristian Klausen ]
   * Include ext{3,4} journal size when calculating image size. Closes: #801712
