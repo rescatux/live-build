@@ -62,7 +62,6 @@ if [ "${LB_ARCHIVE_AREAS}" != "main" ]
 then
 	# Modify archive areas to remove leading/trailing whitespaces and replace other whitepspace with commas
 	DEBOOTSTRAP_OPTIONS="${DEBOOTSTRAP_OPTIONS} --components=$(echo ${LB_ARCHIVE_AREAS} | sed -e 's| |,|g')"
-	FOREIGN_DEBOOTSTRAP_OPTIONS="--components=$(echo ${LB_ARCHIVE_AREAS} | sed -e 's| |,|g')"
 fi
 
 if [ "${_VERBOSE}" = "true" ]
@@ -108,12 +107,8 @@ then
 			DEBOOTSTRAP_OPTIONS="${DEBOOTSTRAP_OPTIONS} --exclude=$(echo ${LB_BOOTSTRAP_QEMU_EXCLUDE} | sed 's|  *|,|g')"
 		fi
 
-		Echo_message "Bootstrap will be foreign"
-		debootstrap ${DEBOOTSTRAP_OPTIONS} --foreign "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
-
-		Echo_message "Running debootstrap second stage under QEMU"
-		cp ${LB_BOOTSTRAP_QEMU_STATIC} chroot/usr/bin
-		Chroot chroot /bin/sh /debootstrap/debootstrap --second-stage ${FOREIGN_DEBOOTSTRAP_OPTIONS}
+		Echo_message "Running debootstrap with qemu-debootstrap"
+		qemu-debootstrap ${DEBOOTSTRAP_OPTIONS} "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
 	else
 		debootstrap ${DEBOOTSTRAP_OPTIONS} "${LB_PARENT_DISTRIBUTION}" chroot "${LB_PARENT_MIRROR_BOOTSTRAP}" ${DEBOOTSTRAP_SCRIPT}
 	fi
