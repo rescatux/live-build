@@ -46,27 +46,28 @@ Create_lockfile .lock
 Check_architectures amd64 i386
 Check_crossarchitectures
 
-# Local functions
-Grub_live_entry_commands ()
-{
-	local KERNEL="${1}"
-	local INITRD="${2}"
-	local APPEND="${3}"
+# Variable used to embed newlines
+NL="
+"
 
-	LINUX_LIVE="${LINUX_LIVE}\nlinux\t\t/${KERNEL} ${INITFS:+boot=${INITFS} }config LB_BOOTAPPEND_LIVE ${APPEND}"
-	LINUX_LIVE="${LINUX_LIVE}\ninitrd\t\t/${INITRD}"
+# Local functions
+Grub_menu_entry() {
+	local LABEL="$1"
+	local KERNEL="$2"
+	local INITRD="$3"
+	local APPEND="$4"
+
+	cat <<END
+menuentry "$LABEL" {
+	linux	$KERNEL $APPEND
+	initrd	$INITRD
+}
+END
 }
 
 Grub_live_entry ()
 {
-	local LABEL="${1}"
-	local KERNEL="${2}"
-	local INITRD="${3}"
-	local APPEND="${4}"
-
-	LINUX_LIVE="${LINUX_LIVE}\nmenuentry \"${LABEL}\" {"
-	Grub_live_entry_commands "${KERNEL}" "${INITRD}" "${APPEND} findiso=\${iso_path}"
-	LINUX_LIVE="${LINUX_LIVE}\n}"
+	LINUX_LIVE="${LINUX_LIVE}$(Grub_menu_entry "$@")$NL"
 }
 
 Grub_install_entry ()
@@ -77,28 +78,23 @@ Grub_install_entry ()
 	INITRD="${4}"
 	APPEND="${5}"
 
-	if [ "${TYPE}" != "rescue" ] && [ "${TYPE}" != "rescuegui" ]
-	then
-		APPEND="${APPEND} quiet"
-	fi
+	# Drop "quiet" kernel parameter for rescue entries
+	case $TYPE in
+		rescue|rescuegui)
+			APPEND=$(echo "$APPEND" | sed -e 's/ quiet//')
+		;;
+	esac
 
 	if [ -z "$LINUX_INSTALL" ]; then
 	    # First entry recorded in LINUX_INSTALL
-	    LINUX_INSTALL="#\t \"Installer\"\n"
-	    LINUX_INSTALL="${LINUX_INSTALL}\nmenuentry \"${LABEL}\" {"
-	    LINUX_INSTALL="${LINUX_INSTALL}\nlinux\t\t/${KERNEL} ${APPEND} LB_BOOTAPPEND_INSTALL"
-	    LINUX_INSTALL="${LINUX_INSTALL}\ninitrd\t\t/${INITRD}"
-	    LINUX_INSTALL="${LINUX_INSTALL}\n}"
+	    LINUX_INSTALL="$(Grub_menu_entry "$LABEL" "$KERNEL" "$INITRD" "$APPEND")$NL"
 	else
 	    # Remaining entries recorded in LINUX_ADVANCED_INSTALL
-	    LINUX_ADVANCED_INSTALL="${LINUX_ADVANCED_INSTALL}\nmenuentry \"${LABEL}\" {"
-	    LINUX_ADVANCED_INSTALL="${LINUX_ADVANCED_INSTALL}\nlinux\t\t/${KERNEL} ${APPEND} LB_BOOTAPPEND_INSTALL"
-	    LINUX_ADVANCED_INSTALL="${LINUX_ADVANCED_INSTALL}\ninitrd\t\t/${INITRD}"
-	    LINUX_ADVANCED_INSTALL="${LINUX_ADVANCED_INSTALL}\n}"
+	    LINUX_ADVANCED_INSTALL="$LINUX_ADVANCED_INSTALL$(Grub_menu_entry "$LABEL" "$KERNEL" "$INITRD" "$APPEND")$NL"
 	fi
 }
 
-Grub_live_autodetect_entry ()
+Grub_live_autodetect_menu_entry ()
 {
 	local LABEL="${1}"
 	local AMD64_KERNEL="${2}"
@@ -106,14 +102,32 @@ Grub_live_autodetect_entry ()
 	local _486_KERNEL="${4}"
 	local _486_INITRD="${5}"
 	local APPEND="${6}"
+	cat <<END
+# Autodetect if amd64 is supported
+menuentry "$LABEL" {
+	if cpuid -l; then
+		linux ${AMD64_KERNEL} ${APPEND}
+		initrd ${AMD64_INITRD}
+	else
+		linux ${_486_KERNEL} ${APPEND}
+		initrd ${_486_INITRD}
+	fi
+}
+END
+}
 
-	LINUX_LIVE="${LINUX_LIVE}\nmenuentry \"${LABEL}\" {"
-	LINUX_LIVE="${LINUX_LIVE}\nif cpuid -l ; then"
-	Grub_live_entry_commands "${AMD64_KERNEL}" "${AMD64_INITRD}" "${APPEND} findiso=\${iso_path}"
-	LINUX_LIVE="${LINUX_LIVE}\nelse"
-	Grub_live_entry_commands "${_486_KERNEL}" "${_486_INITRD}" "${APPEND} findiso=\${iso_path}"
-	LINUX_LIVE="${LINUX_LIVE}\nfi"
-	LINUX_LIVE="${LINUX_LIVE}\n}"
+Grub_live_autodetect_entry ()
+{
+	LINUX_LIVE="${LINUX_LIVE}$(Grub_live_autodetect_menu_entry "$@")$NL"
+}
+
+Grub_memtest_menu_entry ()
+{
+	cat <<END
+menuentry "$LB_MEMTEST" {
+	linux16 /${INITFS}/memtest
+}
+END
 }
 
 if [ -e "config/bootloaders/grub-pc" ]
@@ -140,61 +154,7 @@ case "${LB_INITRAMFS}" in
 		;;
 esac
 
-# Assembling image specifics
-case "${LIVE_IMAGE_TYPE}" in
-	iso*)
-		_BOOTLOADER="isolinux"
-
-		case "${LB_MODE}" in
-			progress-linux)
-				_TARGET="binary/boot"
-				;;
-
-			*)
-				_TARGET="binary/isolinux"
-				;;
-		esac
-		;;
-
-	netboot)
-		_BOOTLOADER="pxelinux"
-		_TARGET="tftpboot"
-		;;
-
-	hdd*|*)
-		case ${LB_BINARY_FILESYSTEM} in
-			fat*|ntfs)
-				_BOOTLOADER=syslinux
-
-				case "${LB_MODE}" in
-					progress-linux)
-						_TARGET="binary/boot"
-						;;
-
-					*)
-						_TARGET="binary/syslinux"
-						;;
-				esac
-				;;
-
-			ext[234]|btrfs)
-				_BOOTLOADER=extlinux
-				_TARGET="binary/boot/extlinux"
-				;;
-			*)
-				Echo_error "syslinux/extlinux doesn't support ${LB_BINARY_FILESYSTEM}"
-				exit 1
-				;;
-		esac
-		;;
-esac
-
-DESTDIR_LIVE="${_TARGET}"
-
 Check_multiarchitectures
-
-# Creating directory
-mkdir -p "${DESTDIR_LIVE}"
 
 # Setting boot parameters
 if [ "${LB_UNION_FILESYSTEM}" != "overlay" ]
@@ -208,7 +168,14 @@ then
 	exit 1
 fi
 
-LB_BOOTAPPEND_LIVE="$(echo ${LB_BOOTAPPEND_LIVE} | sed -e 's|  ||')"
+# Default entries
+DEFAULT_FLAVOUR="$(echo ${LB_LINUX_FLAVOURS} | awk '{ print $1 }')"
+DEFAULT_KERNEL="$(basename chroot/boot/vmlinuz-*${DEFAULT_FLAVOUR})"
+DEFAULT_INITRD="initrd.img-$(echo ${DEFAULT_KERNEL} | sed -e 's|vmlinuz-||')"
+
+KERNEL_LIVE="/${INITFS}/${DEFAULT_KERNEL}"
+INITRD_LIVE="/${INITFS}/${DEFAULT_INITRD}"
+APPEND_LIVE="${LB_BOOTAPPEND_LIVE}"
 
 # Assembling kernel configuration
 _AMD64_486_NUMBER="0"
@@ -227,23 +194,19 @@ if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
 	_486_KERNEL="$(basename chroot/boot/vmlinuz-*486)"
 	_486_INITRD="initrd.img-$(echo ${_486_KERNEL} | sed -e 's|vmlinuz-||')"
 
-	Grub_live_autodetect_entry "live (autodetect)" \
-		"${INITFS}/${AMD64_KERNEL}" \
-		"${INITFS}/${AMD64_INITRD}" \
-		"${INITFS}/${_486_KERNEL}" \
-		"${INITFS}/${_486_INITRD}"
+	Grub_live_autodetect_entry "Live system (autodetect)" \
+		"/${INITFS}/${AMD64_KERNEL}" \
+		"/${INITFS}/${AMD64_INITRD}" \
+		"/${INITFS}/${_486_KERNEL}" \
+		"/${INITFS}/${_486_INITRD}" \
+		"$APPEND_LIVE"
+else
+	Grub_live_entry "Live system" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${APPEND_LIVE}"
 fi
 
-# Default entries
-DEFAULT_FLAVOUR="$(echo ${LB_LINUX_FLAVOURS} | awk '{ print $1 }')"
-DEFAULT_KERNEL="$(basename chroot/boot/vmlinuz-*${DEFAULT_FLAVOUR})"
-DEFAULT_INITRD="initrd.img-$(echo ${DEFAULT_KERNEL} | sed -e 's|vmlinuz-||')"
-
-Grub_live_entry "Boot live system" "${INITFS}/${DEFAULT_KERNEL}" "${INITFS}/${DEFAULT_INITRD}"
-
-if [ "${LB_BOOTAPPEND_FAILSAFE}" != "none" ]
+if [ "${LB_BOOTAPPEND_LIVE_FAILSAFE}" != "none" ]
 then
-	Grub_live_entry "Boot live system (fail-safe mode)" "${INITFS}/${DEFAULT_KERNEL}" "${INITFS}/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_FAILSAFE}"
+	Grub_live_entry "Live system (fail-safe mode)" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
 fi
 
 _COUNT=0
@@ -256,58 +219,71 @@ if [ $_COUNT -gt 1 ]; then
 	do
 		VERSION="$(basename ${KERNEL} | sed -e 's|vmlinuz-||')"
 
-		Grub_live_entry "Boot live system, kernel ${VERSION}" "${INITFS}/$(basename ${KERNEL})" "${INITFS}/initrd.img-${VERSION}"
+		Grub_live_entry "Live system, kernel ${VERSION}" "/${INITFS}/$(basename ${KERNEL})" "/${INITFS}/initrd.img-${VERSION}" "${APPEND_LIVE}"
 
-		if [ "${LB_BOOTAPPEND_FAILSAFE}" != "none" ]; then
-			Grub_live_entry "Boot live system, kernel ${VERSION} (fail-safe mode)" "${INITFS}/$(basename ${KERNEL})" "${INITFS}/initrd.img-${VERSION}" "${LB_BOOTAPPEND_FAILSAFE}"
+		if [ "${LB_BOOTAPPEND_LIVE_FAILSAFE}" != "none" ]; then
+			Grub_live_entry "Live system, kernel ${VERSION} (fail-safe mode)" "/${INITFS}/$(basename ${KERNEL})" "/${INITFS}/initrd.img-${VERSION}" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
 		fi
 	done
 fi
-LINUX_LIVE="$(/bin/echo ${LINUX_LIVE} | sed -e 's|binary||g' -e 's|//|/|g')"
 
 # Assembling debian-installer configuration
 if [ "${LB_DEBIAN_INSTALLER}" != "false" ]
 then
-	LINUX_LIVE="#\t \"Live\"\n${LINUX_LIVE}"
+	KERNEL_DI="/install/vmlinuz"
+	INITRD_DI="/install/initrd.gz"
+	APPEND_DI="vga=normal quiet ${LB_BOOTAPPEND_INSTALL}"
 
-	VMLINUZ_DI="install/vmlinuz"
-	INITRD_DI="install/initrd.gz"
-	APPEND_DI="vga=normal"
+	KERNEL_GI="/install/gtk/vmlinuz"
+	INITRD_GI="/install/gtk/initrd.gz"
+	APPEND_GI="video=vesa:ywrap,mtrr vga=788 quiet ${LB_BOOTAPPEND_INSTALL}"
 
-	VMLINUZ_GI="install/gtk/vmlinuz"
-	INITRD_GI="install/gtk/initrd.gz"
-	APPEND_GI="video=vesa:ywrap,mtrr vga=788"
+	Grub_install_entry "Start installer" "installgui" "${KERNEL_GI}" "${INITRD_GI}" "${APPEND_GI}"
 
-	Grub_install_entry "Start installer" "installgui" "${VMLINUZ_GI}" "${INITRD_GI}" "${APPEND_GI}"
-
-	Grub_install_entry "Install in graphical mode" "installgui" "${VMLINUZ_GI}" "${INITRD_GI}" "${APPEND_GI}"
-	Grub_install_entry "Install in text mode" "install" "${VMLINUZ_DI}" "${INITRD_DI}" "${APPEND_DI}"
-	Grub_install_entry "Expert install in graphical mode" "expertgui" "${VMLINUZ_GI}" "${INITRD_GI}" "priority=low ${APPEND_GI}"
-	Grub_install_entry "Expert install in text mode" "expert" "${VMLINUZ_DI}" "${INITRD_DI}" "priority=low ${APPEND_DI}"
-	Grub_install_entry "Automatic install in graphical mode" "autogui" "${VMLINUZ_GI}" "${INITRD_GI}" "auto=true priority=critical ${APPEND_GI}"
-	Grub_install_entry "Automatic install in text mode" "auto" "${VMLINUZ_DI}" "${INITRD_DI}" "auto=true priority=critical ${APPEND_DI}"
-	Grub_install_entry "Rescue system in graphical mode" "rescuegui" "${VMLINUZ_GI}" "${INITRD_GI}" "rescue/enable=true ${APPEND_GI}"
-	Grub_install_entry "Rescue system in text mode" "rescue" "${VMLINUZ_DI}" "${INITRD_DI}" "rescue/enable=true ${APPEND_DI}"
+	Grub_install_entry "Install in graphical mode" "installgui" "${KERNEL_GI}" "${INITRD_GI}" "${APPEND_GI}"
+	Grub_install_entry "Install in text mode" "install" "${KERNEL_DI}" "${INITRD_DI}" "${APPEND_DI}"
+	Grub_install_entry "Expert install in graphical mode" "expertgui" "${KERNEL_GI}" "${INITRD_GI}" "priority=low ${APPEND_GI}"
+	Grub_install_entry "Expert install in text mode" "expert" "${KERNEL_DI}" "${INITRD_DI}" "priority=low ${APPEND_DI}"
+	Grub_install_entry "Automatic install in graphical mode" "autogui" "${KERNEL_GI}" "${INITRD_GI}" "auto=true priority=critical ${APPEND_GI}"
+	Grub_install_entry "Automatic install in text mode" "auto" "${KERNEL_DI}" "${INITRD_DI}" "auto=true priority=critical ${APPEND_DI}"
+	Grub_install_entry "Rescue system in graphical mode" "rescuegui" "${KERNEL_GI}" "${INITRD_GI}" "rescue/enable=true ${APPEND_GI}"
+	Grub_install_entry "Rescue system in text mode" "rescue" "${KERNEL_DI}" "${INITRD_DI}" "rescue/enable=true ${APPEND_DI}"
 fi
 
-LINUX_INSTALL="$(/bin/echo ${LINUX_INSTALL} | sed -e 's|binary||g' -e 's|//|/|g')"
-LINUX_ADVANCED_INSTALL="$(/bin/echo ${LINUX_ADVANCED_INSTALL} | sed -e 's|binary||g' -e 's|//|/|g')"
-
 # Assembling memtest configuration
-if [ -f "${DESTDIR_LIVE}"/memtest ]
+if [ -f "binary/${INITFS}/memtest" ]
 then
-	MEMTEST="#\t \"Other\"\n"
-	MEMTEST="${MEMTEST}\nmenuentry\t\"${LB_MEMTEST}\" {\nlinux16\t${INITFS}/memtest\n}"
-	MEMTEST="$(/bin/echo ${MEMTEST} | sed -e 's|//|/|g')"
+	MEMTEST="$(Grub_memtest_menu_entry)$NL"
 fi
 
 # Copying templates
 mkdir -p binary/boot/grub
 cp -a "${_SOURCE}"/* binary/boot/grub/
 
-sed -i -e "s|LINUX_LIVE|${LINUX_LIVE}|" -e "s|LINUX_ADVANCED_INSTALL|${LINUX_ADVANCED_INSTALL}|" -e "s|LINUX_INSTALL|${LINUX_INSTALL}|" -e "s|MEMTEST|${MEMTEST}|" binary/boot/grub/*.cfg
-sed -i -e "s#LB_BOOTAPPEND_INSTALL#${LB_BOOTAPPEND_INSTALL}#" -e "s#LB_BOOTAPPEND_LIVE#${LB_BOOTAPPEND_LIVE}#" binary/boot/grub/*.cfg
+escape_for_sed() {
+    echo -n "$1" | perl -npe 's/\n/\\n/gm'
+}
 
+sed -i \
+    -e "s|LINUX_LIVE|$(escape_for_sed "${LINUX_LIVE}")|" \
+    -e "s|LINUX_ADVANCED_INSTALL|$(escape_for_sed "${LINUX_ADVANCED_INSTALL}")|" \
+    -e "s|LINUX_INSTALL|$(escape_for_sed "${LINUX_INSTALL}")|" \
+    -e "s|MEMTEST|$(escape_for_sed "${MEMTEST}")|" \
+    -e "s|KERNEL_GI|$(escape_for_sed "${KERNEL_GI}")|" \
+    -e "s|INITRD_GI|$(escape_for_sed "${INITRD_GI}")|" \
+    -e "s|APPEND_GI|$(escape_for_sed "${APPEND_GI}")|" \
+    -e "s|KERNEL_DI|$(escape_for_sed "${KERNEL_DI}")|" \
+    -e "s|INITRD_DI|$(escape_for_sed "${INITRD_DI}")|" \
+    -e "s|APPEND_DI|$(escape_for_sed "${APPEND_DI}")|" \
+    -e "s|KERNEL_LIVE|$(escape_for_sed "${KERNEL_LIVE}")|" \
+    -e "s|INITRD_LIVE|$(escape_for_sed "${INITRD_LIVE}")|" \
+    -e "s|APPEND_LIVE|$(escape_for_sed "${APPEND_LIVE}")|" \
+    -e "s|LB_BOOTAPPEND_INSTALL|$(escape_for_sed "${LB_BOOTAPPEND_INSTALL}")|" \
+    -e "s|LB_BOOTAPPEND_LIVE_FAILSAFE|$(escape_for_sed "${LB_BOOTAPPEND_LIVE_FAILSAFE}")|" \
+    -e "s|LB_BOOTAPPEND_LIVE|$(escape_for_sed "${LB_BOOTAPPEND_LIVE}")|" \
+    binary/boot/grub/*.cfg
+
+sed -i -e 's|//|/|g' binary/boot/grub/*.cfg
 sed -i -e 's|\ $||g' binary/boot/grub/*.cfg
 
 echo "source /boot/grub/grub.cfg" > binary/boot/grub/loopback.cfg
