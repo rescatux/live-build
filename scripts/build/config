@@ -32,7 +32,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--bootappend-install PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live-failsafe PARAMETER|\"PARAMETERS\"]\n\
-\t    [--bootloaders grub-legacy|grub-pc|syslinux]\n\
+\t    [--bootloaders grub-legacy|grub-pc|syslinux|grub-efi]\n\
 \t    [--cache true|false]\n\
 \t    [--cache-indices true|false]\n\
 \t    [--cache-packages true|false]\n\
@@ -140,7 +140,7 @@ Local_arguments ()
 		archive-areas:,parent-archive-areas:,chroot-filesystem:,
 		gzip-options:,image-name:,interactive:,keyring-packages:,linux-flavours:,linux-packages:,
 		security:,updates:,backports:,binary-filesystem:,binary-images:,
-		apt-indices:,bootappend-install:,bootappend-live:,bootappend-live-failsafe:,bootloaders:,checksums:,compression:,config:,zsync:,build-with-chroot:,
+		apt-indices:,bootappend-install:,bootappend-live:,bootappend-live-failsafe:,bootloader:,bootloaders:,checksums:,compression:,config:,zsync:,build-with-chroot:,
 		debian-installer:,debian-installer-distribution:,debian-installer-preseedfile:,debian-installer-gui:,
 		grub-splash:,isohybrid-options:,hdd-label:,hdd-size:,hdd-partition-start:,iso-application:,iso-preparer:,iso-publisher:,
 		iso-volume:,jffs2-eraseblock:,memtest:,net-root-filesystem:,net-root-mountoptions:,
@@ -499,7 +499,7 @@ Local_arguments ()
 				shift 2
 				;;
 
-			--bootloaders)
+			--bootloaders|--bootloader)
 				LB_BOOTLOADERS="${2}"
 				shift 2
 				;;
