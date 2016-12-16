@@ -1,4 +1,4 @@
-live-build (1:20161213) UNRELEASED; urgency=medium
+live-build (1:20161216) unstable; urgency=medium
 
   * Cleanup binary_loopback_cfg and offer more freedom in overriding
     the default grub-pc configuration.
@@ -6,7 +6,7 @@ live-build (1:20161213) UNRELEASED; urgency=medium
     option.
   * Keep supporting the former --bootloader (without s).
 
- -- Raphaël Hertzog <hertzog@debian.org>  Tue, 13 Dec 2016 18:31:44 +0100
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 16 Dec 2016 10:05:26 +0100
 
 live-build (1:20161202) unstable; urgency=medium
 
