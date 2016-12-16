@@ -264,7 +264,7 @@ defines the architecture of the to be build image. By default, this is set to th
 .IP "\-b|\fB\-\-binary\-images\fR iso|iso\-hybrid|netboot|tar|hdd" 4
 defines the image type to build. By default, for images using syslinux this is set to iso\-hybrid to build CD/DVD images that may also be used like hdd images, for non\-syslinux images, it defaults to iso.
 .IP "\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4" 4
-defines the filesystem to be used in the image type. This only has an effect if the selected binary image type does allow to choose a filesystem. For example, when selection iso the resulting CD/DVD has always the filesystem ISO9660. When building hdd images for usb sticks, this is active. Note that it defaults to fat16 on all architectures except sparc where it defaults to ext4. Also note that if you choose fat16 and your resulting binary image gets bigger than 2GB, the binary filesystem automatically gets switched to fat32.
+defines the filesystem to be used in the image type. This only has an effect if the selected binary image type lets you choose a filesystem. For example, when selection iso the resulting CD/DVD has always the filesystem ISO9660. When building hdd images for usb sticks, this is active. Note that it defaults to fat16 on all architectures except sparc where it defaults to ext4. Also note that if you choose fat16 and your resulting binary image gets bigger than 2GB, the binary filesystem automatically gets switched to fat32.
 .IP "\fB\-\-bootappend\-install\fR \fIPARAMETER\fR|""\fIPARAMETERS\fR""" 4
 sets boot parameters specific to debian\-installer, if included.
 .IP "\fB\-\-bootappend\-live\fR \fIPARAMETER\fR|""\fIPARAMETERS\fR""" 4
@@ -272,11 +272,11 @@ sets boot parameters specific to debian\-live. A complete list of boot parameter
 .IP "\fB\-\-bootappend\-live\-failsafe\fR \fIPARAMETER\fR|""\fIPARAMETERS\fR""" 4
 sets boot parameters specific to debian\-live failsafe boot entries. A complete list of boot parameters can be found in the \fIlive\-boot\fR(7) and \fIlive\-config\fR(7) manual pages.
 .IP "\fB\-\-bootloaders\fR grub-legacy|grub-pc|syslinux|grub-efi" 4
-defines which bootloader is being used in the generated image. This has only an effect if the selected binary image type does allow to choose the bootloader. For example, if you build a iso, always syslinux (or more precise, isolinux) is being used. Also note that some combinations of binary images types and bootloaders may be possible but live\-build does not support them yet. \fBlb config\fR will fail to create such a not yet supported configuration and give a explanation about it. For hdd images on amd64 and i386, the default is syslinux.
+defines which bootloader is being used in the generated image. This has only an effect if the selected binary image type lets you choose the bootloader. For example, if you build a iso, always syslinux (or more precise, isolinux) is being used. Also note that some combinations of binary images types and bootloaders may be possible but live\-build does not support them yet. \fBlb config\fR will fail to create such a not yet supported configuration and give a explanation about it. For hdd images on amd64 and i386, the default is syslinux.
 .IP "\fB\-\-cache\fR true|false" 4
 defines globally if any cache should be used at all. Different caches can be controlled through the their own options.
 .IP "\fB\-\-cache\-indices\fR true|false" 4
-defines if downloaded package indices and lists should be cached which is false by default. Enabling it would allow to rebuild an image completely offline, however, you would not get updates anymore then.
+defines if downloaded package indices and lists should be cached which is false by default. Enabling it lets you rebuild an image completely offline, however, you would not get updates anymore then.
 .IP "\fB\-\-cache\-packages\fR true|false" 4
 defines if downloaded packages files should be cached which is true by default. Disabling it does save space consumption in your build directory, but remember that you will cause much unnecessary traffic if you do a couple of rebuilds. In general you should always leave it true, however, in some particular rare build setups, it can be faster to refetch packages from the local network mirror rather than to utilize the local disk.
 .IP "\fB\-\-cache\-stages\fR true|false|\fISTAGE\fR|""\fISTAGES\fR""" 4
@@ -286,7 +286,7 @@ defines if the binary image should contain a file called md5sums.txt, sha1sums.t
 .IP "\fB\-\-compression\fR bzip2|gzip|lzip|none" 4
 defines the compression program to be used to compress tarballs. Defaults to gzip.
 .IP "\fB\-\-config\fR \fIGIT_URL\fR::\fIGIT_ID\fR" 4
-allows to bootstrap a config tree from a git repositories, optionally appended by a Git Id (branch, commit, tag, etc.).
+bootstrap the config tree from a git repository, optionally appended by a Git Id (branch, commit, tag, etc.).
 .IP "\fB\-\-build\-with\-chroot\fR true|false" 4
 defines whether live\-build should use the tools from within the chroot to build the binary image or not by using and including the host system's tools. This is a very dangerous option, using the tools of the host system can lead to tainted and even non-bootable images if the host systems version of the required tools (mainly these are the bootloaders such as syslinux and grub, and the auxiliary tools such as dosfstools, xorriso, squashfs-tools and others) do not \fBexactly\fR match what is present at build-time in the target distribution. Never do disable this option unless you are \fBexactly\fR sure what you are doing and have \fBcompletely\fI understood its consequences.
 .IP "\fB\-\-chroot\-filesystem\fR ext2|ext3|ext4|squashfs|jffs2|none" 4
@@ -320,7 +320,7 @@ defines the parent distribution for derivatives of the resulting live system.
 .IP "\-d|\fB\-\-parent\-debian\-installer\-distribution\fR \fICODENAME\fR" 4
 defines the parent debian\-installer distribution for derivatives of the resulting live system.
 .IP "\fB\-\-dump\fR" 4
-prepares a report of the currently present live system configuration and the version of live\-build used. This is useful to provide if you submit bug reports, we do get all informations required for us to locate and replicate an error.
+prepares a report of the currently present live system configuration and the version of live\-build used. This is useful to provide if you submit bug reports, we do get all information required for us to locate and replicate an error.
 .IP "\fB\-\-fdisk\fR fdisk|fdisk.dist" 4
 sets the filename of the fdisk binary from the host system that should be used. This is autodetected and does generally not need any customization.
 .IP "\fB\-\-force\fR" 4
