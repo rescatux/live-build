@@ -1,3 +1,10 @@
+live-build (1:20170213) UNRELEASED; urgency=medium
+
+  * Drop the versatile kernel flavour on armel. It's no longer built since
+    Linux 4.9.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Mon, 13 Feb 2017 16:50:05 +0100
+
 live-build (1:20161216) unstable; urgency=medium
 
   * Cleanup binary_loopback_cfg and offer more freedom in overriding
