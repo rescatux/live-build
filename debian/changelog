@@ -1,3 +1,11 @@
+live-build (1:20170609) UNRELEASED; urgency=medium
+
+  * Add keyboard shortcut on the "Advanced options" syslinux menu entry.
+    Closes: #864386 Thanks to Daniel Reichelt <debian@nachtgeist.net>
+    for the patch.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Fri, 09 Jun 2017 13:39:47 +0200
+
 live-build (1:20170213) unstable; urgency=medium
 
   * Drop the versatile kernel flavour on armel. It's no longer built since
