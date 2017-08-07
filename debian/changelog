@@ -3,6 +3,10 @@ live-build (1:20170609) UNRELEASED; urgency=medium
   * Add keyboard shortcut on the "Advanced options" syslinux menu entry.
     Closes: #864386 Thanks to Daniel Reichelt <debian@nachtgeist.net>
     for the patch.
+  * Drop the --hardlinks option from xorriso command line call. It's not
+    needed to avoid duplication of files since this is a native feature
+    of the IS0 filesystem. cf https://bugs.kali.org/view.php?id=4109
+    for a discussion about this.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Fri, 09 Jun 2017 13:39:47 +0200
 
