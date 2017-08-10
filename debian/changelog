@@ -1,3 +1,10 @@
+live-build (1:20170808) UNRELEASED; urgency=medium
+
+  * Add .disk/mkisofs file recording the xorriso command line. Thanks
+    to Thomas Schmitt <scdbackup@gmx.net> for the suggestion.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Thu, 10 Aug 2017 14:53:06 +0200
+
 live-build (1:20170807) unstable; urgency=medium
 
   * Add keyboard shortcut on the "Advanced options" syslinux menu entry.

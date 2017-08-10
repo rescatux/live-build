@@ -213,6 +213,8 @@ fi
 
 cat >> binary.sh << EOF
 
+mkdir -p binary/.disk
+echo "xorriso -as mkisofs ${XORRISO_OPTIONS} -o ${IMAGE} binary" > binary/.disk/mkisofs
 xorriso -as mkisofs ${XORRISO_OPTIONS} -o ${IMAGE} binary
 EOF
 
