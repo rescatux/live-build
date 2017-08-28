@@ -49,26 +49,14 @@ then
 	exit 0
 fi
 
-case "${LB_BUILD_WITH_CHROOT}" in
-	true)
-		# Checking depends
-		Check_package chroot /usr/bin/grep-aptavail dctrl-tools
+# Checking depends
+Check_package chroot /usr/bin/grep-aptavail dctrl-tools
 
-		# Restoring cache
-		Restore_cache cache/packages.chroot
+# Restoring cache
+Restore_cache cache/packages.chroot
 
-		# Installing depends
-		Install_package
-		;;
-
-	false)
-		if [ ! -e /usr/bin/grep-aptavail ]; then
-			# dctrl-tools
-			Echo_error "/usr/bin/grep-aptavail - no such file."
-			exit 1
-		fi
-		;;
-esac
+# Installing depends
+Install_package
 
 if [ -e "${LIVE_BUILD}/share/bin/Packages" ]
 then
@@ -102,19 +90,10 @@ done
 
 rm -f chroot/bin/Packages
 
-case "${LB_BUILD_WITH_CHROOT}" in
-	true)
-		# Removing dctrl-tools again if the user has not installed it
-		if ! grep -qs dctrl-tools chroot/root/packages.chroot
-		then
-			# Removing depends
-			Remove_package
-		fi
+Remove_package
 
-		# Saving cache
-		Save_cache cache/packages.chroot
-		;;
-esac
+# Saving cache
+Save_cache cache/packages.chroot
 
 # Creating stage file
 Create_stagefile .build/chroot_package-lists.${_PASS}

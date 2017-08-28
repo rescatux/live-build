@@ -114,42 +114,13 @@ else
 fi
 
 # Checking depends
-case "${LB_BUILD_WITH_CHROOT}" in
-	true)
-		Check_package chroot /usr/lib/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z]) ${_BOOTLOADER}
-		Check_package chroot /usr/lib/syslinux syslinux-common
+Check_package chroot /usr/lib/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z]) ${_BOOTLOADER}
+Check_package chroot /usr/lib/syslinux syslinux-common
 
-		if ls "${_SOURCE}"/*.svg* > /dev/null 2>&1
-		then
-			Check_package chroot /usr/bin/rsvg-convert librsvg2-bin
-		fi
-		;;
-
-	false)
-		if [ ! -e "/usr/share/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z])" ]
-		then
-			Echo_error "/usr/share/$(echo ${_BOOTLOADER} | tr [a-z] [A-Z])"
-			exit 1
-		fi
-
-		if [ ! -e /usr/lib/syslinux ]
-		then
-			# syslinux-common
-			Echo_error "/usr/lib/syslinux - no such directory"
-			exit 1
-		fi
-
-		if ls "${_SOURCE}"/*.svg* > /dev/null 2>&1
-		then
-			if [ ! -e /usr/bin/rsvg-convert ]
-			then
-				# librsvg2-bin
-				Echo_error "/usr/bin/rsvg-convert - no such file"
-				exit 1
-			fi
-		fi
-		;;
-esac
+if ls "${_SOURCE}"/*.svg* > /dev/null 2>&1
+then
+	Check_package chroot /usr/bin/rsvg-convert librsvg2-bin
+fi
 
 # Restoring cache
 Restore_cache cache/packages.binary

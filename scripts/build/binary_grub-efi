@@ -45,56 +45,11 @@ Check_architectures amd64 i386
 Check_crossarchitectures
 
 # Checking depends
-case "${LB_BUILD_WITH_CHROOT}" in
-	true)
-		_CHROOT_DIR=""
-
-		Check_package chroot /usr/lib/grub/x86_64-efi/configfile.mod grub-efi-amd64-bin
-		Check_package chroot /usr/lib/grub/i386-efi/configfile.mod grub-efi-ia32-bin
-		Check_package chroot /usr/bin/grub-mkimage grub-common
-		Check_package chroot /usr/bin/mcopy mtools
-		Check_package chroot /sbin/mkfs.msdos dosfstools
-		;;
-
-	false)
-		_CHROOT_DIR="chroot"
-
-		if [ ! -e /usr/lib/grub/x86_64-efi ]
-		then
-			# grub-efi-amd64-bin
-			Echo_error "/usr/lib/grub/x86_64-efi - no such directory"
-			exit 1
-		fi
-
-		if [ ! -e /usr/lib/grub/i386-efi ]
-		then
-			# grub-efi-ia32-bin
-			Echo_error "/usr/lib/grub/i386-efi - no such directory"
-			exit 1
-		fi
-
-		if [ ! -e /usr/bin/grub-mkimage ]
-		then
-			# grub-common
-			Echo_error "/usr/bin/grub-mkimage - no such file."
-			exit 1
-		fi
-
-		if [ ! -e /usr/bin/mcopy ]
-		then
-			# mtools
-			Echo_error "/usr/bin/mcopy - no such file."
-			exit 1
-		fi
-
-		if [ ! -e /sbin/mkfs.msdos ]
-		then
-			# dosfstools
-			Echo_error "/sbin/mkfs.msdos - no such file."
-			exit 1
-		fi
-		;;
-esac
+Check_package chroot /usr/lib/grub/x86_64-efi/configfile.mod grub-efi-amd64-bin
+Check_package chroot /usr/lib/grub/i386-efi/configfile.mod grub-efi-ia32-bin
+Check_package chroot /usr/bin/grub-mkimage grub-common
+Check_package chroot /usr/bin/mcopy mtools
+Check_package chroot /sbin/mkfs.msdos dosfstools
 
 # Setting destination directory
 case "${LIVE_IMAGE_TYPE}" in
@@ -125,6 +80,11 @@ case "${LB_BUILD_WITH_CHROOT}" in
 		mkdir -p chroot/${LIVE_BUILD_PATH}
 		cp "${LIVE_BUILD_PATH}/efi-image" "chroot/${LIVE_BUILD_PATH}"
 		cp "${LIVE_BUILD_PATH}/grub-cpmodules" "chroot/${LIVE_BUILD_PATH}"
+
+		_CHROOT_DIR=""
+	;;
+	false)
+		_CHROOT_DIR="chroot"
         ;;
 esac
 #####
