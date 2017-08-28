@@ -16,16 +16,16 @@ Check_package ()
 
 	Check_installed "${CHROOT}" "${FILE}" "${PACKAGE}"
 
-	case "${INSTALL_STATUS}" in
-		1)
+	if [ "${INSTALL_STATUS}" -ne 0 ]
+	then
+		if [ "${LB_BUILD_WITH_CHROOT}" != "false" ]
+		then
 			_LB_PACKAGES="${_LB_PACKAGES} ${PACKAGE}"
-			;;
-
-		2)
+		else
 			Echo_error "You need to install %s on your host system." "${PACKAGE}"
 			exit 1
-			;;
-	esac
+		fi
+	fi
 }
 
 Install_package ()
