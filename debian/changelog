@@ -1,6 +1,7 @@
 live-build (1:20170830) UNRELEASED; urgency=medium
 
   * Auto-update version strings in manual pages.
+  * Update default value of PREPARER to correct the embedded URL.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 29 Aug 2017 15:13:39 +0200
 
