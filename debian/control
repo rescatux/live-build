@@ -5,6 +5,8 @@ Maintainer: Debian Live <debian-live@lists.debian.org>
 Uploaders: Raphaël Hertzog <hertzog@debian.org>
 Build-Depends:
  debhelper (>= 10),
+ po4a,
+ gettext,
 Standards-Version: 4.1.0
 Homepage: https://debian-live.alioth.debian.org/live-build/
 Vcs-Browser: https://anonscm.debian.org/cgit/debian-live/live-build.git

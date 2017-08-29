@@ -1,15 +1,14 @@
 #!/usr/bin/make -f
 
-include /usr/share/dpkg/pkg-info.mk
-
 %:
 	dh $@
 
 override_dh_auto_install:
-	dh_auto_install -- DESTDIR=debian/live-build
+	# Update manual pages first
+	$(MAKE) -C manpages update
+	$(MAKE) -C manpages build
 
-	# Update VERSION file
-	echo $(DEB_VERSION) >debian/live-build/usr/share/live/build/VERSION
+	dh_auto_install -- DESTDIR=debian/live-build
 
 	# Removing unused files
 	rm -f debian/live-build/usr/share/doc/live-build/COPYING
