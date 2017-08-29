@@ -11,7 +11,7 @@
 set -e
 
 PROGRAM="LIVE\\\-BUILD"
-VERSION="$(cat ../VERSION)"
+VERSION="$(cd .. && dpkg-parsechangelog -S Version)"
 
 DATE="$(LC_ALL=C date +%Y\\\\-%m\\\\-%d)"
 

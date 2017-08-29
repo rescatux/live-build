@@ -6,7 +6,7 @@
 .TH LIVE\-BUILD 1 2015\-10\-21 5.0~a11\-1 "Live システムプロジェクト"
 
 .SH 名前
-\fBlb config\fP \- 設定ディレクトリを作成します
+\fBlb_config\fP \- Create config directory
 
 .SH 概要
 \fBlb config\fP [\fIlive\-build オプション\fP]
@@ -44,7 +44,9 @@
 .br
   [\fB\-\-bootappend\-live\fP \fIパラメータ\fP|\fI"パラメータ"\fP]
 .br
-  [\fB\-\-bootloader\fP grub|grub2|syslinux]
+  [\fB\-\-bootappend\-live\-failsafe\fP \fIPARAMETER\fP|\fI"PARAMETERS"\fP]
+.br
+  [\fB\-\-bootloaders\fP grub\-legacy|grub\-pc|syslinux|grub\-efi]
 .br
   [\fB\-\-cache\fP true|false]
 .br
@@ -79,6 +81,10 @@
   [\fB\-\-debian\-installer\-preseedfile\fP \fIファイル\fP|\fIURL\fP]
 .br
   [\fB\-\-debian\-installer\-gui\fP true|false]
+.br
+  [\fB\-\-debootstrap\-options\fP \fIOPTIONS\fP]
+.br
+  [\fB\-\-debootstrap\-script\fP \fISCRIPT\fP]
 .br
   [\fB\-\-debug\fP]
 .br
@@ -284,29 +290,38 @@ i386 系列プロセッサ及び適切なカーネルを使っている場合に
 ビルドするイメージの種類を決定します。デフォルトで、syslinux を利用するイメージではハードディスク向けイメージと同じようにも利用できる
 CD/DVD イメージをビルドするため iso\-hybrid が、syslinux 以外のイメージでは iso がセットされます。
 .IP "\fB\-\-binary\-filesystem\fP fat16|fat32|ext2|ext3|ext4" 4
-指定した種類のイメージで利用するファイルシステムを指定します。これは選択した種類のバイナリイメージでファイルシステムを選択できる場合にのみ効果があります。例えば
-iso 選択時に作成される CD/DVD のファイルシステムは常に ISO9660
-となります。USBメモリ向けのhddイメージをビルドする場合にはこれが有効になります。sparc のデフォルトが ext4
-である例外を除く全アーキテクチャでデフォルトが fat16 となっていることに注意してください。また、fat16
-選択時に出来上がったバイナリイメージのサイズが2GBを超えた場合はそのバイナリのファイルシステムは自動的に fat32
-に切り替えられることに注意してください。
+defines the filesystem to be used in the image type. This only has an effect
+if the selected binary image type lets you choose a filesystem. For example,
+when selection iso the resulting CD/DVD has always the filesystem
+ISO9660. When building hdd images for usb sticks, this is active. Note that
+it defaults to fat16 on all architectures except sparc where it defaults to
+ext4. Also note that if you choose fat16 and your resulting binary image
+gets bigger than 2GB, the binary filesystem automatically gets switched to
+fat32.
 .IP "\fB\-\-bootappend\-install\fP \fIパラメータ\fP|\(dq\fIパラメータ\fP\(dq" 4
 debian\-installer を収録した場合、debian\-installer 特有のブートパラメータをセットします。
 .IP "\fB\-\-bootappend\-live\fP \fIパラメータ\fP|\(dq\fIパラメータ\fP\(dq" 4
 debian\-live 特有のブートパラメータをセットします。ブートパラメータの全容は \fIlive\-boot\fP(7) 及び
 \fIlive\-config\fP(7) マニュアルページにあります。
-.IP "\fB\-\-bootloader\fP grub|grub2|syslinux" 4
-生成されたイメージで利用するブートローダを選択します。これは選択した種類のバイナリイメージでブートローダを選択できる場合にのみ効果があります。例えば
-iso をビルドする場合は常に syslinux (さらに言えば isolinux)
-が利用されます。また、バイナリイメージの種類とブートローダの組み合わせの中には、可能ではあるものの live\-build
-でのサポートが追いついていないものがあり得ることに注意してください。\fBlb config\fP
-はそういった未サポートの設定の作成には失敗し、そのことについて説明します。amd64 や i386 用のhddイメージでは syslinux
-がデフォルトとなっています。
+.IP "\fB\-\-bootappend\-live\-failsafe\fP \fIPARAMETER\fP|\(dq\fIPARAMETERS\fP\(dq" 4
+sets boot parameters specific to debian\-live failsafe boot entries. A
+complete list of boot parameters can be found in the \fIlive\-boot\fP(7) and
+\fIlive\-config\fP(7) manual pages.
+.IP "\fB\-\-bootloaders\fP grub\-legacy|grub\-pc|syslinux|grub\-efi" 4
+defines which bootloader is being used in the generated image. This has only
+an effect if the selected binary image type lets you choose the
+bootloader. For example, if you build a iso, always syslinux (or more
+precise, isolinux) is being used. Also note that some combinations of binary
+images types and bootloaders may be possible but live\-build does not support
+them yet. \fBlb config\fP will fail to create such a not yet supported
+configuration and give a explanation about it. For hdd images on amd64 and
+i386, the default is syslinux.
 .IP "\fB\-\-cache\fP true|false" 4
 全体としてキャッシュを使うか否か大域的に決定します。異なるキャッシュを、キャッシュそれぞれのオプションで制御できます。
 .IP "\fB\-\-cache\-indices\fP true|false" 4
-ダウンロードしたパッケージ索引や一覧をキャッシュするか否かを決定します。デフォルトで false
-となっています。有効にするとイメージを完全にオフラインで再ビルドできるようになりますが、以後の更新は得られなくなります。
+defines if downloaded package indices and lists should be cached which is
+false by default. Enabling it lets you rebuild an image completely offline,
+however, you would not get updates anymore then.
 .IP "\fB\-\-cache\-packages\fP true|false" 4
 ダウンロードしたパッケージファイルをキャッシュするか否かを決定します。デフォルトで true
 となっています。無効化するとビルドディレクトリの容量を節約できますが、再ビルドした場合には不要な転送が発生することを覚えておいてください。一般にこれは常に
@@ -325,7 +340,8 @@ Live
 .IP "\fB\-\-compression\fP bzip2|gzip|lzip|none" 4
 tar アーカイブの圧縮に利用する圧縮プログラムを決定します。デフォルトは gzip です。
 .IP "\fB\-\-config\fP \fIGIT_URL\fP::\fIGIT_ID\fP" 4
-設定ツリーをgitリポジトリから取得できます。オプションとして Git Id (ブランチやコミット、タグ等) を指定できます。
+bootstrap the config tree from a git repository, optionally appended by a
+Git Id (branch, commit, tag, etc.).
 .IP "\fB\-\-build\-with\-chroot\fP true|false" 4
 live\-build がバイナリイメージのビルドに chroot 内のツールを使うのか、chroot
 ではなくホストのシステムツールを取り込んで使うのかを決定します。これは非常に危険なオプションであり、ホストシステムのツールを利用することで汚染され、必要とするツール
@@ -361,6 +377,11 @@ debian\-installer のファイルを取得するディストリビューショ�
 .IP "\fB\-\-debian\-installer\-gui\fP true|false" 4
 debian\-installer グラフィカルGTKインターフェイスを true にするか否かを決定します。デフォルトでは、Debian モードや
 Ubuntu のほとんどのバージョンで true、それ以外では false となっています。
+.IP "\fB\-\-debootstrap\-options\fP \fIOPTIONS\fP" 4
+passes the given options to debootstrap when setting up the base system.
+.IP "\fB\-\-debootstrap\-script\fP \fISCRIPT\fP" 4
+tells debootstrap to use an alternate bootstrap script (last parameter to
+debootstrap).
 .IP \fB\-\-debug\fP 4
 デバッグ情報のメッセージを表示します。
 .IP "\-d|\fB\-\-distribution\fP \fIコード名\fP" 4
@@ -370,8 +391,10 @@ Ubuntu のほとんどのバージョンで true、それ以外では false と�
 .IP "\-d|\fB\-\-parent\-debian\-installer\-distribution\fP \fIコード名\fP" 4
 出来上がる Live システムの派生元の debian\-installer のディストリビューションを決定します。
 .IP \fB\-\-dump\fP 4
-現在存在している Live システムの設定と利用されている live\-build
-のバージョンの報告を作成します。これはバグ報告の際に有用で、エラーが起きている部分を見つけ出し、再現するのに必要となる情報を全て提供します。
+prepares a report of the currently present live system configuration and the
+version of live\-build used. This is useful to provide if you submit bug
+reports, we do get all information required for us to locate and replicate
+an error.
 .IP "\fB\-\-fdisk\fP fdisk|fdisk.dist" 4
 利用するホストシステムの fdisk バイナリのファイル名を指定します。これは自動的に検出されるため通常は独自に指定する必要はありません。
 .IP \fB\-\-force\fP 4
@@ -428,7 +451,8 @@ JFFS2 (Second Journaling Flash File System) ファイルシステムの eraseblo
 .IP "\fB\-\-linux\-packages\fP \(dq\fIパッケージ\fP\(dq" 4
 カーネルのパッケージ命名規則に従った内部名をセットします。Debian のカーネルパッケージを利用している場合は調整する必要はありません。Debian
 の命名規則に従わない独自のカーネルパッケージを利用する場合にはこのオプションでパッケージの前半部 (Debian の場合は
-linux\-image\-2.6) だけを忘れずに指定し、\fI前半部\fP\-\fIフレーバー\fP (Debian の場合は例えば linux\-image\-686\-pae)
+linux\-image\-2.6) だけを忘れずに指定し、\fI前半部\fP\-\fIフレーバー\fP (Debian の場合は例えば
+linux\-image\-686\-pae)
 が有効なパッケージ名になるようにしてください。好ましいのは、メタパッケージがある場合にはその名前を前半部に使うことで、そうすると設定とABIが独立します。また、unionfs
 や aufs、squashfs
 のバイナリモジュールパッケージについても、ツリー外でビルドした場合にはその前半部を含める必要があることを忘れないようにしてください。
@@ -601,9 +625,8 @@ APT_OPTIONS や GZIP_OPTIONS と同様に LB_ を付加しません。
 このプログラムは live\-build の一部です。
 
 .SH ホームページ
-live\-build 及び Live
-システムプロジェクトについてのさらなる情報は、<\fIhttp://live\-systems.org/\fP> のホームページや
-<\fIhttp://live\-systems.org/manual/\fP> のマニュアルにあります。
+More information about live\-build and the Live Systems project can be found
+on the homepage at <\fIhttps://debian\-live.alioth.debian.org/\fP>.
 
 .SH バグ
 バグは <\fIhttp://bugs.debian.org/\fP> にあるバグ追跡システムに live\-build

@@ -6,7 +6,7 @@
 .TH LIVE\-BUILD 1 21.10.2015 5.0~a11\-1 "Projet Live Systems"
 
 .SH NOM
-\fBlb config\fP \- Crée un répertoire de configuration
+\fBlb_config\fP \- Create config directory
 
 .SH SYNOPSIS
 \fBlb config\fP [\fIlive\-build options\fP]
@@ -44,7 +44,9 @@
 .br
   [\fB\-\-bootappend\-live\fP \fIPARAMÈTRES\fP|\fI"PARAMÈTRES"\fP]
 .br
-  [\fB\-\-bootloader\fP grub|grub2|syslinux]
+  [\fB\-\-bootappend\-live\-failsafe\fP \fIPARAMETER\fP|\fI"PARAMETERS"\fP]
+.br
+  [\fB\-\-bootloaders\fP grub\-legacy|grub\-pc|syslinux|grub\-efi]
 .br
   [\fB\-\-cache\fP true|false]
 .br
@@ -79,6 +81,10 @@
   [\fB\-\-debian\-installer\-preseedfile\fP \fIFICHIER\fP|\fIURL\fP]
 .br
   [\fB\-\-debian\-installer\-gui\fP true|false]
+.br
+  [\fB\-\-debootstrap\-options\fP \fIOPTIONS\fP]
+.br
+  [\fB\-\-debootstrap\-script\fP \fISCRIPT\fP]
 .br
   [\fB\-\-debug\fP]
 .br
@@ -312,39 +318,40 @@ syslinux, ceci est paramétré pour iso\-hybrid pour construire des images
 CD/DVD qui peuvent également être utilisée comme images hdd, pour les images
 non\-syslinux, le défaut est iso.
 .IP "\fB\-\-binary\-filesystem\fP fat16|fat32|ext2|ext3|ext4" 4
-définit le système de fichier à utiliser dans le type d'image. Ceci a un
-effet si le type d'image binaire sélectionnée permet de choisir un système
-de fichier. Par exemple, lorsque iso est sélectionné, le CD/DVD résultant a
-toujours un système de fichier ISO9660. Lors de la construction d'une image
-hdd pour des clefs usb, ceci est actif. Notez que ceci sélectionne fat16 par
-défaut sur toutes les architectures excepté sparc où le défaut est
-ext4. Notez également que si vous choisissez fat16 et que votre image
-binaire résultante est plus grosse que 2GB, alors le système de fichier
-binaire sera automatiquement passé à fat32.
+defines the filesystem to be used in the image type. This only has an effect
+if the selected binary image type lets you choose a filesystem. For example,
+when selection iso the resulting CD/DVD has always the filesystem
+ISO9660. When building hdd images for usb sticks, this is active. Note that
+it defaults to fat16 on all architectures except sparc where it defaults to
+ext4. Also note that if you choose fat16 and your resulting binary image
+gets bigger than 2GB, the binary filesystem automatically gets switched to
+fat32.
 .IP "\fB\-\-bootappend\-install\fP \fIPARAMÈTRE\fP|\(dq\fIPARAMÈTRES\fP\(dq" 4
 paramètre les options de démarrage spécifiques à debian\-installer, si inclu.
 .IP "\fB\-\-bootappend\-live\fP \fIPARAMÈTRE\fP|\(dq\fIPARAMÈTRES\fP\(dq" 4
 paramètre les options de démarrage spécifiques à debian\-live. Une liste
 complète des paramètres de démarrage peut être trouvée dans les pages de
 manuel \fIlive\-boot\fP(7) et \fIlive\-config\fP(7).
-.IP "\fB\-\-bootloader\fP grub|grub2|syslinux" 4
-définit quel chargeur de démarrage est utilisé dans l'image générée. Ceci a
-effet seulement si l'image binaire sélectionnée permet de choisir le
-chargeur de démarrage. Par exemple, si vous construisez une iso, syslinux
-(ou plus précisément, isolinux) est toujours utilisé. Notez également que
-certaines combinaisons de types d'images binaires et de chargeurs de
-démarrage peuvent être possibles mais que live\-build ne les prend pas encore
-en charge. \fBlb config\fP échouera a créer une de ses configurations pas
-encore supportées et donnera une explication à ce propos. Pour des images
-hdd sur amd64 et i386, le défaut est syslinux.
+.IP "\fB\-\-bootappend\-live\-failsafe\fP \fIPARAMETER\fP|\(dq\fIPARAMETERS\fP\(dq" 4
+sets boot parameters specific to debian\-live failsafe boot entries. A
+complete list of boot parameters can be found in the \fIlive\-boot\fP(7) and
+\fIlive\-config\fP(7) manual pages.
+.IP "\fB\-\-bootloaders\fP grub\-legacy|grub\-pc|syslinux|grub\-efi" 4
+defines which bootloader is being used in the generated image. This has only
+an effect if the selected binary image type lets you choose the
+bootloader. For example, if you build a iso, always syslinux (or more
+precise, isolinux) is being used. Also note that some combinations of binary
+images types and bootloaders may be possible but live\-build does not support
+them yet. \fBlb config\fP will fail to create such a not yet supported
+configuration and give a explanation about it. For hdd images on amd64 and
+i386, the default is syslinux.
 .IP "\fB\-\-cache\fP true|false" 4
 définit globalement si un cache devrait être utilisé. Les différents caches
 peuvent être controlés à travers leurs propres options.
 .IP "\fB\-\-cache\-indices\fP true|false" 4
-définit si les indices et les listes de paquets téléchargés devrait être
-cachés ce qui est faux (false) par défaut. L'activer autoriserait la
-reconstruction d'une image complétement hors\-ligne, vous n'auriez donc plus
-les mises\-à\-jour.
+defines if downloaded package indices and lists should be cached which is
+false by default. Enabling it lets you rebuild an image completely offline,
+however, you would not get updates anymore then.
 .IP "\fB\-\-cache\-packages\fP true|false" 4
 définit si les fichiers de paquets téléchargés pourrait être cachés ce qui
 est vrai (true) par défaut. Le désactiver économise la consomation d'espace
@@ -375,9 +382,8 @@ sommes de vérification.
 définit le programme de compression à utiliser pour compresser les
 tarballs. Par défaut : gzip.
 .IP "\fB\-\-config\fP \fIGIT_URL\fP::\fIGIT_ID\fP" 4
-permet d'amorcer un arbre de configuration depuis un dépôt GIT,
-optionnellement avec un numéro d'identification GIT (branche, commit, tag,
-etc.).
+bootstrap the config tree from a git repository, optionally appended by a
+Git Id (branch, commit, tag, etc.).
 .IP "\fB\-\-build\-with\-chroot\fP true|false" 4
 définit si live\-build devrait utiliser les outils de l'intérieur du chroot
 pour construire l'image binaire ou non en utilisant et incluant les outils
@@ -439,6 +445,11 @@ défaut.
 définit si l'interface graphique GTK de l'installateur\-debian devrait être
 vraie ou pas. En mode Debian et pour la plupart des versions d'Ubuntu, cette
 option est vraie, tandis que sinon fausse, par défaut.
+.IP "\fB\-\-debootstrap\-options\fP \fIOPTIONS\fP" 4
+passes the given options to debootstrap when setting up the base system.
+.IP "\fB\-\-debootstrap\-script\fP \fISCRIPT\fP" 4
+tells debootstrap to use an alternate bootstrap script (last parameter to
+debootstrap).
 .IP \fB\-\-debug\fP 4
 active les messages d'information de déboguage.
 .IP "\-d|\fB\-\-distribution\fP \fINOM_DE_CODE\fP" 4
@@ -452,7 +463,7 @@ du système live résultant.
 .IP \fB\-\-dump\fP 4
 prepares a report of the currently present live system configuration and the
 version of live\-build used. This is useful to provide if you submit bug
-reports, we do get all informations required for us to locate and replicate
+reports, we do get all information required for us to locate and replicate
 an error.
 .IP "\fB\-\-fdisk\fP fdisk|fdisk.dist" 4
 sets the filename of the fdisk binary from the host system that should be
@@ -536,10 +547,11 @@ debian kernel packages, you will not have to adjust it. If you decide to use
 custom kernel packages that do not follow the debian naming scheme, remember
 to set this option to the stub of the packages only (for debian this is
 linux\-image\-2.6), so that \fISTUB\fP\-\fIFLAVOUR\fP results in a valid package name
-(for debian e.g. linux\-image\-686\-pae). Preferably you use the meta package name,
-if any, for the stub, so that your configuration is ABI independent. Also
-don't forget that you have to include stubs of the binary modules packages
-for unionfs or aufs, and squashfs if you built them out\-of\-tree.
+(for debian e.g. linux\-image\-686\-pae). Preferably you use the meta package
+name, if any, for the stub, so that your configuration is ABI
+independent. Also don't forget that you have to include stubs of the binary
+modules packages for unionfs or aufs, and squashfs if you built them
+out\-of\-tree.
 .IP "\fB\-\-losetup\fP losetup|losetup.orig" 4
 sets the filename of the losetup binary from the host system that should be
 used. This is autodetected and does generally not need any customization.
@@ -768,10 +780,8 @@ LB_PARENT_MIRROR_BOOTSTRAP. This feature can be false by specifying the
 Ce programme est une partie de live\-build.
 
 .SH "PAGE D'ACCUEIL"
-Davantage d'informations à propos de live\-build et du projet Live Systems
-peuvent être trouvées sur la page d'accueil à
-<\fIhttp://live\-systems.org/\fP> et dans le manuel à
-<\fIhttp://live\-systems.org/manual/\fP>.
+More information about live\-build and the Live Systems project can be found
+on the homepage at <\fIhttps://debian\-live.alioth.debian.org/\fP>.
 
 .SH BOGUES
 Les bogues peuvent être signalés en soumettant un rapport de bogue pour le

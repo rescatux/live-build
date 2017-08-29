@@ -25,9 +25,9 @@ tous les aspects de la construction d'une image Live.
 La \fICOMMANDE\fP est un nom d'une commande live\-build (voir ci\-dessous).
 .PP
 .\" FIXME
-Davantage de documentation à propos de la façon d'utiliser live\-build est
-disponible dans les pages de manuel individuelles de chaque assistant ainsi
-que dans le manual à <\fIhttp://live\-systems.org/manual/\fP>.
+More documentation about how to use live\-build is available in the
+individual manpages for each helper and in the manual at
+<\fIhttps://debian\-live.alioth.debian.org/manual/\fP>.
 
 .SH OPTIONS
 .\" FIXME
@@ -73,30 +73,29 @@ documentation additionnelle.
 Nous séparons les commandes porcelaine en commandes principales et en
 utilitaires utilisateur auxiliaires.
 .SS "Commandes porcelaine principales"
-.IP \fBlb_config\fP(1) 4
-crée une configuration pour live\-build
-.IP \fBlb_bootstrap\fP(1) 4
-crée le premier stage en amorçant un système debian basique
-.IP \fBlb_chroot\fP(1) 4
-crée un deuxième stage en personnalisant le chroot
-.IP \fBlb_binary\fP(1) 4
-crée le troisième stage en générant une image binaire
-.IP \fBlb_source\fP(1) 4
-crée le quatrième stage optionel en générant une image source
-.IP \fBlb_clean\fP(1) 4
-nettoie les répertoires de construction du système
+.IP "\fBlb config\fP(1)" 4
+creates configuration for live\-build
+.IP "\fBlb bootstrap\fP(1)" 4
+executes the first build stage, creating (bootstraping) a basic Debian root
+filesystem
+.IP "\fBlb chroot\fP(1)" 4
+executes the second build stage, building the live OS filesystem
+.IP "\fBlb installer\fP(1)" 4
+executes the third build stage, obtaining installer components (optional)
+.IP "\fBlb binary\fP(1)" 4
+executes the fourth build stage, generating a binary image
+.IP "\fBlb source\fP(1)" 4
+executes the fifth build stage, generating a source image (optional)
+.IP "\fBlb clean\fP(1)" 4
+cleans up system build directories
 .SS "Commandes auxiliaires"
 .IP \fBlb\fP(1) 4
-emballage live\-build générique
-.IP \fBlb_build\fP(1) 4
-alias pour tous les stages
-.IP \fBlb_local\fP(1) 4
-assistant pour l'utilisation d'un live\-build local
-.IP \fBlb_testroot\fP(1) 4
+generic live\-build script execution wrapper
+.IP "\fBlb build\fP(1)" 4
 .\" FIXME
-s'assure que le système est construit en tant qu'administrateur (root)
+alias for all build stages
 
-.SH "COMMANDES BAS\-NIVEAU (PLOMBERIE)"
+.SH "LOW\-LEVEL COMMANDS (PLUMBING) \- BUILD STAGE COMPONENTS"
 .\" FIXME
 Le travail réel de live\-build est implémenté dans les commandes bas\-niveau,
 appelées plomberie. Elles ne sont pas supposées être utilisées par les
@@ -111,119 +110,176 @@ commandes bas\-niveau sont pensées pour être beaucoup plus stables que les
 commandes de niveau Porcelaine. D'un autre côté, l'interface des commandes
 Porcelaine sont sujettes à changement afin d'améliorer l'expérience de
 l'utilisateur final.
-.SS "Commandes d'amorçage"
-.IP \fBlb_bootstrap_cache\fP(1) 4
-stage d'amorçage cache
-.IP \fBlb_bootstrap_debootstrap\fP(1) 4
-amorçcer un système Debian avec debootstrap(8)
-.SS "Commandes chroot"
-.IP \fBlb_chroot_apt\fP(1) 4
-gère /etc/apt/apt.conf
-.IP \fBlb_chroot_cache\fP(1) 4
-stage de chroot cache
-.IP \fBlb_chroot_debianchroot\fP(1) 4
-gère /etc/debian_chroot
-.IP \fBlb_chroot_devpts\fP(1) 4
-monte /dev/pts
-.IP \fBlb_chroot_dpkg\fP(1) 4
-gère /sbin/dpkg
-.IP \fBlb_chroot_hacks\fP(1) 4
-exécute les hacks dans le chroot
-.IP \fBlb_chroot_hostname\fP(1) 4
-gère /bin/hostname
-.IP \fBlb_chroot_hosts\fP(1) 4
-gère /etc/hosts
-.IP \fBlb_chroot_install\-packages\fP(1) 4
-installe les paquets en attente dans le chroot
-.IP \fBlb_chroot_interactive\fP(1) 4
-rend la construction intéractive
-.IP \fBlb_chroot_linux\-image\fP(1) 4
-gère /etc/kernel\-img.conf
-.IP \fBlb_chroot_hooks\fP(1) 4
-exécute les hooks locaux dans le chroot
-.IP \fBlb_chroot_local\-includes\fP(1) 4
-copie les fichiers locaux dans le chroot
-.IP \fBlb_chroot_packages\fP(1) 4
-met en attente l'installation des paquets dans le chroot
-.IP \fBlb_chroot_local\-patches\fP(1) 4
-appliques les rustines locales dans le chroot
-.IP \fBlb_chroot_local\-preseed\fP(1) 4
-utilise un fichier de pré\-configuration local debconf
-.IP \fBlb_chroot_packagelists\fP(1) 4
-met en attente l'installation des listes de paquets dans le chroot
-.IP \fBlb_chroot_proc\fP(1) 4
-monte /proc
-.IP \fBlb_chroot_resolv\fP(1) 4
-gère /etc/resolv.conf
-.IP \fBlb_chroot_selinuxfs\fP(1) 4
-monte /selinux
-.IP \fBlb_chroot_archives\fP(1) 4
-gère /etc/apt/sources.list
-.IP \fBlb_chroot_sysfs\fP(1) 4
-gère /sys
-.IP \fBlb_chroot_sysv\-rc\fP(1) 4
-gère /usr/sbin/policy\-rc.d
-.IP \fBlb_chroot_task\-lists\fP(1) 4
-installe les listes de tâches dans le chroot
-.SS "Commandes binaires"
-.IP \fBlb_binary_chroot\fP(1) 4
-copie le chroot dans le chroot
-.IP \fBlb_binary_debian\-installer\fP(1) 4
-installe debian\-installer dans le binaire
-.IP \fBlb_binary_disk\fP(1) 4
-installe les informations de disque dans le binaire
-.IP \fBlb_binary_grub\fP(1) 4
-installe grub dans le binaire
-.IP \fBlb_binary_grub2\fP(1) 4
-installe grub2 dans le binaire
-.IP \fBlb_binary_includes\fP(1) 4
-copie les fichiers dans le binaire
-.IP \fBlb_binary_iso\fP(1) 4
-construit l'image binaire iso
-.IP \fBlb_binary_linux\-image\fP(1) 4
-installe linux\-image dans le binaire
-.IP \fBlb_binary_local\-hooks\fP(1) 4
-exécute les hooks locaux dans le binaire
-.IP \fBlb_binary_local\-includes\fP(1) 4
-copie les fichiers dans le binaire
-.IP \fBlb_binary_local\-packagelists\fP(1) 4
-installe les listes de paquets locaux dans le binaire
-.IP \fBlb_binary_manifest\fP(1) 4
-crée le manifeste
-.IP \fBlb_binary_checksums\fP(1) 4
-crée les sommes de vérification binaires (md5, sha1, et/ou sha256)
-.IP \fBlb_binary_memtest\fP(1) 4
-installe memtest dans le binaire
-.IP \fBlb_binary_net\fP(1) 4
-construit l'image binaire netboot
-.IP \fBlb_binary_rootfs\fP(1) 4
-construit l'image rootfs
-.IP \fBlb_binary_syslinux\fP(1) 4
-installe syslinux dans le binaire
-.IP \fBlb_binary_tar\fP(1) 4
-construit une image binaire pour disque dur
-.IP \fBlb_binary_hdd\fP(1) 4
-construit une image binaire hdd
-.IP \fBlb_binary_win32\-loader\fP(1) 4
-installe win32\-loader dans le binaire
-.SS "Commandes source"
-.IP \fBlb_source_debian\fP(1) 4
-télécharge les sources
-.IP \fBlb_source_debian\-live\fP(1) 4
-copie la configuration debian\-live dans la source
-.IP \fBlb_source_disk\fP(1) 4
-installe les informations de disque dans la source
-.IP \fBlb_source_iso\fP(1) 4
-construit l'image source iso
-.IP \fBlb_source_checksums\fP(1) 4
-crée les sommes de vérification binaires (md5, sha1, et/ou sha256)
-.IP \fBlb_source_net\fP(1) 4
-construit l'image net source
-.IP \fBlb_source_tar\fP(1) 4
-construit le tarball source
-.IP \fBlb_source_hdd\fP(1) 4
+.SS "Bootstrap stage specific commands"
+.IP "\fBlb bootstrap_archives\fP(1)" 4
+applies apt archive configuration
+.IP "\fBlb bootstrap_cache\fP(1)" 4
+in save mode, saves to cache a copy of the generated bootstrap directory,
+and in restore mode, restores from cache a previously generated copy
+.IP "\fBlb bootstrap_debootstrap\fP(1)" 4
+creates (bootstrap) a basic Debian root filesystem using debootstrap(8)
+.SS "Chroot stage specific commands"
+.PP
+Note: The following chroot_ prefixed commands are used in building the live
+OS filesystem. Another set of similarly prefixed files are listed separately
+(see further down).
+.IP "\fBlb chroot_cache\fP(1)" 4
+in save mode, saves to cache a copy of the chroot directory, and in restore
+mode, restores from cache a previously generated copy
+.IP "\fBlb chroot_firmware\fP(1)" 4
+compiles a list of firmware packages to be installed in the live OS root
+filesystem
+.IP "\fBlb chroot_hacks\fP(1)" 4
+executes local hacks against the live OS root filesystem, if any are
+provided
+.IP "\fBlb chroot_hooks\fP(1)" 4
+executes local hooks against the live OS root filesystem, if any are
+provided
+.IP "\fBlb chroot_includes\fP(1)" 4
+copies a set of local files from the config directory into the live OS root
+filesystem, if any are provided
+.IP "\fBlb chroot_install\-packages\fP(1)" 4
+installs into the live OS root filesystem any packages listed in local
+package lists
+.IP "\fBlb chroot_interactive\fP(1)" 4
+pauses the build process and starts an interactive shell from the live OS
+root filesystem, providing an oportunity for manual modifications or
+testing; note that this is (currently) usually executed with several chroot
+prep modifications applied (see description of these further down)
+.IP "\fBlb chroot_linux\-image\fP(1)" 4
+compiles a list of kernel images to be installed in the live OS root
+filesystem
+.IP "\fBlb chroot_live\-packages\fP(1)" 4
+installs a set of live system specific packages to the live OS root
+filesystem
+.IP "\fBlb chroot_package\-lists\fP(1)" 4
+compiles a list of packages provided in the user\' local config to be
+installed in the live OS root filesystem
+.IP "\fBlb chroot_preseed\fP(1)" 4
+installs pre\-configured answers to certain install prompts into the live OS
+root filesystem
+.SS "Installer stage specific commands"
+.IP "\fBlb installer_debian\-installer\fP(1)" 4
+obtains and sets up Debian installer(d\-i) components
+.IP "\fBlb installer_preseed\fP(1)" 4
+installs pre\-configured answers to certain install prompts
+.SS "Binary stage specific commands"
+.IP "\fBlb binary_checksums\fP(1)" 4
+creates checksums (md5, sha1, and/or sha256) for live image content
+.IP "\fBlb binary_chroot\fP(1)" 4
+duplicates the chroot directory, to place a copy of what whould be the
+completed live OS root filesystem to one side, allowing the original to
+continue to be used in executing certain parts of the remainder of the build
+process
+.IP "\fBlb binary_disk\fP(1)" 4
+creates disk information files to be added to live image
+.IP "\fBlb binary_grub\fP(1)" 4
+installs grub into live image to provide image boot capability
+.IP "\fBlb binary_grub2\fP(1)" 4
+installs grub2 into live image to provide image boot capability
+.IP "\fBlb binary_hdd\fP(1)" 4
+compiles the final live image into an hdd image file
+.IP "\fBlb binary_hooks\fP(1)" 4
+executes local hooks against the live image, if any are provided
+.IP "\fBlb binary_includes\fP(1)" 4
+copies a set of local files from the config directory into the live image,
+if any are provided
+.IP "\fBlb binary_iso\fP(1)" 4
+compiles the final live image into an iso file
+.IP "\fBlb binary_linux\-image\fP(1)" 4
+copies the linux\-image into the live image
+.IP "\fBlb binary_loadlin\fP(1)" 4
+bundles a copy of loadlin into the live image
+.IP "\fBlb binary_manifest\fP(1)" 4
+creates manifest of packages installed into live OS filesystem, and list of
+packages to be excluded by a persistence mechanism installing the live OS to
+disk
+.IP "\fBlb binary_memtest\fP(1)" 4
+bundles a copy of memtest into the live image
+.IP "\fBlb binary_netboot\fP(1)" 4
+compiles the final live image into a netboot tar archive
+.IP "\fBlb binary_package\-lists\fP(1)" 4
+processes local lists of packages to obtain and bundle into image (from
+which they could later be installed if not already)
+.IP "\fBlb binary_rootfs\fP(1)" 4
+wraps up the completed live OS root filesystem into a virtual file system
+image
+.IP "\fBlb binary_syslinux\fP(1)" 4
+installs syslinux into live image to provide image boot capability
+.IP "\fBlb binary_tar\fP(1)" 4
+compiles the final live image into a tar archive
+.IP "\fBlb binary_win32\-loader\fP(1)" 4
+bundles a copy of win32\-loader into the live image and creates an
+autorun.inf file
+.IP "\fBlb binary_zsync\fP(1)" 4
+builds zsync control files
+.SS "Source stage specific commands"
+.IP "\fBlb source_checksums\fP(1)" 4
+creates checksums (md5, sha1, and/or sha256) for source image content
+.IP "\fBlb source_debian\fP(1)" 4
+downloads source packages for bundling into source image
+.IP "\fBlb source_disk\fP(1)" 4
+creates disk information files to be added to source image
+.IP "\fBlb source_hdd\fP(1)" 4
+compiles the final source image into an hdd image file
+.IP "\fBlb source_hooks\fP(1)" 4
+executes local hooks against the source image, if any are provided
+.IP "\fBlb source_iso\fP(1)" 4
+compiles the final source image into an iso file
+.IP "\fBlb source_live\fP(1)" 4
+copies live\-build config into source
+.IP "\fBlb source_tar\fP(1)" 4
 .\" FIXME
-construit l'image hdd source
+compiles the final source image into a tar archive
+
+.SH "LOW\-LEVEL COMMANDS (PLUMBING) \- CHROOT PREP COMPONENTS"
+.\" FIXME
+The notes above under the section regarding build\-stage specific low\-level
+plumbing commands also apply here.
+.PP
+The following chroot_ prefixed commands are used throughout the various
+primary stages of the build process to apply and remove modifications to a
+chroot root filesystem. Generally these are used to apply modification that
+setup the chroot for use (execution of programs within it) during the build
+process, and later to remove those modification, unmounting things that were
+mounted, and making the chroot suitable for use as the root filesystem of
+the live OS to be bundled into the live image.
+.IP "\fBlb chroot_apt\fP(1)" 4
+manages apt configuration; in apply mode it applies configuration for use
+during build process, and in remove mode removes that configuration
+.IP "\fBlb chroot_archives\fP(1)" 4
+manages apt archive source lists; in apply mode it applies source list
+configurations suitable for use of the chroot in the build process, and in
+remove mode replaces that with a configuration suitable for the final live
+OS
+.IP "\fBlb chroot_debianchroot\fP(1)" 4
+manages a /etc/debian_chroot file
+.IP "\fBlb chroot_devpts\fP(1)" 4
+manages mounting of /dev/pts
+.IP "\fBlb chroot_dpkg\fP(1)" 4
+manages dpkg; in apply mode disabling things like the start\-stop\-daemon, and
+in remove mode enabling them again
+.IP "\fBlb chroot_hostname\fP(1)" 4
+manages the hostname configuration
+.IP "\fBlb chroot_hosts\fP(1)" 4
+manages the /etc/hosts file
+.IP "\fBlb chroot_proc\fP(1)" 4
+manages mounting of /proc
+.IP "\fBlb chroot_resolv\fP(1)" 4
+manages configuration of the /etc/resolv.conf file
+.IP "\fBlb chroot_selinuxfs\fP(1)" 4
+manages mounting of /sys/fs/selinux
+.IP "\fBlb chroot_sysfs\fP(1)" 4
+manages mounting of /sys
+.IP "\fBlb chroot_sysv\-rc\fP(1)" 4
+manages the /usr/sbin/policy\-rc.d file
+.IP "\fBlb chroot_tmpfs\fP(1)" 4
+manages configuration of dpkg to use a tmpfs filesystem
+.IP "\fBlb chroot_upstart\fP(1)" 4
+.\" FIXME
+manages use of upstart /sbin/initctl program; in apply mode blocking
+execution through a dpkg diversion, and in remove mode enabling execution
+again
 
 .SH "FICHIERS DE CONFIGURATION"
 .\" FIXME
@@ -236,14 +292,12 @@ config/stage ou config/stage_assistant (où "stage" est évidemment remplacé
 par le nom du stage auquel il appartient, "assistant" par le nom de
 l'assistant).
 .PP
-Par exemple, lb_bootstrap_debootstrap utilise des fichiers nommés
-config/bootstrap et config/bootstrap_debootstrap pour lire les options qu'il
-utilisera. Voir les pages des commandes individuelles de manuel pour des
-détails à propos des noms et des formats de fichiers qu'ils
-utilisent. Généralement, ces fichiers contiennent des variables avec des
-valeurs assignées, une variable par ligne. Plusieurs programmes dans
-live\-build utilisent des paires de valeur ou des assignations de variables
-légèrement plus compliquées.
+For example, lb bootstrap_debootstrap uses files named config/bootstrap and
+config/bootstrap_debootstrap to read the options it will use. See the man
+pages of individual commands for details about the names and formats of the
+files they use. Generally, these files contain variables with values
+assigned, one variable per line. Some programs in live\-build use pairs of
+values or slightly more complicated variable assignments.
 .PP
 Notez que live\-build respectera les variables d'environment présentes dans
 le contexte du shell lancé. Si les variables peuvent être lues depuis les
@@ -279,10 +333,8 @@ fichiers; les lignes commençant par des "#" sont ignorées.
 Ce programme est une partie de live\-build.
 
 .SH "PAGE D'ACCUEIL"
-Davantage d'informations à propos de live\-build et du projet Live Systems
-peuvent être trouvées sur la page d'accueil à
-<\fIhttp://live\-systems.org/\fP> et dans le manuel à
-<\fIhttp://live\-systems.org/manual/\fP>.
+More information about live\-build and the Live Systems project can be found
+on the homepage at <\fIhttps://debian\-live.alioth.debian.org/\fP>.
 
 .SH BOGUES
 Les bogues peuvent être signalés en soumettant un rapport de bogue pour le

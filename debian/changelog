@@ -5,6 +5,8 @@ live-build (1:20170808) UNRELEASED; urgency=medium
   * Initialize /etc/default/locale with LANG=C.UTF-8 so that we always
     have a valid UTF-8 locale even when we don't have the "locales"
     package installed.
+  * Drop all references to live-systems.org. Closes: #859290
+  * Update copyright file.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Thu, 10 Aug 2017 14:53:06 +0200
 
