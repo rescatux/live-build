@@ -40,7 +40,7 @@ Losetup ()
 	FILE="${2}"
 	PARTITION="${3:-1}"
 
-	${LB_LOSETUP} --read-only "${DEVICE}" "${FILE}"
+	${LB_LOSETUP} --read-only --partscan "${DEVICE}" "${FILE}"
 	FDISK_OUT="$(${LB_FDISK} -l -u ${DEVICE} 2>&1)"
 	Lodetach "${DEVICE}"
 
@@ -50,14 +50,14 @@ Losetup ()
 	then
 		Echo_message "Mounting %s with offset 0" "${DEVICE}"
 
-		${LB_LOSETUP} "${DEVICE}" "${FILE}"
+		${LB_LOSETUP} --partscan "${DEVICE}" "${FILE}"
 	else
 		SECTORS="$(echo "$FDISK_OUT" | sed -ne "s|^$LOOPDEVICE[ *]*\([0-9]*\).*|\1|p")"
 		OFFSET="$(expr ${SECTORS} '*' 512)"
 
 		Echo_message "Mounting %s with offset %s" "${DEVICE}" "${OFFSET}"
 
-		${LB_LOSETUP} -o "${OFFSET}" "${DEVICE}" "${FILE}"
+		${LB_LOSETUP} --partscan -o "${OFFSET}" "${DEVICE}" "${FILE}"
 	fi
 }
 
