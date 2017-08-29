@@ -2,6 +2,9 @@ live-build (1:20170808) UNRELEASED; urgency=medium
 
   * Add .disk/mkisofs file recording the xorriso command line. Thanks
     to Thomas Schmitt <scdbackup@gmx.net> for the suggestion.
+  * Initialize /etc/default/locale with LANG=C.UTF-8 so that we always
+    have a valid UTF-8 locale even when we don't have the "locales"
+    package installed.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Thu, 10 Aug 2017 14:53:06 +0200
 
