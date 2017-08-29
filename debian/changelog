@@ -7,6 +7,9 @@ live-build (1:20170830) UNRELEASED; urgency=medium
     Thanks to Matthijs Kooijman <matthijs@stdin.nl> for the patch.
   * Fix multiple issues with LB_BUILD_WITH_CHROOT=false. Closes: #873513
     Thanks to Matthijs Kooijman <matthijs@stdin.nl> for the patch.
+  * Fix size calculation when we use FAT filesystems that do not support
+    hardlinks. Closes: #873640
+    Thanks to Matthijs Kooijman <matthijs@stdin.nl> for the patch.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 29 Aug 2017 15:13:39 +0200
 

@@ -97,6 +97,19 @@ then
 	rm -f ${LIVE_iMAGE_NAME}.img
 fi
 
+case "${LB_BINARY_FILESYSTEM}" in
+	fat*)
+		# If the target does not support hardlinks, tell du to
+		# count them double
+		DU_OPTIONS="--count-links"
+		;;
+
+	*)
+		DU_OPTIONS=""
+		;;
+esac
+
+
 # Enforce fat32 if we find individual files bigger than 2GB
 if [ "${LB_BINARY_FILESYSTEM}" = "fat16" ] && [ -n "$(find binary -size +1999M)" ]
 then
@@ -107,7 +120,7 @@ then
 fi
 
 # Enforce fat32 if we have images in total bigger than 2GB
-if [ "${LB_BINARY_FILESYSTEM}" = "fat16" ] && [ "$(du -s binary | awk '{ print $1 }')" -gt "1900000" ]
+if [ "${LB_BINARY_FILESYSTEM}" = "fat16" ] && [ "$(du ${DU_OPTIONS} -s binary | awk '{ print $1 }')" -gt "1900000" ]
 then
 	Echo_warning "FAT16 doesn't support partitions larger than 2GB, automatically enforcing FAT32"
 
@@ -127,7 +140,7 @@ fi
 # Everything which comes here needs to be cleaned up,
 if [ "$LB_HDD_SIZE" = "auto" ];
 then
-	DU_DIM="$(du -ms binary | cut -f1)"
+	DU_DIM="$(du ${DU_OPTIONS} -ms binary | cut -f1)"
 	REAL_DIM="$(Calculate_partition_size ${DU_DIM} ${LB_BINARY_FILESYSTEM})"
 else
 	REAL_DIM=$LB_HDD_SIZE
