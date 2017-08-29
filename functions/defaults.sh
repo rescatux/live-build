@@ -651,7 +651,7 @@ Set_defaults ()
 	esac
 
 	# Set iso preparer
-	LB_ISO_PREPARER="${LB_ISO_PREPARER:-live-build \$VERSION; https://debian-live.alioth.debian.org/devel/live-build}"
+	LB_ISO_PREPARER="${LB_ISO_PREPARER:-live-build \$VERSION; https://debian-live.alioth.debian.org/live-build}"
 
 	# Set iso publisher
 	case "${LB_MODE}" in
