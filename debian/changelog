@@ -1,4 +1,4 @@
-live-build (1:20170808) UNRELEASED; urgency=medium
+live-build (1:20170829) unstable; urgency=medium
 
   * Add .disk/mkisofs file recording the xorriso command line. Thanks
     to Thomas Schmitt <scdbackup@gmx.net> for the suggestion.
@@ -8,7 +8,7 @@ live-build (1:20170808) UNRELEASED; urgency=medium
   * Drop all references to live-systems.org. Closes: #859290
   * Update copyright file.
 
- -- Raphaël Hertzog <hertzog@debian.org>  Thu, 10 Aug 2017 14:53:06 +0200
+ -- Raphaël Hertzog <hertzog@debian.org>  Tue, 29 Aug 2017 14:16:49 +0200
 
 live-build (1:20170807) unstable; urgency=medium
 
