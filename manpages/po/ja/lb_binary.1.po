@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: live-build\n"
-"POT-Creation-Date: 2017-08-29 14:07+0200\n"
+"POT-Creation-Date: 2017-08-29 15:05+0200\n"
 "PO-Revision-Date: 2014-08-28 02:52+0900\n"
 "Last-Translator: victory <victory.deb@gmail.com>\n"
 "Language-Team: none\n"
@@ -26,17 +26,17 @@ msgstr "LIVE-BUILD"
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
 #: en/lb_chroot.1:1 en/lb_clean.1:1 en/lb_config.1:1 en/lb_source.1:1
 #: en/live-build.7:1
-#, fuzzy, no-wrap
-msgid "2015-10-21"
-msgstr "2015-02-07"
+#, no-wrap
+msgid "2017-08-29"
+msgstr ""
 
 #. type: TH
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
 #: en/lb_chroot.1:1 en/lb_clean.1:1 en/lb_config.1:1 en/lb_source.1:1
 #: en/live-build.7:1
-#, fuzzy, no-wrap
-msgid "5.0~a11-1"
-msgstr "5.0~a3-1"
+#, no-wrap
+msgid "1:20170807kali1"
+msgstr ""
 
 #. type: TH
 #: en/lb.1:1 en/lb_binary.1:1 en/lb_bootstrap.1:1 en/lb_build.1:1
@@ -127,11 +127,6 @@ msgstr "ホームページ"
 #: en/lb_chroot.1:27 en/lb_clean.1:50 en/lb_config.1:492 en/lb_source.1:27
 #: en/live-build.7:242
 #, fuzzy
-#| msgid ""
-#| "More information about live-build and the Live Systems project can be "
-#| "found on the homepage at E<lt>I<https://debian-live.alioth.debian.org/"
-#| ">E<gt> and in the manual at E<lt>I<https://debian-live.alioth.debian.org/"
-#| "manual/>E<gt>."
 msgid ""
 "More information about live-build and the Live Systems project can be found "
 "on the homepage at E<lt>I<https://debian-live.alioth.debian.org/>E<gt>."

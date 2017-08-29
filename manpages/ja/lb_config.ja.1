@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH LIVE\-BUILD 1 2015\-10\-21 5.0~a11\-1 "Live システムプロジェクト"
+.TH LIVE\-BUILD 1 2017\-08\-29 1:20170807kali1 "Live システムプロジェクト"
 
 .SH 名前
 \fBlb_config\fP \- Create config directory
@@ -429,9 +429,10 @@ isohybrid に渡すオプションを指定します。
 出来上がる CD/DVD イメージのヘッダの APPLICATION フィールドをセットします。デフォルトは Debian モードでは「Debian
 Live」、ubuntu モードでは「Ubuntu Live」となっています。
 .IP "\fB\-\-iso\-preparer\fP \fI名前\fP" 4
-出来上がる CD/DVD イメージのヘッダの PREPARER フィールドをセットします。デフォルトは「live\-build \fIバージョン\fP;
-http://packages.qa.debian.org/live\-build」で、バージョンはそのイメージのビルドに利用した live\-build
-のバージョンに展開されます。
+sets the PREPARER field in the header of a resulting CD/DVD image. By
+default this is set to "live\-build \fIVERSION\fP;
+http://debian\-live.alioth.debian.org/live\-build", where VERSION is expanded
+to the version of live\-build that was used to build the image.
 .IP "\fB\-\-iso\-publisher\fP \fI名前\fP" 4
 出来上がる CD/DVD イメージのヘッダの PUBLISHED フィールドをセットします。デフォルトは「Live Systems project;
 http:/live\-systems.org/;
