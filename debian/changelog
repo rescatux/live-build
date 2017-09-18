@@ -10,6 +10,8 @@ live-build (1:20170830) UNRELEASED; urgency=medium
   * Fix size calculation when we use FAT filesystems that do not support
     hardlinks. Closes: #873640
     Thanks to Matthijs Kooijman <matthijs@stdin.nl> for the patch.
+  * Replace "kirkwood" and "orion5x" armel flavors with the new
+    "marvell" (as done by the linux source package since its version 4.4).
 
  -- Raphaël Hertzog <hertzog@debian.org>  Tue, 29 Aug 2017 15:13:39 +0200
 
