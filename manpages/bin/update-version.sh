@@ -13,11 +13,11 @@ set -e
 PROGRAM="LIVE\\\-BUILD"
 VERSION="$(cd .. && dpkg-parsechangelog -S Version)"
 
-DATE="$(LC_ALL=C date +%Y\\\\-%m\\\\-%d)"
+DATE="$(LC_ALL=C date --utc --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y\\\\-%m\\\\-%d)"
 
-DAY="$(LC_ALL=C date +%d)"
-MONTH="$(LC_ALL=C date +%m)"
-YEAR="$(LC_ALL=C date +%Y)"
+DAY="$(LC_ALL=C date --utc --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%d)"
+MONTH="$(LC_ALL=C date --utc --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%m)"
+YEAR="$(LC_ALL=C date --utc --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y)"
 
 echo "Updating version headers..."
 

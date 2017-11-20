@@ -1,3 +1,11 @@
+live-build (1:20170921) UNRELEASED; urgency=medium
+
+  * Use $SOURCE_DATE_EPOCH when updating timestamps of manual pages in order
+    to make the package reproducible at build time. Closes: #879169
+    Thanks to Chris Lamb <lamby@debian.org> for the patch.
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Mon, 20 Nov 2017 22:02:22 +0100
+
 live-build (1:20170920) unstable; urgency=medium
 
   * Auto-update version strings in manual pages.
