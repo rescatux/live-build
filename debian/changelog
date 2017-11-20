@@ -5,6 +5,8 @@ live-build (1:20170921) UNRELEASED; urgency=medium
     Thanks to Chris Lamb <lamby@debian.org> for the patch.
   * Accept kernels without initrd. Closes: #878430
     Thanks to Balint Reczey <balint.reczey@canonical.com> for the patch.
+  * Fix the way the .disk/mkisofs file is created. Closes: #881941
+    Thanks to Daniel Reichelt <debian@nachtgeist.net> for the patch.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Mon, 20 Nov 2017 22:02:22 +0100
 
