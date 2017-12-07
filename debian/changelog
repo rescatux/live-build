@@ -1,4 +1,4 @@
-live-build (1:20170921) UNRELEASED; urgency=medium
+live-build (1:20171207) unstable; urgency=medium
 
   * Use $SOURCE_DATE_EPOCH when updating timestamps of manual pages in order
     to make the package reproducible at build time. Closes: #879169
@@ -8,7 +8,7 @@ live-build (1:20170921) UNRELEASED; urgency=medium
   * Fix the way the .disk/mkisofs file is created. Closes: #881941
     Thanks to Daniel Reichelt <debian@nachtgeist.net> for the patch.
 
- -- Raphaël Hertzog <hertzog@debian.org>  Mon, 20 Nov 2017 22:02:22 +0100
+ -- Raphaël Hertzog <hertzog@debian.org>  Thu, 07 Dec 2017 20:29:59 +0100
 
 live-build (1:20170920) unstable; urgency=medium
 
