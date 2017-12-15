@@ -453,7 +453,7 @@ Local_arguments ()
 				;;
 
 			-k|--linux-flavours)
-				LB_LINUX_FLAVOURS="${2}"
+				LB_LINUX_FLAVOURS_WITH_ARCH="${2}"
 				shift 2
 				;;
 
@@ -1132,8 +1132,16 @@ LB_INTERACTIVE="${LB_INTERACTIVE}"
 LB_KEYRING_PACKAGES="${LB_KEYRING_PACKAGES}"
 
 # \$LB_LINUX_FLAVOURS: set kernel flavour to use
+# This is kept for backwards compatibility
 # (Default: autodetected)
-LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS}"
+if [ -n "${LB_LINUX_FLAVOURS}" ]
+then
+	LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS}"
+fi
+
+# \$LB_LINUX_FLAVOURS_WITH_ARCH: set kernel flavour to use (with arch)
+# (Default: autodetected)
+LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH}"
 
 # \$LB_LINUX_PACKAGES: set kernel packages to use
 # (Default: autodetected)
