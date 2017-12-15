@@ -99,8 +99,8 @@ Grub_live_autodetect_menu_entry ()
 	local LABEL="${1}"
 	local AMD64_KERNEL="${2}"
 	local AMD64_INITRD="${3}"
-	local _486_KERNEL="${4}"
-	local _486_INITRD="${5}"
+	local _686_KERNEL="${4}"
+	local _686_INITRD="${5}"
 	local APPEND="${6}"
 	cat <<END
 # Autodetect if amd64 is supported
@@ -109,8 +109,8 @@ menuentry "$LABEL" {
 		linux ${AMD64_KERNEL} ${APPEND}
 		initrd ${AMD64_INITRD}
 	else
-		linux ${_486_KERNEL} ${APPEND}
-		initrd ${_486_INITRD}
+		linux ${_686_KERNEL} ${APPEND}
+		initrd ${_686_INITRD}
 	fi
 }
 END
@@ -178,27 +178,27 @@ INITRD_LIVE="/${INITFS}/${DEFAULT_INITRD}"
 APPEND_LIVE="${LB_BOOTAPPEND_LIVE}"
 
 # Assembling kernel configuration
-_AMD64_486_NUMBER="0"
+_AMD64_686_NUMBER="0"
 
 for _FLAVOUR in ${LB_LINUX_FLAVOURS}
 do
-	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "486" ] ; then
-		_AMD64_486_NUMBER="$((${_AMD64_486_NUMBER} + 1))"
+	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "686" ] ; then
+		_AMD64_686_NUMBER="$((${_AMD64_686_NUMBER} + 1))"
 	fi
 done
 
-if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
+if [ "${_AMD64_686_NUMBER}" -ge 2 ] ; then
 	# Default entries
 	AMD64_KERNEL="$(basename chroot/boot/vmlinuz-*amd64)"
 	AMD64_INITRD="initrd.img-$(echo ${AMD64_KERNEL} | sed -e 's|vmlinuz-||')"
-	_486_KERNEL="$(basename chroot/boot/vmlinuz-*486)"
-	_486_INITRD="initrd.img-$(echo ${_486_KERNEL} | sed -e 's|vmlinuz-||')"
+	_686_KERNEL="$(basename chroot/boot/vmlinuz-*686)"
+	_686_INITRD="initrd.img-$(echo ${_686_KERNEL} | sed -e 's|vmlinuz-||')"
 
 	Grub_live_autodetect_entry "Live system (autodetect)" \
 		"/${INITFS}/${AMD64_KERNEL}" \
 		"/${INITFS}/${AMD64_INITRD}" \
-		"/${INITFS}/${_486_KERNEL}" \
-		"/${INITFS}/${_486_INITRD}" \
+		"/${INITFS}/${_686_KERNEL}" \
+		"/${INITFS}/${_686_INITRD}" \
 		"$APPEND_LIVE"
 else
 	Grub_live_entry "Live system" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${APPEND_LIVE}"
