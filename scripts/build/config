@@ -1116,6 +1116,10 @@ LB_KEYRING_PACKAGES="${LB_KEYRING_PACKAGES}"
 # (Default: autodetected)
 LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS}"
 
+# \$LB_PACKAGE_LINUX_FLAVOURS: set kernel flavour package to use
+# (Default: autodetected)
+LB_PACKAGE_LINUX_FLAVOURS="${LB_PACKAGE_LINUX_FLAVOURS}"
+
 # \$LB_LINUX_PACKAGES: set kernel packages to use
 # (Default: autodetected)
 LB_LINUX_PACKAGES="${LB_LINUX_PACKAGES}"
