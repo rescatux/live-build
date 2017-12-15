@@ -407,27 +407,27 @@ Set_defaults ()
 	# Setting linux flavour string
 	case "${LB_ARCHITECTURES}" in
 		arm64)
-			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-arm64}"
+			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-arm64}"
 			;;
 
 		armel)
 			# armel will have special images: one rootfs image and many additional kernel images.
 			# therefore we default to all available armel flavours
-			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-marvell}"
+			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-marvell}"
 			;;
 
 		armhf)
 			# armhf will have special images: one rootfs image and many additional kernel images.
 			# therefore we default to all available armhf flavours
-			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-armmp armmp-lpae}"
+			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-armmp armmp-lpae}"
 			;;
 
 		amd64)
-			LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-amd64}"
+			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-amd64}"
 			;;
 
 		i386)
-                        LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-686-pae}"
+                        LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-686-pae}"
 			;;
 
 		ia64)
@@ -438,7 +438,7 @@ Set_defaults ()
 					;;
 
 				*)
-					LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-itanium}"
+					LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-itanium}"
 					;;
 			esac
 			;;
@@ -451,7 +451,7 @@ Set_defaults ()
 					;;
 
 				*)
-					LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-powerpc64 powerpc}"
+					LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-powerpc64 powerpc}"
 					;;
 			esac
 			;;
@@ -464,7 +464,7 @@ Set_defaults ()
 					;;
 
 				*)
-					LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS:-s390x}"
+					LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-s390x}"
 					;;
 			esac
 			;;
@@ -474,6 +474,14 @@ Set_defaults ()
 			exit 1
 			;;
 	esac
+
+	LB_LINUX_FLAVOURS=""
+	for FLAVOUR in ${LB_LINUX_FLAVOURS_WITH_ARCH}
+	do
+		ARCH_FILTERED_FLAVOUR="$(echo ${FLAVOUR} | awk -F':' '{print $1}')"
+		LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS} ${ARCH_FILTERED_FLAVOUR}"
+	done
+
 
 	# Set linux packages
 	LB_LINUX_PACKAGES="${LB_LINUX_PACKAGES:-linux-image}"
