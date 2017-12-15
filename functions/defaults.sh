@@ -475,6 +475,14 @@ Set_defaults ()
 			;;
 	esac
 
+	LB_PACKAGE_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS}"
+	LB_LINUX_FLAVOURS=""
+	for FLAVOUR in ${LB_PACKAGE_LINUX_FLAVOURS}
+	do
+		PACKAGE_FILTERED_FLAVOUR="$(echo ${FLAVOUR} | awk -F':' '{print $1}')"
+		LB_LINUX_FLAVOURS="${LB_LINUX_FLAVOURS} ${PACKAGE_FILTERED_FLAVOUR}"
+	done
+
 	# Set linux packages
 	LB_LINUX_PACKAGES="${LB_LINUX_PACKAGES:-linux-image}"
 
