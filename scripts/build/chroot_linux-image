@@ -48,7 +48,7 @@ Create_lockfile .lock
 #		;;
 #esac
 
-for FLAVOUR in ${LB_LINUX_FLAVOURS}
+for FLAVOUR in ${LB_LINUX_FLAVOURS_WITH_ARCH}
 do
 	for PACKAGE in ${LB_LINUX_PACKAGES}
 	do
