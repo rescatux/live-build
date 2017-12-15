@@ -169,7 +169,7 @@ then
 fi
 
 # Default entries
-DEFAULT_FLAVOUR="$(echo ${LB_LINUX_FLAVOURS} | awk '{ print $1 }')"
+DEFAULT_FLAVOUR="$(echo ${LB_LINUX_FILENAME_FLAVOURS} | awk '{ print $1 }')"
 DEFAULT_KERNEL="$(basename chroot/boot/vmlinuz-*${DEFAULT_FLAVOUR})"
 DEFAULT_INITRD="initrd.img-$(echo ${DEFAULT_KERNEL} | sed -e 's|vmlinuz-||')"
 
@@ -180,7 +180,7 @@ APPEND_LIVE="${LB_BOOTAPPEND_LIVE}"
 # Assembling kernel configuration
 _AMD64_486_NUMBER="0"
 
-for _FLAVOUR in ${LB_LINUX_FLAVOURS}
+for _FLAVOUR in ${LB_LINUX_FILENAME_FLAVOURS}
 do
 	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "486" ] ; then
 		_AMD64_486_NUMBER="$((${_AMD64_486_NUMBER} + 1))"

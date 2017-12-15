@@ -151,7 +151,7 @@ esac
 if [ -e "${_TARGET}/live.cfg.in" ]
 then
 	# This is all rather suboptimal.. needs prettifying at some point
-	_FLAVOURS="$(echo ${LB_LINUX_FLAVOURS} | wc -w)"
+	_FLAVOURS="$(echo ${LB_LINUX_FILENAME_FLAVOURS} | wc -w)"
 
 	case "${_FLAVOURS}" in
 		1)
@@ -160,7 +160,7 @@ then
 			ln $(ls -r1 --sort=version binary/${_INITRAMFS}/vmlinuz-* | head -n 1) binary/${_INITRAMFS}/vmlinuz
 			ln $(ls -r1 --sort=version binary/${_INITRAMFS}/initrd.img-* | head -n 1) binary/${_INITRAMFS}/initrd.img
 
-			sed -e "s|@FLAVOUR@|${LB_LINUX_FLAVOURS}|g" \
+			sed -e "s|@FLAVOUR@|${LB_LINUX_FILENAME_FLAVOURS}|g" \
 			    -e "s|@LINUX@|/${_INITRAMFS}/vmlinuz|g" \
 			    -e "s|@INITRD@|/${_INITRAMFS}/initrd.img|g" \
 			"${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
@@ -171,7 +171,7 @@ then
 		*)
 			_NUMBER="0"
 
-			for _FLAVOUR in ${LB_LINUX_FLAVOURS}
+			for _FLAVOUR in ${LB_LINUX_FILENAME_FLAVOURS}
 			do
 				_NUMBER="$((${_NUMBER} + 1))"
 
