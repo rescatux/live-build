@@ -199,14 +199,23 @@ if [ "${_AMD64_686_NUMBER}" -ge 2 ] ; then
 		"/${INITFS}/${AMD64_INITRD}" \
 		"/${INITFS}/${_686_KERNEL}" \
 		"/${INITFS}/${_686_INITRD}" \
-		"$APPEND_LIVE"
+		"${APPEND_LIVE}"
+
+	if [ "${LB_BOOTAPPEND_LIVE_FAILSAFE}" != "none" ]
+	then
+		Grub_live_autodetect_entry "Live system (autodetect) (fail-safe mode)" \
+			"/${INITFS}/${AMD64_KERNEL}" \
+			"/${INITFS}/${AMD64_INITRD}" \
+			"/${INITFS}/${_686_KERNEL}" \
+			"/${INITFS}/${_686_INITRD}" \
+			"${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+	fi
 else
 	Grub_live_entry "Live system" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${APPEND_LIVE}"
-fi
-
-if [ "${LB_BOOTAPPEND_LIVE_FAILSAFE}" != "none" ]
-then
-	Grub_live_entry "Live system (fail-safe mode)" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+	if [ "${LB_BOOTAPPEND_LIVE_FAILSAFE}" != "none" ]
+	then
+		Grub_live_entry "Live system (fail-safe mode)" "/${INITFS}/${DEFAULT_KERNEL}" "/${INITFS}/${DEFAULT_INITRD}" "${LB_BOOTAPPEND_LIVE_FAILSAFE}"
+	fi
 fi
 
 _COUNT=0
