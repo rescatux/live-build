@@ -211,7 +211,7 @@ fi
 
 _COUNT=0
 for KERNEL in chroot/boot/vmlinuz-*; do
-	_COUNT=$(( $COUNT + 1 ))
+	_COUNT=$(( $_COUNT + 1 ))
 done
 
 if [ $_COUNT -gt 1 ]; then
