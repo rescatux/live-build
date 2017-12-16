@@ -3,6 +3,8 @@ live-build (1:20171208) UNRELEASED; urgency=medium
   * Restore i386/amd64 autodetection in grub after rename of
     i386 kernel from -486 to -686. Closes: #884585
     Thanks to Adrian Gibanel Lopez for the patch.
+  * Fix handling of multiple kernels in binary_loopback_cfg.
+    Closes: #884588 Thanks to Adrian Gibanel Lopez for the patch.
 
  -- Raphaël Hertzog <hertzog@debian.org>  Thu, 21 Dec 2017 14:14:04 +0100
 
