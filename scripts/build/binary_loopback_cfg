@@ -182,7 +182,7 @@ _AMD64_486_NUMBER="0"
 
 for _FLAVOUR in ${LB_LINUX_FLAVOURS}
 do
-	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "486" ] ; then
+	if [ "${_FLAVOUR}" = "amd64" -o "${_FLAVOUR}" = "686" ] ; then
 		_AMD64_486_NUMBER="$((${_AMD64_486_NUMBER} + 1))"
 	fi
 done
@@ -191,7 +191,7 @@ if [ "${_AMD64_486_NUMBER}" -ge 2 ] ; then
 	# Default entries
 	AMD64_KERNEL="$(basename chroot/boot/vmlinuz-*amd64)"
 	AMD64_INITRD="initrd.img-$(echo ${AMD64_KERNEL} | sed -e 's|vmlinuz-||')"
-	_486_KERNEL="$(basename chroot/boot/vmlinuz-*486)"
+	_486_KERNEL="$(basename chroot/boot/vmlinuz-*686)"
 	_486_INITRD="initrd.img-$(echo ${_486_KERNEL} | sed -e 's|vmlinuz-||')"
 
 	Grub_live_autodetect_entry "Live system (autodetect)" \
