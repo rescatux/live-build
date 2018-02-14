@@ -9,6 +9,8 @@ live-build (1:20171208) UNRELEASED; urgency=medium
     consistent with the i386/amd64 autodetection entries.
     Closes: #884591 Thanks to Adrian Gibanel Lopez for the patch.
   * Add e2fsprogs to Suggests along with mtd-utils, parted. Closes: #887278
+  * Fix Check_package invocation in binary_hdd for ntfs-3g
+    (/sbin/mkfs.nfts -> /sbin/mkfs.ntfs)
 
  -- Raphaël Hertzog <hertzog@debian.org>  Thu, 21 Dec 2017 14:14:04 +0100
 

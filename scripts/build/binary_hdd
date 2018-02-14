@@ -50,7 +50,7 @@ case "${LB_BINARY_FILESYSTEM}" in
 		;;
 
 	ntfs)
-		Check_package chroot /sbin/mkfs.nfts ntfs-3g
+		Check_package chroot /sbin/mkfs.ntfs ntfs-3g
 		;;
 esac
 
