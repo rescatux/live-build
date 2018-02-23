@@ -449,12 +449,6 @@ EOF
 			mv chroot/etc/apt/sources.list.d/zz-sources.list chroot/etc/apt/sources.list
 		fi
 
-		# Unmount local repository
-if echo "${LB_PARENT_MIRROR_CHROOT}" | grep -q '^file:/'
-then
-	Chroot_unbind_path chroot "$(echo ${LB_PARENT_MIRROR_CHROOT} | sed -e 's|file:||')"
-fi
-
 		# Configure generic indices
 		# Cleaning apt list cache
 		rm -rf chroot/var/lib/apt/lists
@@ -651,6 +645,12 @@ EOF
 
 		# Updating indices
 		Apt chroot update
+
+		# Unmount local repository - after apt update or it will fail due to missing files
+		if echo "${LB_PARENT_MIRROR_CHROOT}" | grep -q '^file:/'
+		then
+			Chroot_unbind_path chroot "$(echo ${LB_PARENT_MIRROR_CHROOT} | sed -e 's|file:||')"
+		fi
 
 		# Cleaning apt package cache
 		rm -rf chroot/var/cache/apt
