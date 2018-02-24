@@ -1,5 +1,6 @@
-live-build (1:20171208) UNRELEASED; urgency=medium
+live-build (1:20180224) UNRELEASED; urgency=medium
 
+  [ Raphaël Hertzog ]
   * Restore i386/amd64 autodetection in grub after rename of
     i386 kernel from -486 to -686. Closes: #884585
     Thanks to Adrian Gibanel Lopez for the patch.
@@ -11,8 +12,17 @@ live-build (1:20171208) UNRELEASED; urgency=medium
   * Add e2fsprogs to Suggests along with mtd-utils, parted. Closes: #887278
   * Fix Check_package invocation in binary_hdd for ntfs-3g
     (/sbin/mkfs.nfts -> /sbin/mkfs.ntfs)
+  * Run mksquashfs with nice -n 19 to not overload the system.
+    Thanks to Ronny Standtke for the patch. (Closes: #867539)
 
- -- Raphaël Hertzog <hertzog@debian.org>  Thu, 21 Dec 2017 14:14:04 +0100
+  [ Luca Boccassi ]
+  * Fix build with local offline mirrors (Closes: #891206)
+
+  [ Rohan Garg ]
+  * Simplify bootstrapping of foreign architectures with qemu-debootstrap
+    (Closes: #847919)
+
+ -- Raphaël Hertzog <hertzog@debian.org>  Sat, 24 Feb 2018 17:55:25 +0100
 
 live-build (1:20171207) unstable; urgency=medium
 
