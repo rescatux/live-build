@@ -133,6 +133,21 @@ case "${LB_ARCHITECTURES}" in
 esac
 
 
+# On some platforms the EFI grub image will be loaded, so grub's root
+# variable will be set to the EFI partition. This means that grub will
+# look in that partition for a grub.cfg file, and even if it finds it
+# it will not be able to find the vmlinuz and initrd.
+# Drop a minimal grub.cfg in the EFI partition that sets the root and prefix
+# to whatever partition holds the /live/vmlinuz image, and load the grub
+# config from that same partition.
+# This is what the Ubuntu livecd already does.
+mkdir -p ${_CHROOT_DIR}/grub-efi-temp-cfg
+cat >${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg <<EOF
+search --set=root --file /live/vmlinuz
+set prefix=(\\\$root)/boot/grub
+configfile (\\\$root)/boot/grub/grub.cfg
+EOF
+
 # The code below is adapted from tools/boot/jessie/boot-x86
 # in debian-cd
 
@@ -143,9 +158,13 @@ esac
 # the case of a multi-arch amd64/i386 image
 
 size=0
-for file in ${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot*.efi; do
+for file in ${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot*.efi \
+		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg; do
 	size=\$((\$size + \$(stat -c %s "\$file")))
 done
+
+# directories: efi efi/boot boot boot/grub
+size=\$((\$size + 4096 * 4))
 
 blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
 
@@ -155,6 +174,11 @@ mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi/boot
 mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot*.efi \
 	"::efi/boot"
+
+mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot
+mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot/grub
+mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg \
+	"::boot/grub"
 END
 
 case "${LB_BUILD_WITH_CHROOT}" in
@@ -186,6 +210,7 @@ cp -r chroot/grub-efi-temp/* binary/
 rm -rf chroot/grub-efi-temp-x86_64-efi
 rm -rf chroot/grub-efi-temp-i386-efi
 rm -rf chroot/grub-efi-temp-arm64-efi
+rm -rf chroot/grub-efi-temp-cfg
 rm -rf chroot/grub-efi-temp
 
 # We rely on: binary_loopback_cfg to generate grub.cfg and other configuration files
