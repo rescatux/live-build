@@ -157,14 +157,16 @@ gen_efi_boot_img(){
 	local netboot_prefix="\$3"
 	local outdir="grub-efi-temp-\${platform}"
 	"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/\$outdir" "\$platform" "\$efi_name" "\$netboot_prefix"
-	mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-	mcopy -n -i ${_CHROOT_DIR}/\$outdir/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+	mkdir -p ${_CHROOT_DIR}/grub-efi-temp/EFI/boot
+	mcopy -n -i ${_CHROOT_DIR}/\$outdir/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/EFI/boot
 	cp -r "${_CHROOT_DIR}"/\$outdir/* "${_CHROOT_DIR}/grub-efi-temp/"
 
 	# Secure Boot support:
+	# - create the EFI directory in the ESP with uppercase letters to make
+	#   certain firmwares (eg: TianoCore) happy
 	# - use shim as the boot<arch>.efi that gets loaded first by the firmware
 	# - drop a grub.cfg (same reason as below) in the cfg directory as configured
-	#   by the signed grub efi binary creation. At the moment that is efi/debian
+	#   by the signed grub efi binary creation. At the moment that is EFI/debian
 	#   as set by grub2/debian/build-efi-images and cannot be changed without
 	#   rebuilding grub2
 	# - the source paths are taken from shim-signed:
@@ -175,11 +177,11 @@ gen_efi_boot_img(){
 	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed -a \
 			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
 			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
-		mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/debian
+		mkdir -p ${_CHROOT_DIR}/grub-efi-temp/EFI/debian
 		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed \
-			${_CHROOT_DIR}/grub-efi-temp/efi/boot/grub\$efi_name.efi
+			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
 		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
-			${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot\$efi_name.efi
+			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
 	fi
 }
 
@@ -230,35 +232,35 @@ EOF
 # the case of a multi-arch amd64/i386 image
 
 size=0
-for file in ${_CHROOT_DIR}/grub-efi-temp/efi/boot/*.efi \
+for file in ${_CHROOT_DIR}/grub-efi-temp/EFI/boot/*.efi \
 		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg; do
 	size=\$((\$size + \$(stat -c %s "\$file")))
 done
 
-# directories: efi efi/boot boot boot/grub
+# directories: EFI EFI/boot boot boot/grub
 size=\$((\$size + 4096 * 4))
 
-# efi/debian and additional grub.cfg
-if [ -d ${_CHROOT_DIR}/grub-efi-temp/efi/debian ]; then
+# EFI/debian and additional grub.cfg
+if [ -d ${_CHROOT_DIR}/grub-efi-temp/EFI/debian ]; then
 	size=\$((\$size + 4096))
 	size=\$((\$size + \$(stat -c %s "${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg")))
 	cp ${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg \
-		${_CHROOT_DIR}/grub-efi-temp/efi/debian
+		${_CHROOT_DIR}/grub-efi-temp/EFI/debian
 fi
 
 blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
 
 rm -f ${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img
 mkfs.msdos -C "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \$blocks >/dev/null
-mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi
-mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi/boot
-mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/efi/boot/*.efi \
-	"::efi/boot"
+mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI
+mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI/boot
+mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/EFI/boot/*.efi \
+	"::EFI/boot"
 
-if [ -d ${_CHROOT_DIR}/grub-efi-temp/efi/debian ]; then
-	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi/debian
+if [ -d ${_CHROOT_DIR}/grub-efi-temp/EFI/debian ]; then
+	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI/debian
 	mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \
-		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::efi/debian"
+		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::EFI/debian"
 fi
 
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot
