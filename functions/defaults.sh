@@ -770,6 +770,9 @@ Set_defaults ()
 	# Setting swap file
 	LB_SWAP_FILE_SIZE="${LB_SWAP_FILE_SIZE:-512}"
 
+	# Setting UEFI Secure Boot
+	LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT:-auto}"
+
 	## config/source
 
 	# Setting source option

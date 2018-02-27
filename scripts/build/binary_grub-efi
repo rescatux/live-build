@@ -58,6 +58,57 @@ Check_package chroot /usr/bin/grub-mkimage grub-common
 Check_package chroot /usr/bin/mcopy mtools
 Check_package chroot /sbin/mkfs.msdos dosfstools
 
+# Check UEFI Secure Boot setting and depends
+# By default (auto) do a best-effort build: if the signed binaries are available use
+# them, but don't fail if they are not, just print a warning.
+case "${LB_ARCHITECTURES}" in
+	amd64|i386)
+		_SB_EFI_PLATFORM="x86_64"
+		_SB_EFI_NAME="x64"
+		_SB_EFI_DEB="amd64"
+	;;
+	arm64)
+		_SB_EFI_PLATFORM="arm64"
+		_SB_EFI_NAME="aa64"
+		_SB_EFI_DEB="arm64"
+	;;
+esac
+
+_PRE_SB_PACKAGES="${_LB_PACKAGES}"
+_LB_PACKAGES="shim-signed grub-efi-${_SB_EFI_DEB}-signed"
+case "${LB_UEFI_SECURE_BOOT}" in
+	auto)
+		# Use Check_installed, as Check_package will error out immediately
+		set +e
+		Install_package
+		set -e
+		Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/grub${_SB_EFI_NAME}.efi.signed \
+			grub-efi-${_SB_EFI_DEB}-signed
+		_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
+		Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+			shim-signed
+
+		if [ "${INSTALL_STATUS}" -ne 0 -o "${_GRUB_INSTALL_STATUS}" -ne 0 ]
+		then
+			Echo_warning "UEFI Secure Boot disabled due to missing signed Grub/Shim."
+		else
+			Echo_message "UEFI Secure Boot support enabled."
+		fi
+	;;
+	enable)
+		Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/grub${_SB_EFI_NAME}.efi.signed \
+			grub-efi-${_SB_EFI_DEB}-signed
+		Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+			shim-signed
+		Install_package
+		Echo_message "UEFI Secure Boot support enabled."
+	;;
+	disable)
+		Echo_message "UEFI Secure Boot support disabled."
+	;;
+esac
+_LB_PACKAGES="${_PRE_SB_PACKAGES}"
+
 # Setting destination directory
 case "${LIVE_IMAGE_TYPE}" in
 	hdd*|netboot)
@@ -109,6 +160,27 @@ gen_efi_boot_img(){
 	mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
 	mcopy -n -i ${_CHROOT_DIR}/\$outdir/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
 	cp -r "${_CHROOT_DIR}"/\$outdir/* "${_CHROOT_DIR}/grub-efi-temp/"
+
+	# Secure Boot support:
+	# - use shim as the boot<arch>.efi that gets loaded first by the firmware
+	# - drop a grub.cfg (same reason as below) in the cfg directory as configured
+	#   by the signed grub efi binary creation. At the moment that is efi/debian
+	#   as set by grub2/debian/build-efi-images and cannot be changed without
+	#   rebuilding grub2
+	# - the source paths are taken from shim-signed:
+	#    https://packages.debian.org/sid/amd64/shim-signed/filelist
+	#   and grub-efi-amd64-signed, currently in Ubuntu:
+	#    https://packages.ubuntu.com/xenial/amd64/grub-efi-amd64-signed/filelist
+	#    https://packages.ubuntu.com/bionic/arm64/grub-efi-arm64-signed/filelist
+	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed -a \
+			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
+			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
+		mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/debian
+		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed \
+			${_CHROOT_DIR}/grub-efi-temp/efi/boot/grub\$efi_name.efi
+		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
+			${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot\$efi_name.efi
+	fi
 }
 
 PRE_EFI_IMAGE_PATH="${PATH}"
@@ -158,7 +230,7 @@ EOF
 # the case of a multi-arch amd64/i386 image
 
 size=0
-for file in ${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot*.efi \
+for file in ${_CHROOT_DIR}/grub-efi-temp/efi/boot/*.efi \
 		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg; do
 	size=\$((\$size + \$(stat -c %s "\$file")))
 done
@@ -166,14 +238,28 @@ done
 # directories: efi efi/boot boot boot/grub
 size=\$((\$size + 4096 * 4))
 
+# efi/debian and additional grub.cfg
+if [ -d ${_CHROOT_DIR}/grub-efi-temp/efi/debian ]; then
+	size=\$((\$size + 4096))
+	size=\$((\$size + \$(stat -c %s "${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg")))
+	cp ${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg \
+		${_CHROOT_DIR}/grub-efi-temp/efi/debian
+fi
+
 blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
 
 rm -f ${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img
 mkfs.msdos -C "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \$blocks >/dev/null
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi/boot
-mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/efi/boot/boot*.efi \
+mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/efi/boot/*.efi \
 	"::efi/boot"
+
+if [ -d ${_CHROOT_DIR}/grub-efi-temp/efi/debian ]; then
+	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::efi/debian
+	mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \
+		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::efi/debian"
+fi
 
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot/grub

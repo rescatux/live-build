@@ -116,6 +116,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--swap-file-path PATH]\n\
 \t    [--swap-file-size MB]\n\
 \t    [--tasksel apt|aptitude|tasksel]\n\
+\t    [--uefi-secure-boot auto|enable|disable]\n\
 \t    [--updates true|false]\n\
 \t    [--backports true|false]\n\
 \t    [--verbose]\n\
@@ -148,6 +149,7 @@ Local_arguments ()
 		net-cow-server:,net-tarball:,firmware-binary:,firmware-chroot:,swap-file-path:,swap-file-size:,
 		loadlin:,win32-loader:,source:,source-images:,breakpoints,conffile:,debug,force,
 		help,ignore-system-defaults,quiet,usage,verbose,version,bootstrap-qemu-static:,bootstrap-qemu-arch:,
+		uefi-secure-boot:,
 		bootstrap-qemu-exclude:"
 	# Remove spaces added by indentation
 	LONG_OPTIONS="$(echo ${LONG_OPTIONS} | tr -d ' ')"
@@ -671,6 +673,11 @@ Local_arguments ()
 
 			--swap-file-size)
 				LB_SWAP_FILE_SIZE="${2}"
+				shift 2
+				;;
+
+			--uefi-secure-boot)
+				LB_UEFI_SECURE_BOOT="${2}"
 				shift 2
 				;;
 
@@ -1299,6 +1306,10 @@ LB_SWAP_FILE_PATH="${LB_SWAP_FILE_PATH}"
 # \$LB_SWAP_FILE_SIZE: set swap file size
 # (Default: ${LB_SWAP_FILE_SIZE})
 LB_SWAP_FILE_SIZE="${LB_SWAP_FILE_SIZE}"
+
+# \$LB_UEFI_SECURE_BOOT: enable/disable UEFI secure boot
+# (Default: ${LB_UEFI_SECURE_BOOT})
+LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT}"
 EOF
 
 # Creating lb_source_* configuration

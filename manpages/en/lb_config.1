@@ -215,6 +215,8 @@
 .br
 	[\fB\-\-templates\fR \fIPATH\fR]
 .br
+	[\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR]
+.br
 	[\fB\-\-hdd\-size \fIMB\fR]
 .br
 	[\fB\-\-updates\fR true|false]
@@ -454,6 +456,8 @@ defines what size in megabytes the swap file should be, if one is to be created.
 selects which program is used to install tasks. By default, this is set to tasksel.
 .IP "\fB\-\-templates\fR \fIPATH\fR" 4
 sets the path to the templates that live\-build is going to use, e.g. for bootloaders. By default, this is set to /usr/share/live/build/templates/.
+.IP "\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR" 4
+enables or disables Secure Boot support when using grub-efi, by installing signed shim and grub-efi packages. By default, this is set to auto, which means if the packages are available they will be installed, but if not only a warning will be printed and the normal non-signed grub-efi will be used.
 .IP "\fB\-\-hdd\-size\fR MB" 4
 defines what size the hdd image should be. Note that although the default is set to 10000 (= 10GB), it will not need 10GB space on your harddisk as the files are created as sparse files.
 .IP "\fB\-\-updates\fR true|false" 4
