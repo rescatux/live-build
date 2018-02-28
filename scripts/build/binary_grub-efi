@@ -41,12 +41,19 @@ Check_lockfile .lock
 Create_lockfile .lock
 
 # Check architecture
-Check_architectures amd64 i386
+Check_architectures amd64 i386 arm64
 Check_crossarchitectures
 
 # Checking depends
-Check_package chroot /usr/lib/grub/x86_64-efi/configfile.mod grub-efi-amd64-bin
-Check_package chroot /usr/lib/grub/i386-efi/configfile.mod grub-efi-ia32-bin
+case "${LB_ARCHITECTURES}" in
+	amd64|i386)
+		Check_package chroot /usr/lib/grub/x86_64-efi/configfile.mod grub-efi-amd64-bin
+		Check_package chroot /usr/lib/grub/i386-efi/configfile.mod grub-efi-ia32-bin
+	;;
+	arm64)
+		Check_package chroot /usr/lib/grub/arm64-efi/configfile.mod grub-efi-arm64-bin
+	;;
+esac
 Check_package chroot /usr/bin/grub-mkimage grub-common
 Check_package chroot /usr/bin/mcopy mtools
 Check_package chroot /sbin/mkfs.msdos dosfstools
@@ -67,7 +74,7 @@ Restore_cache cache/packages.binary
 Install_package
 
 # Cleanup files that we generate
-rm -rf binary/boot/efi.img binary/boot/grub/i386-efi/ binary/boot/grub/x86_64-efi
+rm -rf binary/boot/efi.img binary/boot/grub/i386-efi/ binary/boot/grub/x86_64-efi binary/boot/grub/arm64-efi
 
 # This is workaround till both efi-image and grub-cpmodules are put into a binary package
 case "${LB_BUILD_WITH_CHROOT}" in
@@ -93,6 +100,17 @@ cat >binary.sh <<END
 
 set -e
 
+gen_efi_boot_img(){
+	local platform="\$1"
+	local efi_name="\$2"
+	local netboot_prefix="\$3"
+	local outdir="grub-efi-temp-\${platform}"
+	"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/\$outdir" "\$platform" "\$efi_name" "\$netboot_prefix"
+	mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+	mcopy -n -i ${_CHROOT_DIR}/\$outdir/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
+	cp -r "${_CHROOT_DIR}"/\$outdir/* "${_CHROOT_DIR}/grub-efi-temp/"
+}
+
 PRE_EFI_IMAGE_PATH="${PATH}"
 if [ ! -e "${LIVE_BUILD}" ] ; then
 	LIVE_BUILD_PATH="/usr/lib/live/build"
@@ -102,16 +120,18 @@ fi
 
 PATH="${PATH}:\${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it was installed in the system
 
-"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp-x86_64-efi/" "x86_64-efi" "x64" "debian-live/amd64"
-mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp-x86_64-efi/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-cp -r "${_CHROOT_DIR}"/grub-efi-temp-x86_64-efi/* "${_CHROOT_DIR}/grub-efi-temp/"
+case "${LB_ARCHITECTURES}" in
+	amd64|i386)
+		gen_efi_boot_img "x86_64-efi" "x64" "debian-live/amd64"
+		gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
+		PATH="\${PRE_EFI_IMAGE_PATH}"
+	;;
+	arm64)
+		gen_efi_boot_img "arm64-efi" "aa64" "debian-live/arm64"
+		PATH="\${PRE_EFI_IMAGE_PATH}"
+	;;
+esac
 
-"\${LIVE_BUILD_PATH}/efi-image" "${_CHROOT_DIR}/grub-efi-temp-i386-efi/" "i386-efi" "ia32" "debian-live/i386"
-PATH="\${PRE_EFI_IMAGE_PATH}"
-mkdir -p ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-mcopy -n -i ${_CHROOT_DIR}/grub-efi-temp-i386-efi/efi.img '::efi/boot/boot*.efi' ${_CHROOT_DIR}/grub-efi-temp/efi/boot
-cp -r "${_CHROOT_DIR}"/grub-efi-temp-i386-efi/* "${_CHROOT_DIR}/grub-efi-temp/"
 
 # The code below is adapted from tools/boot/jessie/boot-x86
 # in debian-cd
@@ -159,11 +179,13 @@ esac
 # Remove unnecessary files
 rm -f chroot/grub-efi-temp/bootnetia32.efi
 rm -f chroot/grub-efi-temp/bootnetx64.efi
+rm -f chroot/grub-efi-temp/bootnetaa64.efi
 
 mkdir -p binary
 cp -r chroot/grub-efi-temp/* binary/
 rm -rf chroot/grub-efi-temp-x86_64-efi
 rm -rf chroot/grub-efi-temp-i386-efi
+rm -rf chroot/grub-efi-temp-arm64-efi
 rm -rf chroot/grub-efi-temp
 
 # We rely on: binary_loopback_cfg to generate grub.cfg and other configuration files
