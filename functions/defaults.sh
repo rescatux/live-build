@@ -763,6 +763,12 @@ Set_defaults ()
 	# Setting net tarball
 	LB_NET_TARBALL="${LB_NET_TARBALL:-true}"
 
+	# Setting onie
+	LB_ONIE="${LB_ONIE:-false}"
+
+	# Setting onie additional kernel cmdline options
+	LB_ONIE_KERNEL_CMDLINE="${LB_ONIE_KERNEL_CMDLINE:-}"
+
 	# Setting firmware option
 	LB_FIRMWARE_CHROOT="${LB_FIRMWARE_CHROOT:-true}"
 	LB_FIRMWARE_BINARY="${LB_FIRMWARE_BINARY:-true}"

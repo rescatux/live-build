@@ -82,6 +82,7 @@ fi
 
 # Building images
 lb binary_iso ${@}
+lb binary_onie ${@}
 lb binary_netboot ${@}
 lb binary_tar ${@}
 lb binary_hdd ${@}
