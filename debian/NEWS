@@ -1,0 +1,10 @@
+live-build (1:20180224) unstable; urgency=medium
+
+  The live-boot mount points have been moved from /lib/live/mount to
+  /run/live. Since this is a backward-incompatible change, a compat
+  recursive bind mount point is being provided in /lib/live/mount so
+  that existing scripts will not break in Debian 10 (Buster).
+  Please note that this will be removed in Debian 11 (Bullseye) so
+  plan accordingly and update any required scripts.
+
+ -- Luca Boccassi <bluca@debian.org>  Thu, 22 Mar 2018 14:36:03 +0000
