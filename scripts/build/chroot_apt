@@ -78,11 +78,13 @@ case "${1}" in
 			true)
 				echo "APT::Get::AllowUnauthenticated \"false\";" > chroot/etc/apt/apt.conf.d/00secure
 				echo "Aptitude::CmdLine::Ignore-Trust-Violations \"false\";" >> chroot/etc/apt/apt.conf.d/00secure
+				echo "Acquire::AllowInsecureRepositories \"false\";" >> chroot/etc/apt/apt.conf.d/00secure
 				;;
 
 			false)
 				echo "APT::Get::AllowUnauthenticated \"true\";" > chroot/etc/apt/apt.conf.d/00secure
 				echo "Aptitude::CmdLine::Ignore-Trust-Violations \"true\";" >> chroot/etc/apt/apt.conf.d/00secure
+				echo "Acquire::AllowInsecureRepositories \"true\";" >> chroot/etc/apt/apt.conf.d/00secure
 				;;
 		esac
 
