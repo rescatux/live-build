@@ -56,6 +56,21 @@ Check_lockfile .lock
 # Creating lock file
 Create_lockfile .lock
 
+Check_package chroot /bin/cpio cpio
+Check_package chroot /usr/bin/sha1sum coreutils
+Check_package chroot /bin/zcat gzip
+Check_package chroot /bin/gzip gzip
+Check_package chroot /usr/bin/xzcat xz-utils
+Check_package chroot /usr/bin/xz xz-utils
+Check_package chroot /bin/bzcat bzip2
+Check_package chroot /bin/bzip2 bzip2
+
+# Restoring cache
+Restore_cache cache/packages.binary
+
+# Installing depends
+Install_package
+
 ### Adds needed helper script
 ## Based on https://github.com/opencomputeproject/onie/blob/master/contrib/debian-iso/sharch_body.sh
 cat > sharch_body.sh << EOF
@@ -175,14 +190,42 @@ rm -rf ${INITDIR}
 mkdir -p ${INITDIR}
 cd ${INITDIR}
 # extract current initrd
-xzcat $EXTRACTDIR/live/initrd.img | cpio -d -i -m
+case $(file --brief --mime --dereference $EXTRACTDIR/live/initrd.img | \
+		sed "s/application\/\(.*\);.*/\1/") in
+	gzip)
+		UNCOMPRESS="zcat"
+		COMPRESS="gzip"
+		;;
+	x-xz)
+		UNCOMPRESS="xzcat"
+		COMPRESS="xz --check=crc32"
+		;;
+	x-bzip2)
+		UNCOMPRESS="bzcat"
+		COMPRESS="bzip2"
+		;;
+	x-lzma)
+		UNCOMPRESS="lzcat --suffix \"\""
+		COMPRESS="lzma"
+		;;
+	octet-stream)
+		UNCOMPRESS="cat"
+		COMPRESS="cat"
+		;;
+	*)
+		echo "ERROR: Unable to detect initrd compression format."
+		exit 1
+		;;
+esac
+
+$UNCOMPRESS $EXTRACTDIR/live/initrd.img | cpio -d -i -m
 echo -n "."
 # copy inputed iso into initrd
 cp "${CURDIR}/${IN_IMAGE}" ./conf/live.iso
 echo -n "."
 # repack
-find . | cpio -o -H newc | xz --check=crc32 --x86 --lzma2=dict=512KiB > ${WORKDIR}/initrd.img
-# cd back into rood dir
+find . | cpio -o -H newc | $COMPRESS > ${WORKDIR}/initrd.img
+# cd back into root dir
 cd ${CURDIR}
 echo -n "."
 
@@ -295,6 +338,12 @@ rm -rf $OUT $WORKDIR
 echo " Done."
 ls -la $(basename $output_file)
 Echo_message "onie-installer created..."
+
+# Saving cache
+Save_cache cache/packages.binary
+
+# Removing depends
+Remove_package
 
 # Creating stage file
 Create_stagefile .build/binary_onie
