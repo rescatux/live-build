@@ -1,4 +1,4 @@
-live-build (1:20180224) UNRELEASED; urgency=medium
+live-build (1:20180328) unstable; urgency=low
 
   [ Raphaël Hertzog ]
   * Restore i386/amd64 autodetection in grub after rename of
@@ -22,7 +22,21 @@ live-build (1:20180224) UNRELEASED; urgency=medium
   * Simplify bootstrapping of foreign architectures with qemu-debootstrap
     (Closes: #847919)
 
- -- Raphaël Hertzog <hertzog@debian.org>  Sat, 24 Feb 2018 17:55:25 +0100
+  [ Steven Shiau ]
+  * Add grub-based UEFI boot support for ARM64 (Closes: #885692)
+
+  [ Luca Boccassi ]
+  * UEFI: add minimal grub.cfg to fat32 partition (Closes: #892406)
+  * UEFI: add support for Secure Boot on amd64 and arm64 (Closes: #821084)
+  * UEFI: use uppercase EFI directory name for Tianocore
+  * Add NEWS file to warn users about change of live-boot mount paths
+  * Add options to build ONIE images
+  * Add Acquire::AllowInsecureRepositories to fix apt-secure in sid
+  * Use HTTPS in debian/copyright (policy 4.0.0).
+  * Bump Standards-Version to 4.1.3.
+  * Add myself to Uploaders.
+
+ -- Luca Boccassi <bluca@debian.org>  Wed, 28 Mar 2018 20:20:46 +0100
 
 live-build (1:20171207) unstable; urgency=medium
 
