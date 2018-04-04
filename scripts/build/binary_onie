@@ -56,14 +56,14 @@ Check_lockfile .lock
 # Creating lock file
 Create_lockfile .lock
 
-Check_package chroot /bin/cpio cpio
-Check_package chroot /usr/bin/sha1sum coreutils
-Check_package chroot /bin/zcat gzip
-Check_package chroot /bin/gzip gzip
-Check_package chroot /usr/bin/xzcat xz-utils
-Check_package chroot /usr/bin/xz xz-utils
-Check_package chroot /bin/bzcat bzip2
-Check_package chroot /bin/bzip2 bzip2
+Check_package host /bin/cpio cpio
+Check_package host /usr/bin/sha1sum coreutils
+Check_package host /bin/zcat gzip
+Check_package host /bin/gzip gzip
+Check_package host /usr/bin/xzcat xz-utils
+Check_package host /usr/bin/xz xz-utils
+Check_package host /bin/bzcat bzip2
+Check_package host /bin/bzip2 bzip2
 
 # Restoring cache
 Restore_cache cache/packages.binary
