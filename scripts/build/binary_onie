@@ -57,6 +57,7 @@ Check_lockfile .lock
 Create_lockfile .lock
 
 Check_package host /bin/cpio cpio
+Check_package host /usr/bin/file file
 Check_package host /usr/bin/sha1sum coreutils
 Check_package host /bin/zcat gzip
 Check_package host /bin/gzip gzip
