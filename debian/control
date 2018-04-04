@@ -20,11 +20,15 @@ Depends:
  ${misc:Depends},
 Recommends:
  apt-utils,
+ bzip2,
  cpio,
+ file,
+ gzip,
  live-boot-doc,
  live-config-doc,
  live-manual-html | live-manual,
  wget,
+ xz-utils,
 Suggests:
  e2fsprogs,
  parted,
