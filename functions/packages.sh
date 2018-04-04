@@ -18,7 +18,7 @@ Check_package ()
 
 	if [ "${INSTALL_STATUS}" -ne 0 ]
 	then
-		if [ "${LB_BUILD_WITH_CHROOT}" != "false" ]
+		if [ "${LB_BUILD_WITH_CHROOT}" != "false" ] && [ "${CHROOT}" = "chroot" ]
 		then
 			_LB_PACKAGES="${_LB_PACKAGES} ${PACKAGE}"
 		else
