@@ -66,12 +66,6 @@ Check_package host /usr/bin/xz xz-utils
 Check_package host /bin/bzcat bzip2
 Check_package host /bin/bzip2 bzip2
 
-# Restoring cache
-Restore_cache cache/packages.binary
-
-# Installing depends
-Install_package
-
 ### Adds needed helper script
 ## Based on https://github.com/opencomputeproject/onie/blob/master/contrib/debian-iso/sharch_body.sh
 cat > sharch_body.sh << EOF
@@ -339,12 +333,6 @@ rm -rf $OUT $WORKDIR
 echo " Done."
 ls -la $(basename $output_file)
 Echo_message "onie-installer created..."
-
-# Saving cache
-Save_cache cache/packages.binary
-
-# Removing depends
-Remove_package
 
 # Creating stage file
 Create_stagefile .build/binary_onie
