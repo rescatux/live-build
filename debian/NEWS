@@ -1,4 +1,4 @@
-live-build (1:20180224) unstable; urgency=medium
+live-build (1:20180411) unstable; urgency=medium
 
   The live-boot mount points have been moved from /lib/live/mount to
   /run/live. Since this is a backward-incompatible change, a compat
@@ -7,4 +7,4 @@ live-build (1:20180224) unstable; urgency=medium
   Please note that this will be removed in Debian 11 (Bullseye) so
   plan accordingly and update any required scripts.
 
- -- Luca Boccassi <bluca@debian.org>  Thu, 22 Mar 2018 14:36:03 +0000
+ -- Luca Boccassi <bluca@debian.org>  Wed, 11 Apr 2018 12:35:19 +0100
