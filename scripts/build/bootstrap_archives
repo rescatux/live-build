@@ -222,9 +222,7 @@ then
 	do
 		if [ -e "${FILE}" ]
 		then
-			cp ${FILE} chroot/root
-			Chroot chroot "apt-key add /root/$(basename ${FILE})"
-			rm -f chroot/root/$(basename ${FILE})
+			cp ${FILE} chroot/etc/apt/trusted.gpg.d/$(basename ${FILE}).asc
 		fi
 	done
 fi
