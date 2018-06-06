@@ -166,9 +166,9 @@ gen_efi_boot_img(){
 	#   certain firmwares (eg: TianoCore) happy
 	# - use shim as the boot<arch>.efi that gets loaded first by the firmware
 	# - drop a grub.cfg (same reason as below) in the cfg directory as configured
-	#   by the signed grub efi binary creation. At the moment that is EFI/debian
-	#   as set by grub2/debian/build-efi-images and cannot be changed without
-	#   rebuilding grub2
+	#   by the signed grub efi binary creation. This is set dynamically when grub2 is
+	#   built with the ouput of dpkg-vendor, and can be overridden by the builder, so
+	#   we do the same here in live-build.
 	# - the source paths are taken from shim-signed:
 	#    https://packages.debian.org/sid/amd64/shim-signed/filelist
 	#   and grub-efi-amd64-signed, currently in Ubuntu:
@@ -177,13 +177,21 @@ gen_efi_boot_img(){
 	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed -a \
 			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
 			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
-		mkdir -p ${_CHROOT_DIR}/grub-efi-temp/EFI/debian
+		mkdir -p "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR"
 		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
 		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
 	fi
 }
+
+# The EFI vendor, used by Grub to set the directory in the monolithic image, depends
+# on the distro vendor set at Grub's build time. It will be added to the package metadata.
+EFI_VENDOR="\$(dpkg-query -f='\${Efi-Vendor}' -W grub-efi-${_SB_EFI_DEB}-bin)"
+# If it's missing, fallback to the previous usage of just "debian".
+if [ -z "$EFI_VENDOR" ]; then
+	EFI_VENDOR="debian"
+fi
 
 PRE_EFI_IMAGE_PATH="${PATH}"
 if [ ! -e "${LIVE_BUILD}" ] ; then
@@ -240,12 +248,12 @@ done
 # directories: EFI EFI/boot boot boot/grub
 size=\$((\$size + 4096 * 4))
 
-# EFI/debian and additional grub.cfg
-if [ -d ${_CHROOT_DIR}/grub-efi-temp/EFI/debian ]; then
+# EFI/\$EFI_VENDOR and additional grub.cfg
+if [ -d "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR" ]; then
 	size=\$((\$size + 4096))
 	size=\$((\$size + \$(stat -c %s "${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg")))
 	cp ${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg \
-		${_CHROOT_DIR}/grub-efi-temp/EFI/debian
+		"${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR"
 fi
 
 blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
@@ -257,10 +265,10 @@ mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI/boot
 mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/EFI/boot/*.efi \
 	"::EFI/boot"
 
-if [ -d ${_CHROOT_DIR}/grub-efi-temp/EFI/debian ]; then
-	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI/debian
+if [ -d "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR" ]; then
+	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" "::EFI/\$EFI_VENDOR"
 	mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \
-		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::EFI/debian"
+		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::EFI/\$EFI_VENDOR"
 fi
 
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot
