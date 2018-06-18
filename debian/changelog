@@ -1,3 +1,16 @@
+live-build (1:20180618) unstable; urgency=medium
+
+  * ONIE: make lb clean remove the ONIE binary.
+  * Avoid apt-key add and just drop the custom user-supplied apt key in
+    /etc/apt/trusted.gpg.d. Note that this requires the key to be in
+    armored ASCII format - which is usually the default anyway.
+  * UEFI: parse vendor from Grub package metadata if available, and use
+    it in the EFI partition directory layout instead of always using
+    "debian" (which is still the default fallback).
+  * Bump Standards-Version to 4.1.4, no changes.
+
+ -- Luca Boccassi <bluca@debian.org>  Mon, 18 Jun 2018 12:02:55 +0100
+
 live-build (1:20180411) unstable; urgency=medium
 
   * ONIE: Check_package in the host, not the chroot
