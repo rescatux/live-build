@@ -42,8 +42,12 @@ if Find_files config/includes.chroot/
 then
 	# Copying includes
 	cd config/includes.chroot
-	find . | cpio -dmpu --no-preserve-owner "${OLDPWD}"/chroot
+	Echo_message "Creating a tarball with files from includes.chroot..."
+	tar cf "${OLDPWD}"/chroot/includes.chroot.tar .
 	cd "${OLDPWD}"
+	Echo_message "Extracting the tarball in the chroot..."
+	Chroot chroot "tar -xvf includes.chroot.tar --no-same-owner --keep-directory-symlink --overwrite"
+	rm chroot/includes.chroot.tar
 
 	# Creating stage file
 	Create_stagefile .build/includes.chroot
