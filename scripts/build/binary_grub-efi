@@ -82,7 +82,7 @@ case "${LB_UEFI_SECURE_BOOT}" in
 		set +e
 		Install_package
 		set -e
-		Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/grub${_SB_EFI_NAME}.efi.signed \
+		Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
 			grub-efi-${_SB_EFI_DEB}-signed
 		_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
 		Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
@@ -96,7 +96,7 @@ case "${LB_UEFI_SECURE_BOOT}" in
 		fi
 	;;
 	enable)
-		Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/grub${_SB_EFI_NAME}.efi.signed \
+		Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
 			grub-efi-${_SB_EFI_DEB}-signed
 		Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
 			shim-signed
@@ -174,11 +174,15 @@ gen_efi_boot_img(){
 	#   and grub-efi-amd64-signed, currently in Ubuntu:
 	#    https://packages.ubuntu.com/xenial/amd64/grub-efi-amd64-signed/filelist
 	#    https://packages.ubuntu.com/bionic/arm64/grub-efi-arm64-signed/filelist
-	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed -a \
+	#    E.g., gcdx64.efi.signed is the boot loader for removable device, like CD or
+        #    USB flash drive, while grubx64.efi.signed is for hard drive.
+        #    Therefore here gcdx64.efi.signed is used for amd64 and gcdaa64.efi.signed is 
+	#    for arm64.
+	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed -a \
 			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
 			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
 		mkdir -p "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR"
-		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/grub\$efi_name.efi.signed \
+		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
 		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
