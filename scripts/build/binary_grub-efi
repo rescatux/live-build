@@ -181,21 +181,12 @@ gen_efi_boot_img(){
 	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed -a \
 			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
 			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
-		mkdir -p "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR"
 		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
 		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
 			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
 	fi
 }
-
-# The EFI vendor, used by Grub to set the directory in the monolithic image, depends
-# on the distro vendor set at Grub's build time. It will be added to the package metadata.
-EFI_VENDOR="\$(dpkg-query -f='\${Efi-Vendor}' -W grub-efi-${_SB_EFI_DEB}-bin)"
-# If it's missing, fallback to the previous usage of just "debian".
-if [ -z "$EFI_VENDOR" ]; then
-	EFI_VENDOR="debian"
-fi
 
 PRE_EFI_IMAGE_PATH="${PATH}"
 if [ ! -e "${LIVE_BUILD}" ] ; then
@@ -252,14 +243,6 @@ done
 # directories: EFI EFI/boot boot boot/grub
 size=\$((\$size + 4096 * 4))
 
-# EFI/\$EFI_VENDOR and additional grub.cfg
-if [ -d "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR" ]; then
-	size=\$((\$size + 4096))
-	size=\$((\$size + \$(stat -c %s "${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg")))
-	cp ${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg \
-		"${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR"
-fi
-
 blocks=\$(((\$size / 1024 + 55) / 32 * 32 ))
 
 rm -f ${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img
@@ -268,12 +251,6 @@ mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::EFI/boot
 mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ${_CHROOT_DIR}/grub-efi-temp/EFI/boot/*.efi \
 	"::EFI/boot"
-
-if [ -d "${_CHROOT_DIR}/grub-efi-temp/EFI/\$EFI_VENDOR" ]; then
-	mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" "::EFI/\$EFI_VENDOR"
-	mcopy -o -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" \
-		${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg "::EFI/\$EFI_VENDOR"
-fi
 
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot
 mmd -i "${_CHROOT_DIR}/grub-efi-temp/boot/grub/efi.img" ::boot/grub
