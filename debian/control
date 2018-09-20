@@ -9,6 +9,7 @@ Build-Depends:
  po4a,
  gettext,
 Standards-Version: 4.1.4
+Rules-Requires-Root: no
 Homepage: https://debian-live.alioth.debian.org/live-build/
 Vcs-Browser: https://salsa.debian.org/live-team/live-build
 Vcs-Git: https://salsa.debian.org/live-team/live-build.git
