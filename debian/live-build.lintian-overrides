@@ -1,1 +1,2 @@
 live-build: symlink-should-be-relative
+live-build: depends-on-essential-package-without-using-version suggests: e2fsprogs
