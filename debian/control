@@ -5,7 +5,7 @@ Maintainer: Debian Live <debian-live@lists.debian.org>
 Uploaders: Raphaël Hertzog <hertzog@debian.org>,
  Luca Boccassi <bluca@debian.org>,
 Build-Depends:
- debhelper (>= 10),
+ debhelper (>= 10~),
  po4a,
  gettext,
 Standards-Version: 4.1.4
