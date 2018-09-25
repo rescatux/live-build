@@ -1,3 +1,24 @@
+live-build (1:20180925) unstable; urgency=medium
+
+  [ Raphaël Hertzog ]
+  * Handle includes.chroot files installed over symlinked directories
+
+  [ Marcel Partap ]
+  * copy keys to /etc/apt/trusted.gpg.d with appropriate extension for
+    them to not be ignored.
+
+  [ Steven Shiau ]
+  * Use gcd{x64.aa64}.efi.signed for amd64/arm64 arch.
+
+  [ Luca Boccassi ]
+  * UEFI: remove the EFI/debian/grub.cfg, not necessary anymore
+  * Build-Depend on debhelper >= 10~ to facilitate backports.
+  * Add Rules-Requires-Root: no.
+  * Bump Standards-Version to 4.2.1.
+  * lintian: override error on dependency on e2fsprogs
+
+ -- Luca Boccassi <bluca@debian.org>  Tue, 25 Sep 2018 14:28:19 +0100
+
 live-build (1:20180618) unstable; urgency=medium
 
   * ONIE: make lb clean remove the ONIE binary.
