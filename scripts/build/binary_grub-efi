@@ -178,14 +178,14 @@ gen_efi_boot_img(){
         #    USB flash drive, while grubx64.efi.signed is for hard drive.
         #    Therefore here gcdx64.efi.signed is used for amd64 and gcdaa64.efi.signed is 
 	#    for arm64.
-	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed -a \
-			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
-			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
-		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed \
-			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
-		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
-			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
-	fi
+#	if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed -a \
+#			-r ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed -a \
+#			"${LB_UEFI_SECURE_BOOT}" != "disable" ]; then
+#		cp ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed \
+#			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/grub\$efi_name.efi
+#		cp ${_CHROOT_DIR}/usr/lib/shim/shim\$efi_name.efi.signed \
+#			${_CHROOT_DIR}/grub-efi-temp/EFI/boot/boot\$efi_name.efi
+#	fi
 }
 
 PRE_EFI_IMAGE_PATH="${PATH}"
