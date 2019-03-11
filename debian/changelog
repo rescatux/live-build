@@ -1,3 +1,14 @@
+live-build (1:20190311) unstable; urgency=medium
+
+  [ Hideki Yamane ]
+  * use deb.debian.org as default
+  * We should add buster for release
+
+  [ Luca Boccassi ]
+  * Bump Standards-Version to 4.3.0, no changes.
+
+ -- Luca Boccassi <bluca@debian.org>  Mon, 11 Mar 2019 10:08:38 +0000
+
 live-build (1:20180925) unstable; urgency=medium
 
   [ Raphaël Hertzog ]
