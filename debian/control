@@ -8,7 +8,7 @@ Build-Depends:
  debhelper (>= 10~),
  po4a,
  gettext,
-Standards-Version: 4.2.1
+Standards-Version: 4.3.0
 Rules-Requires-Root: no
 Homepage: https://debian-live.alioth.debian.org/live-build/
 Vcs-Browser: https://salsa.debian.org/live-team/live-build
