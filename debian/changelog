@@ -1,3 +1,11 @@
+live-build (1:20190315) UNRELEASED; urgency=medium
+
+  [ Adrian Gibanel Lopez ]
+  * Fixed foreign architecture package support to linux kernel flavours
+    (Closes: #884553)
+
+ -- Luca Boccassi <bluca@debian.org>  Fri, 15 Mar 2019 14:34:45 +0000
+
 live-build (1:20190311) unstable; urgency=medium
 
   [ Hideki Yamane ]
