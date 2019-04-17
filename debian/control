@@ -10,7 +10,7 @@ Build-Depends:
  gettext,
 Standards-Version: 4.3.0
 Rules-Requires-Root: no
-Homepage: https://debian-live.alioth.debian.org/live-build/
+Homepage: https://wiki.debian.org/DebianLive
 Vcs-Browser: https://salsa.debian.org/live-team/live-build
 Vcs-Git: https://salsa.debian.org/live-team/live-build.git
 
