@@ -668,7 +668,7 @@ Set_defaults ()
 			;;
 
 		*)
-			LB_ISO_PUBLISHER="${LB_ISO_PUBLISHER:-Live Systems project; https://debian-live.alioth.debian.org/; debian-live@lists.debian.org}"
+			LB_ISO_PUBLISHER="${LB_ISO_PUBLISHER:-Live Systems project; https://wiki.debian.org/DebianLive; debian-live@lists.debian.org}"
 			;;
 	esac
 
