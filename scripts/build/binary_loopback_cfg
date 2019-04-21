@@ -175,7 +175,7 @@ DEFAULT_INITRD="initrd.img-$(echo ${DEFAULT_KERNEL} | sed -e 's|vmlinuz-||')"
 
 KERNEL_LIVE="/${INITFS}/${DEFAULT_KERNEL}"
 INITRD_LIVE="/${INITFS}/${DEFAULT_INITRD}"
-APPEND_LIVE="${LB_BOOTAPPEND_LIVE}"
+APPEND_LIVE="${LB_BOOTAPPEND_LIVE} findiso=\${iso_path}"
 
 # Assembling kernel configuration
 _AMD64_686_NUMBER="0"
