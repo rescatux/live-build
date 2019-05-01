@@ -58,55 +58,62 @@ Check_package chroot /usr/bin/grub-mkimage grub-common
 Check_package chroot /usr/bin/mcopy mtools
 Check_package chroot /sbin/mkfs.msdos dosfstools
 
-# Check UEFI Secure Boot setting and depends
-# By default (auto) do a best-effort build: if the signed binaries are available use
-# them, but don't fail if they are not, just print a warning.
+_PRE_SB_PACKAGES="${_LB_PACKAGES}"
+
+secure_boot_package_install ()
+{
+	_SB_EFI_PLATFORM="${1}"
+	_SB_EFI_NAME="${2}"
+	_SB_DEB_ARCH="${3}"
+	_SB_EFI_GRUB_BIN_NAME="${4}"
+	_LB_PACKAGES="shim-signed:${_SB_DEB_ARCH} grub-efi-${_SB_EFI_GRUB_BIN_NAME}-signed:${_SB_DEB_ARCH}"
+
+	# Check UEFI Secure Boot setting and depends
+	# By default (auto) do a best-effort build: if the signed binaries are available use
+	# them, but don't fail if they are not, just print a warning.
+	case "${LB_UEFI_SECURE_BOOT}" in
+		auto)
+			# Use Check_installed, as Check_package will error out immediately
+			set +e
+			Install_package
+			set -e
+			Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
+				grub-efi-${_SB_EFI_GRUB_BIN_NAME}-signed:${_SB_DEB_ARCH}
+			_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
+			Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+				shim-signed:${_SB_DEB_ARCH}
+
+			if [ "${INSTALL_STATUS}" -ne 0 -o "${_GRUB_INSTALL_STATUS}" -ne 0 ]
+			then
+				Echo_warning "UEFI Secure Boot disabled due to missing signed Grub/Shim. (${_SB_EFI_NAME})"
+			else
+				Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
+			fi
+		;;
+		enable)
+			Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
+				grub-efi-${_SB_EFI_GRUB_BIN_NAME}-signed:${_SB_DEB_ARCH}
+			Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+				shim-signed:${_SB_DEB_ARCH}
+			Install_package
+			Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
+		;;
+		disable)
+			Echo_message "UEFI Secure Boot support disabled. (${_SB_EFI_NAME})"
+		;;
+	esac
+}
+
 case "${LB_ARCHITECTURES}" in
 	amd64|i386)
-		_SB_EFI_PLATFORM="x86_64"
-		_SB_EFI_NAME="x64"
-		_SB_EFI_DEB="amd64"
+		secure_boot_package_install "x86_64" "x64" "amd64" "amd64"
+		secure_boot_package_install "i386" "ia32" "i386" "ia32"
 	;;
 	arm64)
-		_SB_EFI_PLATFORM="arm64"
-		_SB_EFI_NAME="aa64"
-		_SB_EFI_DEB="arm64"
+		secure_boot_package_install "arm64" "aa64" "arm64" "arm64"
 	;;
 esac
 
-_PRE_SB_PACKAGES="${_LB_PACKAGES}"
-_LB_PACKAGES="shim-signed grub-efi-${_SB_EFI_DEB}-signed"
-case "${LB_UEFI_SECURE_BOOT}" in
-	auto)
-		# Use Check_installed, as Check_package will error out immediately
-		set +e
-		Install_package
-		set -e
-		Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-			grub-efi-${_SB_EFI_DEB}-signed
-		_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
-		Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-			shim-signed
-
-		if [ "${INSTALL_STATUS}" -ne 0 -o "${_GRUB_INSTALL_STATUS}" -ne 0 ]
-		then
-			Echo_warning "UEFI Secure Boot disabled due to missing signed Grub/Shim."
-		else
-			Echo_message "UEFI Secure Boot support enabled."
-		fi
-	;;
-	enable)
-		Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-			grub-efi-${_SB_EFI_DEB}-signed
-		Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-			shim-signed
-		Install_package
-		Echo_message "UEFI Secure Boot support enabled."
-	;;
-	disable)
-		Echo_message "UEFI Secure Boot support disabled."
-	;;
-esac
 _LB_PACKAGES="${_PRE_SB_PACKAGES}"
 
 # Setting destination directory
