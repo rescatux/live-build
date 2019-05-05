@@ -105,6 +105,11 @@ secure_boot_package_install ()
 				# Each user needs to enroll the hash for grub*.efi in their UEFI setup
 				Echo_warning "Limited UEFI Secure Boot support enabled: only the Shim is available. (${_SB_EFI_NAME})"
 			else
+				# Save efi signed files to chroot/secure-boot-temp as a workaround for #928486 bug.
+				mkdir -p chroot/secure-boot-temp/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed
+				mkdir -p chroot/secure-boot-temp/usr/lib/shim
+				cp -a chroot/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed chroot/secure-boot-temp/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed
+				cp -a chroot/usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed chroot/secure-boot-temp/usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed
 				Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
 			fi
 			;;
@@ -114,6 +119,11 @@ secure_boot_package_install ()
 			Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
 				shim-signed:${_SB_DEB_ARCH}
 			Install_packages
+			# Save efi signed files to chroot/secure-boot-temp as a workaround for #928486 bug.
+			mkdir -p chroot/secure-boot-temp/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed
+			mkdir -p chroot/secure-boot-temp/usr/lib/shim
+			cp -a chroot/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed chroot/secure-boot-temp/usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed
+			cp -a chroot/usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed chroot/secure-boot-temp/usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed
 			Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
 			;;
 		disable)
@@ -135,6 +145,13 @@ case "${LB_ARCHITECTURE}" in
 		secure_boot_package_install "arm" "arm" "arm" "arm"
 	;;
 esac
+
+# Restore efi signed files from chroot/secure-boot-temp as a workaround for #928486 bug.
+if [ -e "chroot/secure-boot-temp" ]
+then
+	cp -a chroot/secure-boot-temp/* chroot/
+	rm -rf chroot/secure-boot-temp
+fi
 
 _LB_PACKAGES="${_PRE_SB_PACKAGES}"
 
