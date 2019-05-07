@@ -118,7 +118,8 @@ END
 
 Grub_live_autodetect_entry ()
 {
-	LINUX_LIVE="${LINUX_LIVE}$(Grub_live_autodetect_menu_entry "$@")$NL"
+	#LINUX_LIVE="${LINUX_LIVE}$(Grub_live_autodetect_menu_entry "$@")$NL"
+	:
 }
 
 Grub_memtest_menu_entry ()
@@ -224,7 +225,8 @@ for KERNEL in chroot/boot/vmlinuz-*; do
 done
 
 if [ $_COUNT -gt 1 ]; then
-	for KERNEL in chroot/boot/vmlinuz-*
+	_REVERSED_KERNELS="$(echo chroot/boot/vmlinuz-* | tr ' ' '\n' | sort -r | tr '\n' ' ')"
+	for KERNEL in ${_REVERSED_KERNELS}
 	do
 		VERSION="$(basename ${KERNEL} | sed -e 's|vmlinuz-||')"
 
