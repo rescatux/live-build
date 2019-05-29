@@ -38,6 +38,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--cache-packages true|false]\n\
 \t    [--cache-stages STAGE|\"STAGES\"]\n\
 \t    [--checksums md5|sha1|sha256|sha512|none]\n\
+\t    [--color]\n\
 \t    [--compression bzip2|gzip|lzip|xz|none]\n\
 \t    [--config GIT_URL::GIT_BRANCH]\n\
 \t    [--zsync true|false]\n\
@@ -149,7 +150,7 @@ Local_arguments ()
 		iso-volume:,jffs2-eraseblock:,memtest:,net-root-filesystem:,net-root-mountoptions:,
 		net-root-path:,net-root-server:,net-cow-filesystem:,net-cow-mountoptions:,net-cow-path:,
 		net-cow-server:,net-tarball:,onie:,onie-kernel-cmdline:,firmware-binary:,firmware-chroot:,swap-file-path:,swap-file-size:,
-		loadlin:,win32-loader:,source:,source-images:,breakpoints,conffile:,debug,force,
+		loadlin:,win32-loader:,source:,source-images:,breakpoints,conffile:,color,debug,force,
 		help,ignore-system-defaults,quiet,usage,verbose,version,bootstrap-qemu-static:,bootstrap-qemu-arch:,
 		uefi-secure-boot:,
 		bootstrap-qemu-exclude:"
