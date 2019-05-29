@@ -10,7 +10,7 @@
 
 Arguments ()
 {
-	ARGUMENTS="$(getopt --longoptions breakpoints,conffile:,debug,force,help,quiet,usage,verbose,version --name=${PROGRAM} --options c:huv --shell sh -- "${@}")"
+	ARGUMENTS="$(getopt --longoptions breakpoints,color,conffile:,debug,force,help,quiet,usage,verbose,version --name=${PROGRAM} --options c:huv --shell sh -- "${@}")"
 
 	if [ "${?}" != "0" ]
 	then
@@ -25,6 +25,11 @@ Arguments ()
 		case "${1}" in
 			--breakpoints)
 				_BREAKPOINTS="true"
+				shift
+				;;
+
+			--color)
+				_COLOR="true"
 				shift
 				;;
 
