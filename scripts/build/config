@@ -996,26 +996,32 @@ LB_TASKSEL="${LB_TASKSEL}"
 # live-build options
 
 # \$_BREAKPOINTS: enable breakpoints
+# If set here, overrides the command line option
 # (Default: ${_BREAKPOINTS})
 #_BREAKPOINTS="${_BREAKPOINTS}"
 
 # \$_DEBUG: enable debug
+# If set here, overrides the command line option
 # (Default: ${_DEBUG})
 #_DEBUG="${_DEBUG}"
 
 # \$_COLOR: enable color
+# If set here, overrides the command line option
 # (Default: ${_COLOR})
 #_COLOR="${_COLOR}"
 
 # \$_FORCE: enable force
+# If set here, overrides the command line option
 # (Default: ${_FORCE})
 #_FORCE="${_FORCE}"
 
 # \$_QUIET: enable quiet
+# If set here, overrides the command line option
 # (Default: ${_QUIET})
-_QUIET="${_QUIET}"
+#_QUIET="${_QUIET}"
 
 # \$_VERBOSE: enable verbose
+# If set here, overrides the command line option
 # (Default: ${_VERBOSE})
 #_VERBOSE="${_VERBOSE}"
 
