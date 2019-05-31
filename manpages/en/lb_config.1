@@ -33,7 +33,7 @@
 .br
 	[\-b|\fB\-\-binary\-images\fR iso|iso\-hybrid|netboot|tar|hdd]
 .br
-	[\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4]
+	[\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4|ntfs]
 .br
 	[\fB\-\-bootappend\-install\fR \fIPARAMETER\fR|\fI"PARAMETERS"\fR]
 .br
@@ -271,7 +271,7 @@ defines if deb-src entries should be included in the resulting live image or not
 defines the architecture of the to be build image. By default, this is set to the host architecture. Note that you cannot crossbuild for another architecture if your host system is not able to execute binaries for the target architecture natively. For example, building amd64 images on i386 and vice versa is possible if you have a 64bit capable i386 processor and the right kernel. But building powerpc images on an i386 system is not possible.
 .IP "\-b|\fB\-\-binary\-images\fR iso|iso\-hybrid|netboot|tar|hdd" 4
 defines the image type to build. By default, for images using syslinux this is set to iso\-hybrid to build CD/DVD images that may also be used like hdd images, for non\-syslinux images, it defaults to iso.
-.IP "\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4" 4
+.IP "\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4|ntfs" 4
 defines the filesystem to be used in the image type. This only has an effect if the selected binary image type lets you choose a filesystem. For example, when selection iso the resulting CD/DVD has always the filesystem ISO9660. When building hdd images for usb sticks, this is active. Note that it defaults to fat16 on all architectures except sparc where it defaults to ext4. Also note that if you choose fat16 and your resulting binary image gets bigger than 2GB, the binary filesystem automatically gets switched to fat32.
 .IP "\fB\-\-bootappend\-install\fR \fIPARAMETER\fR|""\fIPARAMETERS\fR""" 4
 sets boot parameters specific to debian\-installer, if included.
