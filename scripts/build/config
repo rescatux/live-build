@@ -45,7 +45,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--zsync true|false]\n\
 \t    [--build-with-chroot true|false]\n\
 \t    [--chroot-filesystem ext2|ext3|ext4|squashfs|jffs2|none]\n\
-\t    [--clean\n\
+\t    [--clean]\n\
 \t    [-c|--conffile FILE]\n\
 \t    [--debconf-frontend dialog|editor|noninteractive|readline]\n\
 \t    [--debconf-priority low|medium|high|critical]\n\
