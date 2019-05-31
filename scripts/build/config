@@ -33,6 +33,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--bootappend-live PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live-failsafe PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootloaders grub-legacy|grub-pc|syslinux|grub-efi]\n\
+\t    [--breakpoints]\n\
 \t    [--cache true|false]\n\
 \t    [--cache-indices true|false]\n\
 \t    [--cache-packages true|false]\n\
