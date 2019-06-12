@@ -43,6 +43,8 @@
 .br
 	[\fB\-\-bootloaders\fR grub-legacy|grub-pc|syslinux|grub-efi]
 .br
+	[\fB\-\-breakpoints]
+.br
 	[\fB\-\-cache\fR true|false]
 .br
 	[\fB\-\-cache\-indices\fR true|false]
@@ -281,6 +283,8 @@ sets boot parameters specific to debian\-live. A complete list of boot parameter
 sets boot parameters specific to debian\-live failsafe boot entries. A complete list of boot parameters can be found in the \fIlive\-boot\fR(7) and \fIlive\-config\fR(7) manual pages.
 .IP "\fB\-\-bootloaders\fR grub-legacy|grub-pc|syslinux|grub-efi" 4
 defines which bootloader is being used in the generated image. This has only an effect if the selected binary image type lets you choose the bootloader. For example, if you build a iso, always syslinux (or more precise, isolinux) is being used. Also note that some combinations of binary images types and bootloaders may be possible but live\-build does not support them yet. \fBlb config\fR will fail to create such a not yet supported configuration and give a explanation about it. For hdd images on amd64 and i386, the default is syslinux.
+.IP "\fB\-\-breakpoints\fR" 4
+inserts pauses during the generation of the image.
 .IP "\fB\-\-cache\fR true|false" 4
 defines globally if any cache should be used at all. Different caches can be controlled through the their own options.
 .IP "\fB\-\-cache\-indices\fR true|false" 4
