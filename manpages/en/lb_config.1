@@ -107,7 +107,7 @@
 .br
 	[\fB\-\-ignore\-system\-defaults\fR]
 .br
-	[\fB\-\-initramfs\fR auto|none|live\-boot|casper]
+	[\fB\-\-initramfs\fR none|live\-boot]
 .br
 	[\fB\-\-initramfs\-compression\fR bzip2|gzip|lzma]
 .br
@@ -325,8 +325,8 @@ defines the name of an optional to be included splash screen graphic for the gru
 defines the default options that will be appended to (almost) every gzip call during the building of the image. By default, this is set to \-\-best to use highest (but slowest) compression. Dynamically, if the host system supports it, also \-\-rsyncable is added.
 .IP "\fB\-\-ignore\-system\-defaults\fR" 4
 \fBlb config\fR by default reads system defaults from \fI/etc/live/build.conf\fR and \fI/etc/live/build/*\fR when generating a new live system config directory. This is useful if you want to set global settings, such as mirror locations, and don't want to specify them all of the time.
-.IP "\fB\-\-initramfs\fR auto|none|live\-boot|casper" 4
-sets the name of package that contains the live system specific initramfs modification. By default, auto is used, which means that at build time of the image rather than on configuration time, the value will be expanded to casper when building ubuntu systems, to live\-boot for all other systems. Using 'none' is useful if the resulting system image should not be a live image (experimental).
+.IP "\fB\-\-initramfs\fR none|live\-boot" 4
+sets the name of the package that contains the live system specific initramfs modification and defaults to live\-boot. Using 'none' is useful if the resulting system image should not be a live image (experimental).
 .IP "\fB\-\-initramfs\-compression\fR bzip2|gzip|lzma]
 defines the compression program to be used to compress the initramfs. Defaults to gzip.
 .IP "\fB\-\-interactive\fR shell" 4

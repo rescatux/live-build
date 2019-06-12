@@ -65,7 +65,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--grub-splash FILE]\n\
 \t    [--gzip-options OPTION|\"OPTIONS\"]\n\
 \t    [--ignore-system-defaults]\n\
-\t    [--initramfs auto|none|live-boot]\n\
+\t    [--initramfs none|live-boot]\n\
 \t    [--initramfs-compression bzip2|gzip|lzma]\n\
 \t    [--initsystem sysvinit|systemd|none]\n\
 \t    [--image-name [NAME]\n\
