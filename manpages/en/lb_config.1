@@ -61,6 +61,8 @@
 .br
 	[\fB\-\-config\fR \fIGIT_URL::GIT_BRANCH\fR]
 .br
+	[\fB\-\-zsync\fR true|false]
+.br
 	[\fB\-\-build\-with\-chroot\fR true|false]
 .br
 	[\fB\-\-chroot\-filesystem\fR ext2|ext3|ext4|squashfs|jffs2|none]
@@ -301,6 +303,8 @@ turn on color in the messages.
 defines the compression program to be used to compress tarballs. Defaults to none.
 .IP "\fB\-\-config\fR \fIGIT_URL\fR::\fIGIT_BRANCH\fR" 4
 bootstrap the config tree from a git repository, optionally appended by a Git Id (branch, commit, tag, etc.).
+.IP "\fB\-\-zsync\fR true|false" 4
+defines whether a file for distributing the image in \fIzsync\fR(1) format will be generated. Defaults to true.
 .IP "\fB\-\-build\-with\-chroot\fR true|false" 4
 defines whether live\-build should use the tools from within the chroot to build the binary image or not by using and including the host system's tools. This is a very dangerous option, using the tools of the host system can lead to tainted and even non-bootable images if the host systems version of the required tools (mainly these are the bootloaders such as syslinux and grub, and the auxiliary tools such as dosfstools, xorriso, squashfs-tools and others) do not \fBexactly\fR match what is present at build-time in the target distribution. Never do disable this option unless you are \fBexactly\fR sure what you are doing and have \fBcompletely\fI understood its consequences.
 .IP "\fB\-\-chroot\-filesystem\fR ext2|ext3|ext4|squashfs|jffs2|none" 4
