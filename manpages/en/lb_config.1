@@ -99,17 +99,11 @@
 .br
 	[\fB\-\-fdisk\fR fdisk|fdisk.dist]
 .br
-	[\fB\-\-firmware\-binary true|false\fR]
-.br
-	[\fB\-\-firmware\-chroot true|false\fR]
-.br
 	[\fB\-\-force\fR]
 .br
 	[\fB\-\-grub\-splash\fR \fIFILE\fR]
 .br
 	[\fB\-\-gzip\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
-.br
-	[\fB\-\-hooks\fR \fIFILE\fR]
 .br
 	[\fB\-\-ignore\-system\-defaults\fR]
 .br
@@ -149,17 +143,9 @@
 .br
 	[\fB\-\-parent\-mirror\-chroot\-security\fR \fIURL\fR]
 .br
-	[\fB\-\-parent\-mirror\-chroot\-updates\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-chroot\-backports\fR \fIURL\fR]
-.br
 	[\fB\-\-parent\-mirror\-binary\fR \fIURL\fR]
 .br
 	[\fB\-\-parent\-mirror\-binary\-security\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-binary\-updates\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-binary\-backports\fR \fIURL\fR]
 .br
 	[\fB\-\-parent\-mirror\-debian\-installer\fR \fIURL\fR]
 .br
@@ -169,17 +155,9 @@
 .br
 	[\fB\-\-mirror\-chroot\-security\fR \fIURL\fR]
 .br
-	[\fB\-\-mirror\-chroot\-updates\fR \fIURL\fR]
-.br
-	[\fB\-\-mirror\-chroot\-backports\fR \fIURL\fR]
-.br
 	[\fB\-\-mirror\-binary\fR \fIURL\fR]
 .br
 	[\fB\-\-mirror\-binary\-security\fR \fIURL\fR]
-.br
-	[\fB\-\-mirror\-binary\-updates\fR \fIURL\fR]
-.br
-	[\fB\-\-mirror\-binary\-backports\fR \fIURL\fR]
 .br
 	[\fB\-\-mirror\-debian\-installer\fR \fIURL\fR]
 .br
@@ -222,8 +200,6 @@
 	[\-s|\fB\-\-source\-images\fR iso|netboot|tar|hdd]
 .br
 	[\fB\-\-tasksel\fR apt|aptitude|tasksel]
-.br
-	[\fB\-\-templates\fR \fIPATH\fR]
 .br
 	[\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR]
 .br
@@ -347,8 +323,6 @@ forces re\-execution of already run stages. Use only if you know what you are do
 defines the name of an optional to be included splash screen graphic for the grub bootloader.
 .IP "\fB\-\-gzip\-options\fR \fIOPTION\fR|""\fIOPTIONS\fR""" 4
 defines the default options that will be appended to (almost) every gzip call during the building of the image. By default, this is set to \-\-best to use highest (but slowest) compression. Dynamically, if the host system supports it, also \-\-rsyncable is added.
-.IP "\fB\-\-hooks\fR \fIFILE\fR" 4
-defines which hooks available in /usr/share/live/build/examples/hooks should be activated. Normally, there are no hooks executed. Make sure you know and understood the hook before you enable it.
 .IP "\fB\-\-ignore\-system\-defaults\fR" 4
 \fBlb config\fR by default reads system defaults from \fI/etc/live/build.conf\fR and \fI/etc/live/build/*\fR when generating a new live system config directory. This is useful if you want to set global settings, such as mirror locations, and don't want to specify them all of the time.
 .IP "\fB\-\-initramfs\fR auto|none|live\-boot|casper" 4
@@ -385,18 +359,10 @@ sets the location of the debian package mirror that should be used to bootstrap 
 sets the location of the debian package mirror that will be used to fetch the packages in order to build the live system. By default, this is set to the value of \-\-parent\-mirror\-bootstrap.
 .IP "\fB\-\-parent\-mirror\-chroot\-security\fR \fIURL\fR" 4
 sets the location of the debian security package mirror that will be used to fetch the packages in order to build the live system. By default, this points to http://security.debian.org/debian/.
-.IP "\fB\-\-parent\-mirror\-chroot\-updates\fR \fIURL\fR" 4
-sets the location of the debian updates package mirror that will be used to fetch packages in order to build the live system. By default, this is set to the value of \-\-parent\-mirror\-chroot.
-.IP "\fB\-\-parent\-mirror\-chroot\-backports\fR \fIURL\fR" 4
-sets the location of the debian backports package mirror that will be used to fetch packages in order to build the live system. By default, this points to http://backports.debian.org/debian-backports/.
 .IP "\fB\-\-parent\-mirror\-binary\fR \fIURL\fR" 4
 sets the location of the debian package mirror that should end up configured in the final image and which is the one a user would see and use. This has not necessarily to be the same that is used to build the image, e.g. if you use a local mirror but want to have an official mirror in the image. By default, 'http://httpredir.debian.org/debian/' is used.
 .IP "\fB\-\-parent\-mirror\-binary\-security\fR \fIURL\fR" 4
 sets the location of the debian security package mirror that should end up configured in the final image. By default, 'http://security.debian.org/' is used.
-.IP "\fB\-\-parent\-mirror\-binary\-updates\fR \fIURL\fR" 4
-sets the location of the debian updates package mirror that should end up configured in the final image. By default, the value of \-\-parent\-mirror\-binary is used.
-.IP "\fB\-\-parent\-mirror\-binary\-backports\fR \fIURL\fR" 4
-sets the location of the debian backports package mirror that should end up configured in the final image. By default, 'http://backports.debian.org/debian-backports/' is used.
 .IP "\fB\-\-parent\-mirror\-debian\-installer\fR \fIURL\fR" 4
 sets the location of the mirror that will be used to fetch the debian installer images. By default, this points to the same mirror used to build the live system, i.e. the value of \-\-parent\-mirror\-bootstrap.
 .IP "\fB\-\-mirror\-bootstrap\fR \fIURL\fR" 4
@@ -405,18 +371,10 @@ sets the location of the debian package mirror that should be used to bootstrap 
 sets the location of the debian package mirror that will be used to fetch the packages of the derivative in order to build the live system. By default, this is set to the value of \-\-mirror\-bootstrap.
 .IP "\fB\-\-mirror\-chroot\-security\fR \fIURL\fR" 4
 sets the location of the debian security package mirror that will be used to fetch the packages of the derivative in order to build the live system. By default, this points to http://security.debian.org/debian/.
-.IP "\fB\-\-mirror\-chroot\-updates\fR \fIURL\fR" 4
-sets the location of the debian updates package mirror that will be used to fetch packages of the derivative in order to build the live system. By default, this is set to the value of \-\-mirror\-chroot.
-.IP "\fB\-\-mirror\-chroot\-backports\fR \fIURL\fR" 4
-sets the location of the debian backports package mirror that will be used to fetch packages of the derivative in order to build the live system. By default, this points to http://backports.debian.org/debian-backports/.
 .IP "\fB\-\-mirror\-binary\fR \fIURL\fR" 4
 sets the location of the derivative package mirror that should end up configured in the final image and which is the one a user would see and use. This has not necessarily to be the same that is used to build the image, e.g. if you use a local mirror but want to have an official mirror in the image.
 .IP "\fB\-\-mirror\-binary\-security\fR \fIURL\fR" 4
 sets the location of the derivatives security package mirror that should end up configured in the final image.
-.IP "\fB\-\-mirror\-binary\-updates\fR \fIURL\fR" 4
-sets the location of the derivatives updates package mirror that should end up configured in the final image.
-.IP "\fB\-\-mirror\-binary\-backports\fR \fIURL\fR" 4
-sets the location of the derivatives backports package mirror that should end up configured in the final image.
 .IP "\fB\-\-mirror\-debian\-installer\fR \fIURL\fR" 4
 sets the location of the mirror that will be used to fetch the debian installer images of the derivative. By default, this points to the same mirror used to build the live system, i.e. the value of \-\-mirror\-bootstrap.
 .IP "\fB\-\-mode\fR debian|progress|ubuntu" 4
@@ -464,10 +422,6 @@ defines if the security repositories specified in the security mirror options sh
 defines if a corresponding source image to the binary image should be build. By default this is false because most people do not require this and would require to download quite a few source packages. However, once you start distributing your live image, you should make sure you build it with a source image alongside.
 .IP "\-s|\fB\-\-source\-images\fR iso|netboot|tar|hdd" 4
 defines the image type for the source image. Default is tar.
-.IP "\fB\-\-firmware\-binary\fR true|false" 4
-defines if firmware packages should be automatically included into the binary pool for debian\-installer. Note that only firmware packages available within the configured archive areas are included, e.g. an image with packages from main only will not automatically include firmware from non\-free. This option does not interfere with explicitly listed packages in binary package lists.
-.IP "\fB\-\-firmware\-chroot\fR true|false" 4
-defines if firmware packages should be automatically included into the live image. Note that only firmware packages available within the configured archive areas are included, e.g. an image with packages from main only will not automatically include firmware from non\-free. This option does not interfere with explicitly listed packages in chroot package lists.
 .IP "\fB\-\-swap\-file\-path\fR \fIPATH\fR" 4
 defines the path to a swap file to create in the binary image. Default is not to create a swap file.
 .IP "\fB\-\-swap\-file\-size\fR \fIMB\fR" 4
