@@ -72,8 +72,8 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--interactive shell]\n\
 \t    [--isohybrid-options OPTION|\"OPTIONS\"]\n\
 \t    [--hdd-label LABEL]\n\
-\t    [--hdd-size MB]\n\
-\t    [--hdd-partition-start [parted unit, e.g. 63s]\n\
+\t    [--hdd-size SIZE]\n\
+\t    [--hdd-partition-start START]\n\
 \t    [--iso-application NAME]\n\
 \t    [--iso-preparer NAME]\n\
 \t    [--iso-publisher NAME]\n\

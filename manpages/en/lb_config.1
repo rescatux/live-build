@@ -119,6 +119,12 @@
 .br
 	[\fB\-\-isohybrid\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
 .br
+	[\fB\-\-hdd\-label\fR \fILABEL\fR]
+.br
+	[\fB\-\-hdd\-size\fR \fISIZE\fR]
+.br
+	[\fB\-\-hdd\-partition\-start\fR \fISTART\fR]
+.br
 	[\fB\-\-iso\-application\fR \fINAME\fR]
 .br
 	[\fB\-\-iso\-preparer\fR \fINAME\fR]
@@ -204,8 +210,6 @@
 	[\fB\-\-tasksel\fR apt|aptitude|tasksel]
 .br
 	[\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR]
-.br
-	[\fB\-\-hdd\-size \fIMB\fR]
 .br
 	[\fB\-\-updates\fR true|false]
 .br
@@ -339,6 +343,12 @@ defines the init system. Defaults to systemd.
 defines if after the chroot stage and before the beginning of the binary stage, a interactive shell login should be spawned in the chroot in order to allow you to do manual customizations. Once you close the shell with logout or exit, the build will continue as usual. Note that it's strongly discouraged to use this for anything else than testing. Modifications that should be present in all builds of a live system should be properly made through hooks. Everything else destroys the beauty of being able to completely automatise the build process and making it non interactive. By default, this is of course false.
 .IP "\fB\-\-isohybrid\-options\fR \fIOPTION\fR|""\fIOPTIONS\fR""" 4
 defines options to pass to isohybrid.
+.IP "\fB\-\-hdd\-label\fR \fILABEL\fR" 4
+defines the label for the hdd target. Defaults to DEBIAN_LIVE.
+.IP "\fB\-\-hdd\-size\fR \fISIZE\fR" 4
+defines the size for the hdd target. The unit is MiB. Defaults to auto, which generates the smallest possible image.
+.IP "\fB\-\-hdd\-partition\-start\fR \fISTART\fR" 4
+set start of partition for the hdd target for BIOSes that expect a specific boot partition start (e.g. "63s"). If empty, use optimal layout. Defaults to empty.
 .IP "\fB\-\-iso\-application\fR \fINAME\fR" 4
 sets the APPLICATION field in the header of a resulting CD/DVD image and defaults to "Debian Live" in debian mode, and "Ubuntu Live" in ubuntu mode.
 .IP "\fB\-\-iso\-preparer\fR \fINAME\fR" 4
@@ -436,8 +446,6 @@ defines what size in megabytes the swap file should be, if one is to be created.
 selects which program is used to install tasks. By default, this is set to tasksel.
 .IP "\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR" 4
 enables or disables Secure Boot support when using grub-efi, by installing signed shim and grub-efi packages. By default, this is set to auto, which means if the packages are available they will be installed, but if not only a warning will be printed and the normal non-signed grub-efi will be used.
-.IP "\fB\-\-hdd\-size\fR MB" 4
-defines what size the hdd image should be. Note that although the default is set to 10000 (= 10GB), it will not need 10GB space on your harddisk as the files are created as sparse files.
 .IP "\fB\-\-updates\fR true|false" 4
 defines if debian updates package archives should be included in the image or not.
 .IP "\fB\-\-backports\fR true|false" 4
