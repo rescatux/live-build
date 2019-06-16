@@ -21,14 +21,16 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--apt-http-proxy URL]\n\
 \t    [--apt-indices true|false]\n\
 \t    [--apt-options OPTION|\"OPTIONS\"]\n\
-\t    [--aptitude-options OPTION|\"OPTIONS\"]\n\
 \t    [--apt-pipeline DEPTH]\n\
 \t    [--apt-recommends true|false]\n\
 \t    [--apt-secure true|false]\n\
 \t    [--apt-source-archives true|false]\n\
+\t    [--aptitude-options OPTION|\"OPTIONS\"]\n\
 \t    [-a|--architectures ARCHITECTURE]\n\
-\t    [-b|--binary-images iso|iso-hybrid|netboot|tar|hdd]\n\
+\t    [--archive-areas ARCHIVE_AREA|\"ARCHIVE_AREAS\"]\n\
+\t    [--backports true|false]\n\
 \t    [--binary-filesystem fat16|fat32|ext2|ext3|ext4|ntfs]\n\
+\t    [-b|--binary-images iso|iso-hybrid|netboot|tar|hdd]\n\
 \t    [--bootappend-install PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live-failsafe PARAMETER|\"PARAMETERS\"]\n\
@@ -37,31 +39,28 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--bootstrap-qemu-exclude PACKAGES]\n\
 \t    [--bootstrap-qemu-static PATH]\n\
 \t    [--breakpoints]\n\
+\t    [--build-with-chroot true|false]\n\
 \t    [--cache true|false]\n\
 \t    [--cache-indices true|false]\n\
 \t    [--cache-packages true|false]\n\
 \t    [--cache-stages STAGE|\"STAGES\"]\n\
 \t    [--checksums md5|sha1|sha224|sha256|sha384|sha512|none]\n\
-\t    [--color]\n\
-\t    [--compression bzip2|gzip|lzip|xz|none]\n\
-\t    [--config GIT_URL::GIT_BRANCH]\n\
-\t    [--zsync true|false]\n\
-\t    [--build-with-chroot true|false]\n\
 \t    [--chroot-filesystem ext2|ext3|ext4|squashfs|jffs2|none]\n\
 \t    [--clean]\n\
+\t    [--color]\n\
+\t    [--compression bzip2|gzip|lzip|xz|none]\n\
 \t    [-c|--conffile FILE]\n\
+\t    [--config GIT_URL::GIT_BRANCH]\n\
 \t    [--debconf-frontend dialog|editor|noninteractive|readline]\n\
 \t    [--debconf-priority low|medium|high|critical]\n\
 \t    [--debian-installer true|cdrom|netinst|netboot|businesscard|live|false]\n\
 \t    [--debian-installer-distribution daily|CODENAME]\n\
-\t    [--debian-installer-preseedfile FILE|URL]\n\
 \t    [--debian-installer-gui true|false]\n\
+\t    [--debian-installer-preseedfile FILE|URL]\n\
 \t    [--debootstrap-options OPTIONS]\n\
 \t    [--debootstrap-script SCRIPT]\n\
 \t    [--debug]\n\
 \t    [-d|--distribution CODENAME]\n\
-\t    [--parent-distribution CODENAME]\n\
-\t    [--parent-debian-installer-distribution CODENAME]\n\
 \t    [--dump]\n\
 \t    [--fdisk fdisk|fdisk.dist]\n\
 \t    [--firmware-binary true|false]\n\
@@ -69,20 +68,20 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--force]\n\
 \t    [--grub-splash FILE]\n\
 \t    [--gzip-options OPTION|\"OPTIONS\"]\n\
+\t    [--hdd-label LABEL]\n\
+\t    [--hdd-partition-start START]\n\
+\t    [--hdd-size SIZE]\n\
 \t    [--ignore-system-defaults]\n\
 \t    [--image-name NAME]\n\
 \t    [--initramfs none|live-boot]\n\
 \t    [--initramfs-compression bzip2|gzip|lzma]\n\
 \t    [--initsystem sysvinit|systemd|none]\n\
 \t    [--interactive shell]\n\
-\t    [--isohybrid-options OPTION|\"OPTIONS\"]\n\
-\t    [--hdd-label LABEL]\n\
-\t    [--hdd-size SIZE]\n\
-\t    [--hdd-partition-start START]\n\
 \t    [--iso-application NAME]\n\
 \t    [--iso-preparer NAME]\n\
 \t    [--iso-publisher NAME]\n\
 \t    [--iso-volume NAME]\n\
+\t    [--isohybrid-options OPTION|\"OPTIONS\"]\n\
 \t    [--jffs2-eraseblock SIZE]\n\
 \t    [--keyring-packages PACKAGE|\"PACKAGES\"]\n\
 \t    [-k|--linux-flavours FLAVOUR|\"FLAVOURS\"]\n\
@@ -90,12 +89,6 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--loadlin true|false]\n\
 \t    [--losetup losetup|losetup.orig]\n\
 \t    [--memtest memtest86+|memtest86|none]\n\
-\t    [-m|--parent-mirror-bootstrap URL]\n\
-\t    [--parent-mirror-chroot URL]\n\
-\t    [--parent-mirror-chroot-security URL]\n\
-\t    [--parent-mirror-binary URL]\n\
-\t    [--parent-mirror-binary-security URL]\n\
-\t    [--parent-mirror-debian-installer URL]\n\
 \t    [--mirror-bootstrap URL]\n\
 \t    [--mirror-chroot URL]\n\
 \t    [--mirror-chroot-security URL]\n\
@@ -103,32 +96,39 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--mirror-binary-security URL]\n\
 \t    [--mirror-debian-installer URL]\n\
 \t    [--mode debian|progress-linux]\n\
-\t    [--system live|normal]\n\
-\t    [--net-root-filesystem nfs|cfs]\n\
-\t    [--net-root-mountoptions OPTIONS]\n\
-\t    [--net-root-path PATH]\n\
-\t    [--net-root-server IP|HOSTNAME]\n\
 \t    [--net-cow-filesystem nfs|cfs]\n\
 \t    [--net-cow-mountoptions OPTIONS]\n\
 \t    [--net-cow-path PATH]\n\
 \t    [--net-cow-server IP|HOSTNAME]\n\
+\t    [--net-root-filesystem nfs|cfs]\n\
+\t    [--net-root-mountoptions OPTIONS]\n\
+\t    [--net-root-path PATH]\n\
+\t    [--net-root-server IP|HOSTNAME]\n\
 \t    [--net-tarball true|false]\n\
 \t    [--onie true|false]\n\
 \t    [--onie-kernel-cmdline \"OPTION1 OPTION2\"]\n\
-\t    [--quiet]\n\
-\t    [--archive-areas ARCHIVE_AREA|\"ARCHIVE_AREAS\"]\n\
 \t    [--parent-archive-areas ARCHIVE_AREA|\"ARCHIVE_AREAS\"]\n\
+\t    [--parent-debian-installer-distribution CODENAME]\n\
+\t    [--parent-distribution CODENAME]\n\
+\t    [--parent-mirror-binary URL]\n\
+\t    [--parent-mirror-binary-security URL]\n\
+\t    [-m|--parent-mirror-bootstrap URL]\n\
+\t    [--parent-mirror-chroot URL]\n\
+\t    [--parent-mirror-chroot-security URL]\n\
+\t    [--parent-mirror-debian-installer URL]\n\
+\t    [--quiet]\n\
 \t    [--security true|false]\n\
 \t    [--source true|false]\n\
 \t    [-s|--source-images iso|netboot|tar|hdd]\n\
 \t    [--swap-file-path PATH]\n\
 \t    [--swap-file-size MB]\n\
+\t    [--system live|normal]\n\
 \t    [--tasksel apt|aptitude|tasksel]\n\
 \t    [--uefi-secure-boot auto|enable|disable]\n\
 \t    [--updates true|false]\n\
-\t    [--backports true|false]\n\
 \t    [--verbose]\n\
-\t    [--win32-loader true|false]"
+\t    [--win32-loader true|false]\n\
+\t    [--zsync true|false]"
 
 
 Local_arguments ()

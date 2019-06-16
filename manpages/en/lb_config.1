@@ -19,8 +19,6 @@
 .br
 	[\fB\-\-apt\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
 .br
-	[\fB\-\-aptitude\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
-.br
 	[\fB\-\-apt\-pipeline\fR \fIDEPTH\fR]
 .br
 	[\fB\-\-apt\-recommends\fR true|false]
@@ -29,11 +27,17 @@
 .br
 	[\fB\-\-apt\-source\-archives\fR true|false]
 .br
+	[\fB\-\-aptitude\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
+.br
 	[\-a|\fB\-\-architectures\fR \fIARCHITECTURE\fR]
 .br
-	[\-b|\fB\-\-binary\-images\fR iso|iso\-hybrid|netboot|tar|hdd]
+	[\fB\-\-archive\-areas\fR \fIARCHIVE_AREA\fR|\fI"ARCHIVE_AREAS"\fR]
+.br
+	[\fB\-\-backports\fR true|false]
 .br
 	[\fB\-\-binary\-filesystem\fR fat16|fat32|ext2|ext3|ext4|ntfs]
+.br
+	[\-b|\fB\-\-binary\-images\fR iso|iso\-hybrid|netboot|tar|hdd]
 .br
 	[\fB\-\-bootappend\-install\fR \fIPARAMETER\fR|\fI"PARAMETERS"\fR]
 .br
@@ -51,6 +55,8 @@
 .br
 	[\fB\-\-breakpoints]
 .br
+	[\fB\-\-build\-with\-chroot\fR true|false]
+.br
 	[\fB\-\-cache\fR true|false]
 .br
 	[\fB\-\-cache\-indices\fR true|false]
@@ -61,21 +67,17 @@
 .br
 	[\fB\-\-checksums\fR md5|sha1|sha224|sha256|sha384|sha512|none]
 .br
-	[\fB\-\-color]
-.br
-	[\fB\-\-compression\fR bzip2|gzip|lzip|xz|none]
-.br
-	[\fB\-\-config\fR \fIGIT_URL::GIT_BRANCH\fR]
-.br
-	[\fB\-\-zsync\fR true|false]
-.br
-	[\fB\-\-build\-with\-chroot\fR true|false]
-.br
 	[\fB\-\-chroot\-filesystem\fR ext2|ext3|ext4|squashfs|jffs2|none]
 .br
 	[\fB\-\-clean\fR]
 .br
+	[\fB\-\-color]
+.br
+	[\fB\-\-compression\fR bzip2|gzip|lzip|xz|none]
+.br
 	[\-c|\fB\-\-conffile\fR \fIFILE\fR]
+.br
+	[\fB\-\-config\fR \fIGIT_URL::GIT_BRANCH\fR]
 .br
 	[\fB\-\-debconf\-frontend\fR dialog|editor|noninteractive|readline]
 .br
@@ -85,9 +87,9 @@
 .br
 	[\fB\-\-debian\-installer\-distribution\fR daily|\fICODENAME\fR]
 .br
-	[\fB\-\-debian\-installer\-preseedfile\fR \fIFILE\fR|\fIURL\fR]
-.br
 	[\fB\-\-debian\-installer\-gui\fR true|false]
+.br
+	[\fB\-\-debian\-installer\-preseedfile\fR \fIFILE\fR|\fIURL\fR]
 .br
 	[\fB\-\-debootstrap\-options\fR \fIOPTIONS\fR]
 .br
@@ -96,10 +98,6 @@
 	[\fB\-\-debug\fR]
 .br
 	[\-d|\fB\-\-distribution\fR \fICODENAME\fR]
-.br
-	[\fB\-\-parent\-distribution\fR \fICODENAME\fR]
-.br
-	[\fB\-\-parent\-debian\-installer\-distribution\fR \fICODENAME\fR]
 .br
 	[\fB\-\-dump\fR]
 .br
@@ -115,6 +113,12 @@
 .br
 	[\fB\-\-gzip\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
 .br
+	[\fB\-\-hdd\-label\fR \fILABEL\fR]
+.br
+	[\fB\-\-hdd\-partition\-start\fR \fISTART\fR]
+.br
+	[\fB\-\-hdd\-size\fR \fISIZE\fR]
+.br
 	[\fB\-\-ignore\-system\-defaults\fR]
 .br
 	[\fB\-\-image\-name\fR \fINAME\fR]
@@ -127,14 +131,6 @@
 .br
 	[\fB\-\-interactive\fR shell]
 .br
-	[\fB\-\-isohybrid\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
-.br
-	[\fB\-\-hdd\-label\fR \fILABEL\fR]
-.br
-	[\fB\-\-hdd\-size\fR \fISIZE\fR]
-.br
-	[\fB\-\-hdd\-partition\-start\fR \fISTART\fR]
-.br
 	[\fB\-\-iso\-application\fR \fINAME\fR]
 .br
 	[\fB\-\-iso\-preparer\fR \fINAME\fR]
@@ -142,6 +138,8 @@
 	[\fB\-\-iso\-publisher\fR \fINAME\fR]
 .br
 	[\fB\-\-iso\-volume\fR \fINAME\fR]
+.br
+	[\fB\-\-isohybrid\-options\fR \fIOPTION\fR|"\fIOPTIONS\fR"]
 .br
 	[\fB\-\-jffs2\-eraseblock\fR \fISIZE\fR]
 .br
@@ -157,18 +155,6 @@
 .br
 	[\fB\-\-memtest\fR memtest86+|memtest86|none]
 .br
-	[\-m|\fB\-\-parent\-mirror\-bootstrap\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-chroot\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-chroot\-security\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-binary\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-binary\-security\fR \fIURL\fR]
-.br
-	[\fB\-\-parent\-mirror\-debian\-installer\fR \fIURL\fR]
-.br
 	[\fB\-\-mirror\-bootstrap\fR \fIURL\fR]
 .br
 	[\fB\-\-mirror\-chroot\fR \fIURL\fR]
@@ -183,7 +169,13 @@
 .br
 	[\fB\-\-mode\fR debian|progress-linux]
 .br
-	[\fB\-\-system\fR live|normal]
+	[\fB\-\-net\-cow\-filesystem\fR nfs|cfs]
+.br
+	[\fB\-\-net\-cow\-mountoptions\fR \fIOPTIONS\fR]
+.br
+	[\fB\-\-net\-cow\-path\fR \fIPATH\fR]
+.br
+	[\fB\-\-net\-cow\-server\fR \fIIP\fR|\fIHOSTNAME\fR]
 .br
 	[\fB\-\-net\-root\-filesystem\fR nfs|cfs]
 .br
@@ -193,25 +185,31 @@
 .br
 	[\fB\-\-net\-root\-server\fR \fIIP\fR|\fIHOSTNAME\fR]
 .br
-	[\fB\-\-net\-cow\-filesystem\fR nfs|cfs]
-.br
-	[\fB\-\-net\-cow\-mountoptions\fR \fIOPTIONS\fR]
-.br
-	[\fB\-\-net\-cow\-path\fR \fIPATH\fR]
-.br
-	[\fB\-\-net\-cow\-server\fR \fIIP\fR|\fIHOSTNAME\fR]
-.br
 	[\fB\-\-net\-tarball\fR true|false]
 .br
 	[\fB\-\-onie\fR true|false]
 .br
 	[\fB\-\-onie\-kernel\-cmdline\fR \fI"OPTION1 OPTION2"\fR]
 .br
-	[\fB\-\-quiet\fR]
-.br
-	[\fB\-\-archive\-areas\fR \fIARCHIVE_AREA\fR|\fI"ARCHIVE_AREAS"\fR]
-.br
 	[\fB\-\-parent\-archive\-areas\fR \fIARCHIVE_AREA\fR|\fI"ARCHIVE_AREAS"\fR]
+.br
+	[\fB\-\-parent\-debian\-installer\-distribution\fR \fICODENAME\fR]
+.br
+	[\fB\-\-parent\-distribution\fR \fICODENAME\fR]
+.br
+	[\fB\-\-parent\-mirror\-binary\fR \fIURL\fR]
+.br
+	[\fB\-\-parent\-mirror\-binary\-security\fR \fIURL\fR]
+.br
+	[\-m|\fB\-\-parent\-mirror\-bootstrap\fR \fIURL\fR]
+.br
+	[\fB\-\-parent\-mirror\-chroot\fR \fIURL\fR]
+.br
+	[\fB\-\-parent\-mirror\-chroot\-security\fR \fIURL\fR]
+.br
+	[\fB\-\-parent\-mirror\-debian\-installer\fR \fIURL\fR]
+.br
+	[\fB\-\-quiet\fR]
 .br
 	[\fB\-\-security\fR true|false]
 .br
@@ -223,17 +221,19 @@
 .br
         [\fB\-\-swap\-file\-size MB]
 .br
+	[\fB\-\-system\fR live|normal]
+.br
 	[\fB\-\-tasksel\fR apt|aptitude|tasksel]
 .br
 	[\fB\-\-uefi\-secure\-boot\fR \fIauto|enable|disable\fR]
 .br
 	[\fB\-\-updates\fR true|false]
 .br
-	[\fB\-\-backports\fR true|false]
-.br
 	[\fB\-\-verbose\fR]
 .br
 	[\fB\-\-win32\-loader true|false]
+.br
+	[\fB\-\-zsync\fR true|false]
 .\" FIXME
 
 .SH DESCRIPTION
