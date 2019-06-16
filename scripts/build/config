@@ -33,6 +33,9 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--bootappend-live PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootappend-live-failsafe PARAMETER|\"PARAMETERS\"]\n\
 \t    [--bootloaders grub-legacy|grub-pc|syslinux|grub-efi]\n\
+\t    [--bootstrap-qemu-arch ARCH]\n\
+\t    [--bootstrap-qemu-exclude PACKAGES]\n\
+\t    [--bootstrap-qemu-static PATH]\n\
 \t    [--breakpoints]\n\
 \t    [--cache true|false]\n\
 \t    [--cache-indices true|false]\n\
@@ -125,10 +128,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--updates true|false]\n\
 \t    [--backports true|false]\n\
 \t    [--verbose]\n\
-\t    [--win32-loader true|false]\n\
-\t    [--bootstrap-qemu-exclude PACKAGES]\n\
-\t    [--bootstrap-qemu-static PATH]\n\
-\t    [--bootstrap-qemu-arch ARCH]"
+\t    [--win32-loader true|false]"
 
 
 Local_arguments ()
