@@ -107,6 +107,8 @@
 .br
 	[\fB\-\-ignore\-system\-defaults\fR]
 .br
+	[\fB\-\-image\-name\fR \fINAME\fR]
+.br
 	[\fB\-\-initramfs\fR none|live\-boot]
 .br
 	[\fB\-\-initramfs\-compression\fR bzip2|gzip|lzma]
@@ -325,6 +327,8 @@ defines the name of an optional to be included splash screen graphic for the gru
 defines the default options that will be appended to (almost) every gzip call during the building of the image. By default, this is set to \-\-best to use highest (but slowest) compression. Dynamically, if the host system supports it, also \-\-rsyncable is added.
 .IP "\fB\-\-ignore\-system\-defaults\fR" 4
 \fBlb config\fR by default reads system defaults from \fI/etc/live/build.conf\fR and \fI/etc/live/build/*\fR when generating a new live system config directory. This is useful if you want to set global settings, such as mirror locations, and don't want to specify them all of the time.
+.IP "\fB\-\-image\-name\fR \fINAME\fR" 4
+sets the base name of the image. Defaults to live-image.
 .IP "\fB\-\-initramfs\fR none|live\-boot" 4
 sets the name of the package that contains the live system specific initramfs modification and defaults to live\-boot. Using 'none' is useful if the resulting system image should not be a live image (experimental).
 .IP "\fB\-\-initramfs\-compression\fR bzip2|gzip|lzma]

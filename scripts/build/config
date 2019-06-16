@@ -65,10 +65,10 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--grub-splash FILE]\n\
 \t    [--gzip-options OPTION|\"OPTIONS\"]\n\
 \t    [--ignore-system-defaults]\n\
+\t    [--image-name NAME]\n\
 \t    [--initramfs none|live-boot]\n\
 \t    [--initramfs-compression bzip2|gzip|lzma]\n\
 \t    [--initsystem sysvinit|systemd|none]\n\
-\t    [--image-name [NAME]\n\
 \t    [--interactive shell]\n\
 \t    [--isohybrid-options OPTION|\"OPTIONS\"]\n\
 \t    [--hdd-label LABEL]\n\
