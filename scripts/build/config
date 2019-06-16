@@ -61,6 +61,8 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--parent-debian-installer-distribution CODENAME]\n\
 \t    [--dump]\n\
 \t    [--fdisk fdisk|fdisk.dist]\n\
+\t    [--firmware-binary true|false]\n\
+\t    [--firmware-chroot true|false]\n\
 \t    [--force]\n\
 \t    [--grub-splash FILE]\n\
 \t    [--gzip-options OPTION|\"OPTIONS\"]\n\
@@ -115,8 +117,6 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--security true|false]\n\
 \t    [--source true|false]\n\
 \t    [-s|--source-images iso|netboot|tar|hdd]\n\
-\t    [--firmware-binary true|false]\n\
-\t    [--firmware-chroot true|false]\n\
 \t    [--swap-file-path PATH]\n\
 \t    [--swap-file-size MB]\n\
 \t    [--tasksel apt|aptitude|tasksel]\n\

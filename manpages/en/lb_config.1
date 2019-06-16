@@ -99,6 +99,10 @@
 .br
 	[\fB\-\-fdisk\fR fdisk|fdisk.dist]
 .br
+	[\fB\-\-firmware\-binary true|false]
+.br
+	[\fB\-\-firmware\-chroot true|false]
+.br
 	[\fB\-\-force\fR]
 .br
 	[\fB\-\-grub\-splash\fR \fIFILE\fR]
@@ -323,6 +327,10 @@ defines the parent debian\-installer distribution for derivatives of the resulti
 prepares a report of the currently present live system configuration and the version of live\-build used. This is useful to provide if you submit bug reports, we do get all information required for us to locate and replicate an error.
 .IP "\fB\-\-fdisk\fR fdisk|fdisk.dist" 4
 sets the filename of the fdisk binary from the host system that should be used. This is autodetected and does generally not need any customization.
+.IP "\fB\-\-firmware\-binary\fR true|false" 4
+include firmware packages in debian-installer. Defaults to true.
+.IP "\fB\-\-firmware\-chroot\fR true|false" 4
+include firmware packages in debian-installer. Defaults to true.
 .IP "\fB\-\-force\fR" 4
 forces re\-execution of already run stages. Use only if you know what you are doing. It is generally safer to use \fBlb clean\fR to clean up before re\-executing \fBlb build\fR.
 .IP "\fB\-\-grub\-splash\fR \fIFILE\fR" 4
