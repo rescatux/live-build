@@ -169,7 +169,7 @@
 .br
 	[\fB\-\-mirror\-debian\-installer\fR \fIURL\fR]
 .br
-	[\fB\-\-mode\fR debian|progress-linux|ubuntu]
+	[\fB\-\-mode\fR debian|progress-linux]
 .br
 	[\fB\-\-system\fR live|normal]
 .br
@@ -393,7 +393,7 @@ sets the location of the derivative package mirror that should end up configured
 sets the location of the derivatives security package mirror that should end up configured in the final image.
 .IP "\fB\-\-mirror\-debian\-installer\fR \fIURL\fR" 4
 sets the location of the mirror that will be used to fetch the debian installer images of the derivative. By default, this points to the same mirror used to build the live system, i.e. the value of \-\-mirror\-bootstrap.
-.IP "\fB\-\-mode\fR debian|progress|ubuntu" 4
+.IP "\fB\-\-mode\fR debian|progress-linux" 4
 defines a global mode to load project specific defaults. By default this is set to debian.
 .IP "\fB\-\-system\fR live|normal" 4
 defines if the resulting system image should a live system or a normal, non-live system.
