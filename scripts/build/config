@@ -84,6 +84,7 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--keyring-packages PACKAGE|\"PACKAGES\"]\n\
 \t    [-k|--linux-flavours FLAVOUR|\"FLAVOURS\"]\n\
 \t    [--linux-packages \"PACKAGES\"]\n\
+\t    [--loadlin true|false]\n\
 \t    [--losetup losetup|losetup.orig]\n\
 \t    [--memtest memtest86+|memtest86|none]\n\
 \t    [-m|--parent-mirror-bootstrap URL]\n\
@@ -124,7 +125,6 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--updates true|false]\n\
 \t    [--backports true|false]\n\
 \t    [--verbose]\n\
-\t    [--loadlin true|false]\n\
 \t    [--win32-loader true|false]\n\
 \t    [--bootstrap-qemu-exclude PACKAGES]\n\
 \t    [--bootstrap-qemu-static PATH]\n\
