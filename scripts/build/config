@@ -89,11 +89,11 @@ USAGE="${PROGRAM}   [--apt apt|aptitude]\n\
 \t    [--loadlin true|false]\n\
 \t    [--losetup losetup|losetup.orig]\n\
 \t    [--memtest memtest86+|memtest86|none]\n\
+\t    [--mirror-binary URL]\n\
+\t    [--mirror-binary-security URL]\n\
 \t    [--mirror-bootstrap URL]\n\
 \t    [--mirror-chroot URL]\n\
 \t    [--mirror-chroot-security URL]\n\
-\t    [--mirror-binary URL]\n\
-\t    [--mirror-binary-security URL]\n\
 \t    [--mirror-debian-installer URL]\n\
 \t    [--mode debian|progress-linux]\n\
 \t    [--net-cow-filesystem nfs|cfs]\n\
