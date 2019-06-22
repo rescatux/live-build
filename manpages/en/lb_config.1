@@ -237,11 +237,9 @@
 .SH DESCRIPTION
 \fBlb config\fR is a high\-level command (porcelain) of \fIlive\-build\fR(7), the live systems tool suite.
 .PP
-.\" FIXME
 \fBlb config\fR populates the configuration directory for live\-build. This directory is named 'config' and is created in the current directory where \fBlb config\fR was executed.
 .PP
-Note: Currently \fBlb config\fR tries to be smart and sets defaults for some options depending on the setting of other options (e.g. which linux packages to be used depending on if a wheezy system gets build or not). This means that when generating a new configuration, you should call \fBlb config\fR only once with all options specified. Calling it several times with only a subset of the options each can result in non working configurations. This is also caused by the fact that \fBlb config\fR called with one option only changes that option, and leaves everything else as is unless it is not defined. However, \fBlb config\fR does warn about know impossible or likely impossible combinations that would lead to non working live systems. If unsure, remove config/{binary,bootstrap,chroot,common,source} and call \fBlb config\fR again.
-.\" FIXME
+Note: \fBlb config\fR tries to be smart and sets defaults for some options depending on the setting of other options. This means that when generating a new configuration, you should call \fBlb config\fR only once with all options specified. Calling it several times with only a subset of the options each can result in non working configurations. This is also caused by the fact that \fBlb config\fR called with one option only changes that option, and leaves everything else as is unless it is not defined. However, \fBlb config\fR does warn about know impossible or likely impossible combinations that would lead to non working live systems. If unsure, remove config/{binary,bootstrap,chroot,common,source} and call \fBlb config\fR again.
 
 .SH OPTIONS
 In addition to its specific options \fBlb config\fR understands all generic live\-build options. See \fIlive\-build\fR(7) for a complete list of all generic live\-build options.
