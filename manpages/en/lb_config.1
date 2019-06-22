@@ -308,13 +308,13 @@ defines which filesystem type should be used for the root filesystem image. If y
 .IP "\fB\-\-clean\fR" 4
 minimizes config directory by automatically removing unused and thus empty subdirectories.
 .IP "\fB\-\-color\fR" 4
-turn on color in the messages.
+turns on color in the messages.
 .IP "\fB\-\-compression\fR bzip2|gzip|lzip|xz|none" 4
 defines the compression program to be used to compress tarballs. Defaults to none.
 .IP "\-c|\fB\-\-conffile\fR \fIFILE\fR" 4
-using a user specified alternative configuration file in addition to the normally used one in the config directory.
+uses a user specified alternative configuration file in addition to the normally used one in the config directory.
 .IP "\fB\-\-config\fR \fIGIT_URL\fR::\fIGIT_BRANCH\fR" 4
-bootstrap the config tree from a git repository, optionally appended by a Git Id (branch, commit, tag, etc.).
+bootstraps the config tree from a git repository, optionally appended by a Git Id (branch, commit, tag, etc.).
 .IP "\fB\-\-debconf\-frontend\fR dialog|editor|noninteractive|readline" 4
 defines what value the debconf frontend should be set to inside the chroot. Note that setting it to anything but noninteractive, which is the default, makes your build asking questions during the build.
 .IP "\fB\-\-debconf\-priority\fR low|medium|high|critical" 4
@@ -332,7 +332,7 @@ passes the given options to debootstrap when setting up the base system.
 .IP "\fB\-\-debootstrap\-script\fR \fISCRIPT\fR" 4
 tells debootstrap to use an alternate bootstrap script (last parameter to debootstrap).
 .IP "\fB\-\-debug\fR" 4
-turn on debugging informational messages.
+turns on debugging informational messages.
 .IP "\-d|\fB\-\-distribution\fR \fICODENAME\fR" 4
 defines the distribution of the resulting live system.
 .IP "\fB\-\-dump\fR" 4
@@ -340,9 +340,9 @@ prepares a report of the currently present live system configuration and the ver
 .IP "\fB\-\-fdisk\fR fdisk|fdisk.dist" 4
 sets the filename of the fdisk binary from the host system that should be used. This is autodetected and does generally not need any customization.
 .IP "\fB\-\-firmware\-binary\fR true|false" 4
-include firmware packages in debian-installer. Defaults to true.
+includes firmware packages in debian-installer. Defaults to true.
 .IP "\fB\-\-firmware\-chroot\fR true|false" 4
-include firmware packages in debian-installer. Defaults to true.
+includes firmware packages in debian-installer. Defaults to true.
 .IP "\fB\-\-force\fR" 4
 forces re\-execution of already run stages. Use only if you know what you are doing. It is generally safer to use \fBlb clean\fR to clean up before re\-executing \fBlb build\fR.
 .IP "\fB\-\-grub\-splash\fR \fIFILE\fR" 4
@@ -352,7 +352,7 @@ defines the default options that will be appended to (almost) every gzip call du
 .IP "\fB\-\-hdd\-label\fR \fILABEL\fR" 4
 defines the label for the hdd target. Defaults to DEBIAN_LIVE.
 .IP "\fB\-\-hdd\-partition\-start\fR \fISTART\fR" 4
-set start of partition for the hdd target for BIOSes that expect a specific boot partition start (e.g. "63s"). If empty, use optimal layout. Defaults to empty.
+sets the start of the partition for the hdd target for BIOSes that expect a specific boot partition start (e.g. "63s"). If empty, use optimal layout. Defaults to empty.
 .IP "\fB\-\-hdd\-size\fR \fISIZE\fR" 4
 defines the size for the hdd target. The unit is MiB. Defaults to auto, which generates the smallest possible image.
 .IP "\fB\-\-ignore\-system\-defaults\fR" 4
