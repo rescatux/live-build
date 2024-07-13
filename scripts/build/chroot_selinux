@@ -1,6 +1,7 @@
 #!/bin/sh
 
 ## live-build(7) - System Build Scripts
+## Copyright (C) 2016-2020 The Debian Live team
 ## Copyright (C) 2006-2015 Daniel Baumann <mail@daniel-baumann.ch>
 ##
 ## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
@@ -14,50 +15,43 @@ set -e
 [ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
 
 # Setting static variables
-DESCRIPTION="$(Echo 'Install SELinux chroot packages')"
-HELP=""
+DESCRIPTION="Install SELinux chroot packages"
 USAGE="${PROGRAM} {install|remove} [--force]"
 
-Arguments "${@}"
-
-# Reading configuration files
-Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
-Set_defaults
+# Processing arguments and configuration files
+Init_config_data "${@}"
 
 # Requiring stage file
-Require_stagefile .build/config .build/bootstrap
-
-Echo_message "Begin installing SELinux chroot packages..."
-
-# Checking stage file
-Check_stagefile .build/chroot_selinux
-
-# Checking lock file
-Check_lockfile .lock
-
-# Creating lock file
-Create_lockfile .lock
+Require_stagefiles config bootstrap
 
 case "${LB_SELINUX}" in
-    enforced|permissive)
-        Check_package chroot /usr/bin/chcon coreutils
-        Check_package chroot /sbin/setfiles policycoreutils
-        Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
-        Check_package chroot /usr/sbin/check-selinux-installation selinux-basics
-        Check_package chroot /sbin/auditd auditd
-        Install_package
-    ;;
+	enforced|permissive)
+			Echo_message "Begin installing SELinux chroot packages..."
 
-    #auto)
-    #
-    #;;
-    #
-    #disable)
-    #
-    #;;
+			# Checking stage file
+			Check_stagefile
+
+			# Acquire lock file
+			Acquire_lockfile
+
+			Check_package chroot /usr/bin/chcon coreutils
+			Check_package chroot /sbin/setfiles policycoreutils
+			Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
+			Check_package chroot /usr/sbin/check-selinux-installation selinux-basics
+			Check_package chroot /sbin/auditd auditd
+			Install_packages
+	;;
+
+	#auto)
+	#
+	#;;
+	#
+	#disable)
+	#
+	#;;
 
 esac
 
 # Creating stage file
-Create_stagefile .build/chroot_selinux
-
+Create_stagefile
+;;
