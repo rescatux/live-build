@@ -26,20 +26,32 @@ Require_stagefiles config bootstrap
 
 case "${LB_SELINUX}" in
 	enforced|permissive)
-			Echo_message "Begin installing SELinux chroot packages..."
+		Echo_message "Begin installing SELinux chroot packages..."
 
-			# Checking stage file
-			Check_stagefile
+		# Checking stage file
+		Check_stagefile
 
-			# Acquire lock file
-			Acquire_lockfile
+		# Acquire lock file
+		Acquire_lockfile
 
-			Check_package chroot /usr/bin/chcon coreutils
-			Check_package chroot /sbin/setfiles policycoreutils
-			Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
-			Check_package chroot /usr/sbin/check-selinux-installation selinux-basics
-			Check_package chroot /sbin/auditd auditd
-			Install_packages
+		Check_package chroot /usr/bin/chcon coreutils
+		Check_package chroot /sbin/setfiles policycoreutils
+		Check_package chroot /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
+		Check_package chroot /usr/sbin/check-selinux-installation selinux-basics
+		Check_package chroot /sbin/auditd auditd
+		Install_packages
+
+		# Ensure that the package file exists before it is manipulated
+		touch chroot/root/packages.chroot
+
+		SELINUX_CHROOT_PACKAGES="selinux-utils selinux-policy-default"
+
+		# Drop section and keep package names only
+		for _PACKAGE in ${SELINUX_CHROOT_PACKAGES}
+		do
+			echo $(echo ${_PACKAGE} | awk -F/ '{ print $NF }') >> chroot/root/packages.chroot
+		done
+
 	;;
 
 	#auto)
