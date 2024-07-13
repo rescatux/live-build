@@ -263,6 +263,16 @@ case "${LB_CHROOT_FILESYSTEM}" in
 	squashfs)
 		# Checking depends
 		Check_package chroot /usr/share/doc/squashfs-tools squashfs-tools
+		case "${LB_SELINUX}" in
+			enforced|permissive)
+				Check_package host /sbin/setfiles policycoreutils
+				Check_package host /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
+			;;
+
+			disable)
+			;;
+
+		esac
 
 		# Restoring cache
 		Restore_package_cache binary
@@ -323,6 +333,16 @@ case "${LB_CHROOT_FILESYSTEM}" in
 			MKSQUASHFS_OPTIONS="-Xcompression-level ${LB_CHROOT_SQUASHFS_COMPRESSION_LEVEL} ${MKSQUASHFS_OPTIONS}"
 		fi
 
+		case "${LB_SELINUX}" in
+			enforced|permissive)
+				MKSQUASHFS_OPTIONS="-xattrs ${MKSQUASHFS_OPTIONS}"
+			;;
+
+			disable)
+			;;
+
+		esac
+
 		case "${LB_BUILD_WITH_CHROOT}" in
 			true)
 				if [ -e config/rootfs/excludes ]
@@ -331,6 +351,17 @@ case "${LB_CHROOT_FILESYSTEM}" in
 
 					MKSQUASHFS_OPTIONS="-wildcards -ef /excludes ${MKSQUASHFS_OPTIONS}"
 				fi
+
+				case "${LB_SELINUX}" in
+					enforced|permissive)
+						# TODO: Since bookworm parallel relabelling with -T 0 is possible and faster
+						setfiles -F -r chroot/chroot /etc/selinux/default/contexts/files/file_contexts chroot/chroot
+					;;
+
+					disable)
+					;;
+
+				esac
 
 				# Create image
 				Chroot chroot "nice -n 17 mksquashfs chroot filesystem.squashfs ${MKSQUASHFS_OPTIONS}"
@@ -367,6 +398,17 @@ case "${LB_CHROOT_FILESYSTEM}" in
 				then
 					MKSQUASHFS_OPTIONS="-wildcards -ef config/rootfs/excludes ${MKSQUASHFS_OPTIONS}"
 				fi
+
+				case "${LB_SELINUX}" in
+					enforced|permissive)
+						# TODO: Since bookworm parallel relabelling with -T 0 is possible and faster
+						setfiles -F -r chroot /etc/selinux/default/contexts/files/file_contexts chroot
+					;;
+
+					disable)
+					;;
+
+				esac
 
 				nice -n 19 mksquashfs chroot binary/${INITFS}/filesystem.squashfs ${MKSQUASHFS_OPTIONS}
 				;;

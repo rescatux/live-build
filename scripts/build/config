@@ -116,6 +116,7 @@ USAGE="${PROGRAM} [--apt apt|apt-get|aptitude]\n\
 \t    [--parent-mirror-debian-installer URL]\n\
 \t    [--quiet]\n\
 \t    [--security true|false]\n\
+\t    [--selinux enforced|permissive|disable]\n\
 \t    [--source true|false]\n\
 \t    [-s|--source-images iso|netboot|tar|hdd]\n\
 \t    [--swap-file-path PATH]\n\
@@ -171,7 +172,7 @@ Local_arguments ()
 		parent-mirror-chroot:,parent-mirror-chroot-security:,
 		parent-mirror-debian-installer:,
 		quiet,
-		security:,source:,source-images:,swap-file-path:,swap-file-size:,system:,
+		security:,selinux:,source:,source-images:,swap-file-path:,swap-file-size:,system:,
 		tasksel:,
 		uefi-secure-boot:,updates:,utc-time:,usage,
 		validate,verbose,version,
@@ -780,6 +781,11 @@ Local_arguments ()
 				shift 2
 				;;
 
+			--selinux)
+				LB_SELINUX="${2}"
+				shift 2
+				;;
+
 			--source)
 				LB_SOURCE="${2}"
 				shift 2
@@ -1311,6 +1317,9 @@ LB_SWAP_FILE_SIZE="${LB_SWAP_FILE_SIZE}"
 
 # Enable/disable UEFI secure boot support
 LB_UEFI_SECURE_BOOT="${LB_UEFI_SECURE_BOOT}"
+
+# Enforce/disable SELinux
+LB_SELINUX="${LB_SELINUX}"
 EOF
 
 # Creating lb_source_* configuration

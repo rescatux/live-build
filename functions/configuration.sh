@@ -403,6 +403,30 @@ Prepare_config ()
 			;;
 	esac
 
+	LB_SELINUX="${LB_SELINUX:-disable}"
+
+	case "${LB_SELINUX}" in
+		enforced)
+			SELINUX_ENFORCED_CMDLINE="selinux=1 security=selinux enforcing=1"
+			if ! echo "${LB_BOOTAPPEND_LIVE}" | grep -q "${SELINUX_ENFORCED_CMDLINE}"
+			then
+				LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} ${SELINUX_ENFORCED_CMDLINE}"
+			fi
+		;;
+
+		permissive)
+			SELINUX_PERMISSIVE_CMDLINE="selinux=1 security=selinux enforcing=0"
+			if ! echo "${LB_BOOTAPPEND_LIVE}" | grep -q "${SELINUX_PERMISSIVE_CMDLINE}"
+			then
+				LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} ${SELINUX_PERMISSIVE_CMDLINE}"
+			fi
+		;;
+
+		disable)
+		;;
+
+	esac
+
 	local _LB_BOOTAPPEND_PRESEED
 	if [ -n "${LB_DEBIAN_INSTALLER_PRESEEDFILE}" ]
 	then
@@ -740,6 +764,11 @@ Validate_config_permitted_values ()
 		exit 1
 	fi
 
+	if ! In_list "${LB_SELINUX}" enforced permissive disable; then
+		Echo_error "You have specified an invalid value for LB_SELINUX (--selinux)."
+		exit 1
+	fi
+
 	if ! In_list "${LB_SOURCE_IMAGES}" iso netboot tar hdd; then
 		Echo_error "You have specified an invalid value for LB_SOURCE_IMAGES (--source-images)."
 		exit 1
@@ -800,6 +829,17 @@ Validate_config_dependencies ()
 			Echo_error "You have selected an invalid combination of bootloaders and live image type; the grub-* bootloaders are not compatible with hdd and netboot types."
 			exit 1
 		fi
+	fi
+
+	if In_list "${LB_SELINUX}" permissive enforced; then
+		if [ "${LB_CHROOT_FILESYSTEM}" != "squashfs" ]; then
+			Echo_error "You have selected values of LB_SELINUX and LB_CHROOT_FILESYSTEM which are incompatible. SELinux only supports squashfs as the chroot filesystem."
+			exit 1
+		fi
+	fi
+
+	if [ "${LB_SELINUX}" = "enforced" ]; then
+		Echo_warning "A value of 'enforced' for option LB_SELINUX is known not to boot onto an usable Live CD."
 	fi
 
 	Validate_http_proxy
