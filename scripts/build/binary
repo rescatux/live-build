@@ -33,7 +33,7 @@ lb binary_chroot "${@}"
 # Chroot preparation component lists
 # We deliberately exclude 'debianchroot'
 CHROOT_PREP_MOUNTS="devpts proc selinuxfs sysfs"
-CHROOT_PREP_OTHER="dpkg tmpfs sysv-rc hosts resolv hostname apt"
+CHROOT_PREP_OTHER="dpkg tmpfs sysv-rc hosts resolv hostname apt selinux"
 
 if [ "${LB_BUILD_WITH_CHROOT}" = "true" ]; then
 	# Configuring chroot
