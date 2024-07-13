@@ -68,7 +68,7 @@ while In_list "${1}" $MODES; do
 done
 
 # Default set, EXCLUDING 'archives'
-DEFAULT_HELPERS="devpts proc selinuxfs sysfs debianchroot dpkg tmpfs sysv-rc hosts resolv hostname apt"
+DEFAULT_HELPERS="devpts proc selinuxfs sysfs debianchroot dpkg tmpfs sysv-rc hosts resolv hostname apt selinux"
 
 case "${HELPERS}" in
 	all)
