@@ -37,6 +37,7 @@ lb chroot_prep install all mode-archives-chroot "${@}"
 lb chroot_linux-image "${@}"
 lb chroot_firmware "${@}"
 lb chroot_preseed "${@}"
+lb chroot_selinux "${@}"
 lb chroot_includes_before_packages "${@}"
 
 for _PASS in install live; do

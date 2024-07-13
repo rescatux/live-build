@@ -1,0 +1,55 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016-2020 The Debian Live team
+## Copyright (C) 2006-2015 Daniel Baumann <mail@daniel-baumann.ch>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+# Including common functions
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+# Setting static variables
+DESCRIPTION="Schedule SELinux packages for installation"
+USAGE="${PROGRAM} [--force]"
+
+# Processing arguments and configuration files
+Init_config_data "${@}"
+
+# Requiring stage file
+Require_stagefiles config bootstrap
+
+case "${LB_SELINUX}" in
+	enforced|permissive)
+		Echo_message "Begin scheduling SELinux installation..."
+
+		# Checking stage file
+		Check_stagefile
+
+		# Acquire lock file
+		Acquire_lockfile
+
+		# Ensure that the package file exists before it is manipulated
+		touch chroot/root/packages.chroot
+
+		SELINUX_CHROOT_PACKAGES="selinux-basics selinux-policy-default auditd"
+
+		# Drop section and keep package names only
+		for _PACKAGE in ${SELINUX_CHROOT_PACKAGES}
+		do
+			echo $(echo ${_PACKAGE} | awk -F/ '{ print $NF }') >> chroot/root/packages.chroot
+		done
+	;;
+
+	auto|disable)
+	;;
+
+esac
+
+# Creating stage file
+Create_stagefile
