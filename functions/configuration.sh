@@ -403,6 +403,35 @@ Prepare_config ()
 			;;
 	esac
 
+LB_SELINUX="${LB_SELINUX:-auto}"
+
+case "${LB_SELINUX}" in
+	enforced)
+		SELINUX_ENFORCED_CMDLINE="selinux=1 security=selinux enforcing=1"
+		if ! echo "${LB_BOOTAPPEND_LIVE}" | grep -q "${SELINUX_ENFORCED_CMDLINE}"
+		then
+			LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} ${SELINUX_ENFORCED_CMDLINE}"
+		fi
+	;;
+
+	permissive)
+		SELINUX_PERMISSIVE_CMDLINE="selinux=1 security=selinux enforcing=0"
+		if ! echo "${LB_BOOTAPPEND_LIVE}" | grep -q "${SELINUX_PERMISSIVE_CMDLINE}"
+		then
+			LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} ${SELINUX_PERMISSIVE_CMDLINE}"
+		fi
+	;;
+
+	#auto)
+	#
+	#;;
+	#
+	#disable)
+	#
+	#;;
+
+esac
+
 	local _LB_BOOTAPPEND_PRESEED
 	if [ -n "${LB_DEBIAN_INSTALLER_PRESEEDFILE}" ]
 	then
@@ -737,6 +766,11 @@ Validate_config_permitted_values ()
 
 	if ! In_list "${LB_MEMTEST}" memtest86+ memtest86 none; then
 		Echo_error "You have specified an invalid value for LB_MEMTEST (--memtest)."
+		exit 1
+	fi
+
+	if ! In_list "${LB_SELINUX}" enforced permissive auto disable; then
+		Echo_error "You have specified an invalid value for LB_SELINUX (--selinux)."
 		exit 1
 	fi
 
