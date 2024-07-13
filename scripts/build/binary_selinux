@@ -1,0 +1,65 @@
+#!/bin/sh
+
+## live-build(7) - System Build Scripts
+## Copyright (C) 2016-2020 The Debian Live team
+## Copyright (C) 2006-2015 Daniel Baumann <mail@daniel-baumann.ch>
+##
+## This program comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+# Including common functions
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+# Setting static variables
+DESCRIPTION="SELinux Kernel boot options"
+USAGE="${PROGRAM}"
+
+# Processing arguments and configuration files
+Init_config_data "${@}"
+
+# Requiring stage file
+Require_stagefiles config bootstrap
+
+case "${LB_SELINUX}" in
+	enforced)
+		Echo_message "Adding SELinux Kernel boot options (enforced)..."
+
+		# Checking stage file
+		Check_stagefile
+
+		# Acquire lock file
+		Acquire_lockfile
+
+		LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=1"
+		export LB_BOOTAPPEND_LIVE
+	;;
+
+	permissive)
+		Echo_message "Adding SELinux Kernel boot options (permissive)..."
+
+		# Checking stage file
+		Check_stagefile
+
+		# Acquire lock file
+		Acquire_lockfile
+
+		LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} selinux=1 security=selinux enforcing=0"
+		export LB_BOOTAPPEND_LIVE
+	;;
+
+	#auto)
+	#
+	#;;
+	#
+	#disable)
+	#
+	#;;
+
+esac
+
+# Creating stage file
+Create_stagefile
