@@ -266,6 +266,7 @@ case "${LB_CHROOT_FILESYSTEM}" in
 		case "${LB_SELINUX}" in
 			enforced|permissive)
 				Check_package host /sbin/setfiles policycoreutils
+				Check_package host /etc/selinux/default/contexts/files/file_contexts selinux-policy-default
 			;;
 
 			auto|disable)
@@ -337,13 +338,8 @@ case "${LB_CHROOT_FILESYSTEM}" in
 				MKSQUASHFS_OPTIONS="-xattrs ${MKSQUASHFS_OPTIONS}"
 			;;
 
-			#auto)
-			#
-			#;;
-			#
-			#disable)
-			#
-			#;;
+			auto|disable)
+			;;
 
 		esac
 
