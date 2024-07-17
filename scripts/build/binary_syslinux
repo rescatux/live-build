@@ -149,6 +149,7 @@ if [ -e "${_TARGET}"/advanced.cfg ]; then
 	mv -f "${_TARGET}"/advanced.cfg "${_TARGET}"/utilities.cfg
 fi
 
+_AUTO_ARCH_DETECTED="false"
 # Configuring files
 if [ -e "${_TARGET}/live.cfg.in" ]
 then
@@ -172,6 +173,23 @@ then
 			;;
 
 		*)
+			_AMD64_FLAVOUR_NUMBER="0"
+			_686_FLAVOUR_NUMBER="0"
+
+			for _FLAVOUR in ${LB_LINUX_FLAVOURS}
+			do
+				if [ "${_FLAVOUR}" = "amd64" ] ; then
+					_AMD64_FLAVOUR_NUMBER="$((${_AMD64_FLAVOUR_NUMBER} + 1))"
+				fi
+				if [ "${_FLAVOUR}" = "686" ] ; then
+					_686_FLAVOUR_NUMBER="$((${_686_FLAVOUR_NUMBER} + 1))"
+				fi
+			done
+
+			if [ "${_AMD64_FLAVOUR_NUMBER}" -ge 1 -a "${_686_FLAVOUR_NUMBER}" -ge 1 ] ; then
+				_AUTO_ARCH_DETECTED=true
+			fi
+
 			_NUMBER="0"
 
 			for _FLAVOUR in ${LB_LINUX_FLAVOURS}
@@ -184,7 +202,7 @@ then
 				ln -f $(ls -r1 --sort=version binary/${_INITRAMFS}/vmlinuz-*-${_FLAVOUR} | head -n 1) binary/${_INITRAMFS}/vmlinuz${_NUMBER}
 				ln -f $(ls -r1 --sort=version binary/${_INITRAMFS}/initrd.img-*-${_FLAVOUR} | head -n 1) binary/${_INITRAMFS}/initrd${_NUMBER}.img
 
-				if [ "${_NUMBER}" -gt 1 ]
+				if [ "${_NUMBER}" -gt 1 -o "${_AUTO_ARCH_DETECTED}" = "true" ]
 				then
 					echo "" >> "${_TARGET}/live.cfg"
 					grep -v 'menu default' "${_TARGET}/live.cfg.in" >> "${_TARGET}/live.cfg"
@@ -201,6 +219,14 @@ then
 			rm -f "${_TARGET}/live.cfg.in"
 			;;
 	esac
+fi
+
+if [ "${_AUTO_ARCH_DETECTED}" = "true" ] ; then
+	# Copy necessary syslinux modules
+	for module in ifcpu64.c32
+	do
+		cp "chroot/usr/lib/syslinux/modules/bios/${module}" "${_TARGET}/"
+	done
 fi
 
 if [ -e chroot/etc/os-release ]
@@ -282,6 +308,14 @@ else
 	MEMTEST_PATH="${_INITRAMFS}/memtest"
 fi
 sed -i -e "s#@MEMTEST_VERSION@#${LB_MEMTEST}#g" -e "s#@MEMTEST@#/${MEMTEST_PATH}#g" "${_TARGET}"/memtest.cfg
+
+# Replace placeholder for optional autoarch menu entry include
+if [ "${_AUTO_ARCH_DETECTED}" = "true" ] ; then
+	sed -i -e "s#@OPTIONAL_AUTOARCH_INCLUDE@#include autoarch.cfg#g" "${_TARGET}"/menu.cfg
+else
+	rm -f "${_TARGET}"/autoarch.cfg
+	sed -i -e "/@OPTIONAL_AUTOARCH_INCLUDE@/d" "${_TARGET}"/menu.cfg
+fi
 
 # Replace placeholder for optional install menu entries include
 if [ "${LB_DEBIAN_INSTALLER}" = "none" ]; then
