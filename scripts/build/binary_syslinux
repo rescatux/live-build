@@ -283,6 +283,14 @@ else
 fi
 sed -i -e "s#@MEMTEST_VERSION@#${LB_MEMTEST}#g" -e "s#@MEMTEST@#/${MEMTEST_PATH}#g" "${_TARGET}"/memtest.cfg
 
+# Replace placeholder for optional autoarch menu entry include
+if true; then
+	sed -i -e "s#@OPTIONAL_AUTOARCH_INCLUDE@#include autoarch.cfg#g" "${_TARGET}"/menu.cfg
+else
+	rm -f "${_TARGET}"/autoarch.cfg
+	sed -i -e "/@OPTIONAL_AUTOARCH_INCLUDE@/d" "${_TARGET}"/menu.cfg
+fi
+
 # Replace placeholder for optional install menu entries include
 if [ "${LB_DEBIAN_INSTALLER}" = "none" ]; then
 	rm -f "${_TARGET}"/install.cfg
