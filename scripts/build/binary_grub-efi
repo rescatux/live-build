@@ -225,7 +225,7 @@ PATH="${PATH}:\${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it w
 case "${LB_ARCHITECTURE}" in
 	amd64)
 		gen_efi_boot_img "x86_64-efi" "x64" "debian-live/amd64"
-		if [ -r ${_CHROOT_DIR}/usr/lib/grub/\$platform-signed/gcd\$efi_name.efi.signed ]; then
+		if [ -r ${_CHROOT_DIR}/usr/lib/grub/x86_64-efi-signed/gcdx64.efi.signed ]; then
 			# When a signed grub is available, add 32-bit UEFI support too
 			gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
 		fi
@@ -233,6 +233,10 @@ case "${LB_ARCHITECTURE}" in
 		;;
 	i386)
 		gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
+		if [ -r ${_CHROOT_DIR}/usr/lib/grub/i386-efi-signed/gcdia32.efi.signed ]; then
+			# When a signed grub is available, add 64-bit UEFI support too
+			gen_efi_boot_img "x86_64-efi" "x64" "debian-live/amd64"
+		fi
 		PATH="\${PRE_EFI_IMAGE_PATH}"
 		;;
 	arm64)
