@@ -84,17 +84,17 @@ secure_boot_package_install ()
 			# Uses the (intentionally) undocumented _LB_PACKAGES variable
 			echo "!!! The following error/warning messages can be ignored !!!"
 			set +e
-			_LB_PACKAGES="shim-signed"
+			_LB_PACKAGES="shim-signed:${_SB_DEB_ARCH}"
 			Install_packages
-			_LB_PACKAGES="grub-efi-${_SB_EFI_DEB}-signed"
+			_LB_PACKAGES="grub-efi-${_SB_EFI_DEB}-signed:${_SB_DEB_ARCH}"
 			Install_packages
 			set -e
 			# Use Check_installed, as Check_package will error out immediately
 			Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-				grub-efi-${_SB_EFI_DEB}-signed
+				grub-efi-${_SB_EFI_DEB}-signed:${_SB_DEB_ARCH}
 			_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
 			Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-				shim-signed
+				shim-signed:${_SB_DEB_ARCH}
 			echo "!!! The above error/warning messages can be ignored !!!"
 
 			if [ "${INSTALL_STATUS}" -ne 0 ]
@@ -110,9 +110,9 @@ secure_boot_package_install ()
 			;;
 		enable)
 			Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-				grub-efi-${_SB_EFI_DEB}-signed
+				grub-efi-${_SB_EFI_DEB}-signed:${_SB_DEB_ARCH}
 			Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-				shim-signed
+				shim-signed:${_SB_DEB_ARCH}
 			Install_packages
 			Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
 			;;
