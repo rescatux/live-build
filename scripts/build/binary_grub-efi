@@ -99,13 +99,13 @@ secure_boot_package_install ()
 
 			if [ "${INSTALL_STATUS}" -ne 0 ]
 			then
-				Echo_warning "UEFI Secure Boot disabled due to missing Shim."
+				Echo_warning "UEFI Secure Boot disabled due to missing Shim. (${_SB_EFI_NAME})"
 			elif [ "${_GRUB_INSTALL_STATUS}" -ne 0 ]
 			then
 				# Each user needs to enroll the hash for grub*.efi in their UEFI setup
-				Echo_warning "Limited UEFI Secure Boot support enabled: only the Shim is available."
+				Echo_warning "Limited UEFI Secure Boot support enabled: only the Shim is available. (${_SB_EFI_NAME})"
 			else
-				Echo_message "UEFI Secure Boot support enabled."
+				Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
 			fi
 			;;
 		enable)
@@ -114,10 +114,10 @@ secure_boot_package_install ()
 			Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
 				shim-signed
 			Install_packages
-			Echo_message "UEFI Secure Boot support enabled."
+			Echo_message "UEFI Secure Boot support enabled. (${_SB_EFI_NAME})"
 			;;
 		disable)
-			Echo_message "UEFI Secure Boot support disabled."
+			Echo_message "UEFI Secure Boot support disabled. (${_SB_EFI_NAME})"
 			;;
 	esac
 
