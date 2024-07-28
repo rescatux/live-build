@@ -59,81 +59,84 @@ Check_package chroot /usr/bin/grub-mkimage grub-common
 Check_package chroot /usr/bin/mcopy mtools
 Check_package chroot /sbin/mkfs.msdos dosfstools
 
-# Check UEFI Secure Boot setting and depends
-# By default (auto) do a best-effort build: if the signed binaries are available use
-# them, but don't fail if they are not, just print a warning.
-case "${LB_ARCHITECTURE}" in
-	amd64)
-		_SB_EFI_PLATFORM="x86_64"
-		_SB_EFI_NAME="x64"
-		_SB_EFI_DEB="amd64"
-		;;
-	i386)
-		_SB_EFI_PLATFORM="i386"
-		_SB_EFI_NAME="ia32"
-		_SB_EFI_DEB="ia32"
-		;;
-	arm64)
-		_SB_EFI_PLATFORM="arm64"
-		_SB_EFI_NAME="aa64"
-		_SB_EFI_DEB="arm64"
-		;;
-	armhf)
-		_SB_EFI_PLATFORM="arm"
-		_SB_EFI_NAME="arm"
-		_SB_EFI_DEB="arm"
-		;;
-esac
+_PRE_SB_PACKAGES="${_LB_PACKAGES}"
 
-# Restoring cache
-Restore_package_cache binary
+secure_boot_package_install ()
+{
+	_SB_EFI_PLATFORM="$1"
+	_SB_EFI_NAME="$2"
+	_SB_DEB_ARCH="$3"
+	_SB_EFI_DEB="$4"
 
-# Installing depends
-Install_packages
+	# Restoring cache
+	Restore_package_cache binary
 
-case "${LB_UEFI_SECURE_BOOT}" in
-	auto)
-		# Try to install the shim and signed grub package separately,
-		# as the grub-efi-*-signed package might be uninstallable (e.g. due to binNMUs)
-		# Uses the (intentionally) undocumented _LB_PACKAGES variable
-		echo "!!! The following error/warning messages can be ignored !!!"
-		set +e
-		_LB_PACKAGES="shim-signed"
-		Install_packages
-		_LB_PACKAGES="grub-efi-${_SB_EFI_DEB}-signed"
-		Install_packages
-		set -e
-		# Use Check_installed, as Check_package will error out immediately
-		Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-			grub-efi-${_SB_EFI_DEB}-signed
-		_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
-		Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-			shim-signed
-		echo "!!! The above error/warning messages can be ignored !!!"
+	# Installing depends
+	Install_packages
 
-		if [ "${INSTALL_STATUS}" -ne 0 ]
-		then
-			Echo_warning "UEFI Secure Boot disabled due to missing Shim."
-		elif [ "${_GRUB_INSTALL_STATUS}" -ne 0 ]
-		then
-			# Each user needs to enroll the hash for grub*.efi in their UEFI setup
-			Echo_warning "Limited UEFI Secure Boot support enabled: only the Shim is available."
-		else
+	# Check UEFI Secure Boot setting and depends
+	# By default (auto) do a best-effort build: if the signed binaries are available use
+	# them, but don't fail if they are not, just print a warning.
+	case "${LB_UEFI_SECURE_BOOT}" in
+		auto)
+			# Try to install the shim and signed grub package separately,
+			# as the grub-efi-*-signed package might be uninstallable (e.g. due to binNMUs)
+			# Uses the (intentionally) undocumented _LB_PACKAGES variable
+			echo "!!! The following error/warning messages can be ignored !!!"
+			set +e
+			_LB_PACKAGES="shim-signed"
+			Install_packages
+			_LB_PACKAGES="grub-efi-${_SB_EFI_DEB}-signed"
+			Install_packages
+			set -e
+			# Use Check_installed, as Check_package will error out immediately
+			Check_installed chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
+				grub-efi-${_SB_EFI_DEB}-signed
+			_GRUB_INSTALL_STATUS="${INSTALL_STATUS}"
+			Check_installed chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+				shim-signed
+			echo "!!! The above error/warning messages can be ignored !!!"
+
+			if [ "${INSTALL_STATUS}" -ne 0 ]
+			then
+				Echo_warning "UEFI Secure Boot disabled due to missing Shim."
+			elif [ "${_GRUB_INSTALL_STATUS}" -ne 0 ]
+			then
+				# Each user needs to enroll the hash for grub*.efi in their UEFI setup
+				Echo_warning "Limited UEFI Secure Boot support enabled: only the Shim is available."
+			else
+				Echo_message "UEFI Secure Boot support enabled."
+			fi
+			;;
+		enable)
+			Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
+				grub-efi-${_SB_EFI_DEB}-signed
+			Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
+				shim-signed
+			Install_packages
 			Echo_message "UEFI Secure Boot support enabled."
-		fi
-		;;
-	enable)
-		Check_package chroot /usr/lib/grub/${_SB_EFI_PLATFORM}-efi-signed/gcd${_SB_EFI_NAME}.efi.signed \
-			grub-efi-${_SB_EFI_DEB}-signed
-		Check_package chroot /usr/lib/shim/shim${_SB_EFI_NAME}.efi.signed \
-			shim-signed
-		Install_packages
-		Echo_message "UEFI Secure Boot support enabled."
-		;;
-	disable)
-		Echo_message "UEFI Secure Boot support disabled."
-		;;
+			;;
+		disable)
+			Echo_message "UEFI Secure Boot support disabled."
+			;;
+	esac
+
+}
+
+case "${LB_ARCHITECTURE}" in
+	amd64|i386)
+		secure_boot_package_install "x86_64" "x64" "amd64" "amd64"
+		secure_boot_package_install "i386" "ia32" "i386" "ia32"
+	;;
+	arm64)
+		secure_boot_package_install "arm64" "aa64" "arm64" "arm64"
+	;;
+	armhf)
+		secure_boot_package_install "arm" "arm" "arm" "arm"
+	;;
 esac
+
+_LB_PACKAGES="${_PRE_SB_PACKAGES}"
 
 # Cleanup files that we generate
 rm -rf binary/boot/efi.img binary/boot/grub/i386-efi/ binary/boot/grub/x86_64-efi binary/boot/grub/arm64-efi binary/boot/grub/arm-efi
