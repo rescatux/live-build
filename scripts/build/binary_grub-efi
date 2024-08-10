@@ -223,11 +223,8 @@ fi
 PATH="${PATH}:\${LIVE_BUILD_PATH}" # Make sure grub-cpmodules is used as if it was installed in the system
 
 case "${LB_ARCHITECTURE}" in
-	amd64)
+	amd64|i386)
 		gen_efi_boot_img "x86_64-efi" "x64" "debian-live/amd64"
-		gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
-		;;
-	i386)
 		gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
 		;;
 	arm64)
