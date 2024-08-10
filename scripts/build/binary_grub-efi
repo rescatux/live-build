@@ -229,22 +229,19 @@ case "${LB_ARCHITECTURE}" in
 			# When a signed grub is available, add 32-bit UEFI support too
 			gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
 		fi
-		PATH="\${PRE_EFI_IMAGE_PATH}"
 		;;
 	i386)
 		gen_efi_boot_img "i386-efi" "ia32" "debian-live/i386"
-		PATH="\${PRE_EFI_IMAGE_PATH}"
 		;;
 	arm64)
 		gen_efi_boot_img "arm64-efi" "aa64" "debian-live/arm64"
-		PATH="\${PRE_EFI_IMAGE_PATH}"
 		;;
 	armhf)
 		gen_efi_boot_img "arm-efi" "arm" "debian-live/arm"
-		PATH="\${PRE_EFI_IMAGE_PATH}"
 		;;
 esac
 
+PATH="\${PRE_EFI_IMAGE_PATH}"
 
 # On some platforms the EFI grub image will be loaded, so grub's root
 # variable will be set to the EFI partition. This means that grub will
