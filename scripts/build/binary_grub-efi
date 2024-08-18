@@ -262,11 +262,11 @@ PATH="\${PRE_EFI_IMAGE_PATH}"
 # look in that partition for a grub.cfg file, and even if it finds it
 # it will not be able to find the vmlinuz and initrd.
 # Drop a minimal grub.cfg in the EFI partition that sets the root and prefix
-# to whatever partition holds the /.disk/info file, and load the grub
+# to whatever partition holds the image UUID file, and load the grub
 # config from that same partition.
 mkdir -p ${_CHROOT_DIR}/grub-efi-temp-cfg
 cat >${_CHROOT_DIR}/grub-efi-temp-cfg/grub.cfg <<EOF
-search --set=root --file /.disk/info
+search --set=root --file /${LB_UUID_FILE}
 set prefix=(\\\$root)/boot/grub
 configfile (\\\$root)/boot/grub/grub.cfg
 EOF
