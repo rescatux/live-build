@@ -427,6 +427,34 @@ Prepare_config ()
 
 	esac
 
+	# Setting LB_UUID_FILE (only once)
+	if [ -z "${LB_UUID_FILE}" ]
+	then
+		LIVEID_DIR_PREFIX="LIVEID"
+
+		LB_UUID_SEED="${SOURCE_DATE_EPOCH}"
+
+		LB_UUID=$(echo -n "${LB_UUID_SEED}" | md5sum | tr 'a-z' 'A-Z')
+
+		LB_UUID_DIR1="$(echo ${LB_UUID} | cut -c1-8)"
+		LB_UUID_DIR2="$(echo ${LB_UUID} | cut -c9-16)"
+		LB_UUID_DIR3="$(echo ${LB_UUID} | cut -c17-24)"
+		LB_UUID_FILE4="$(echo ${LB_UUID} | cut -c25-32)"
+
+		LB_UUID_DIR="${LIVEID_DIR_PREFIX}/${LB_UUID_DIR1}"'/'"${LB_UUID_DIR2}"'/'"${LB_UUID_DIR3}"
+		LB_UUID_FILE="${LB_UUID_DIR}"'/'"${LB_UUID_FILE4}"
+
+	fi
+
+	UUID_CMDLINE="liveid=/${LB_UUID_FILE}"
+	if ! echo "${LB_BOOTAPPEND_LIVE}" | grep -q "${UUID_CMDLINE}"
+	then
+		# Setting bootapend according to UUID
+		LB_BOOTAPPEND_LIVE="${LB_BOOTAPPEND_LIVE} ${UUID_CMDLINE}"
+		LB_BOOTAPPEND_LIVE_FAILSAFE="${LB_BOOTAPPEND_LIVE_FAILSAFE} ${UUID_CMDLINE}"
+		LB_BOOTAPPEND_INSTALL="${LB_BOOTAPPEND_INSTALL} ${UUID_CMDLINE}"
+	fi
+
 	local _LB_BOOTAPPEND_PRESEED
 	if [ -n "${LB_DEBIAN_INSTALLER_PRESEEDFILE}" ]
 	then
