@@ -72,5 +72,5 @@ docker run \
 ## Actual manual build
 
 ```
-dpkg-buildpackage -us -uc && cp ../* /live-build-release/
+dpkg-buildpackage -us -uc && cp ../*deb /live-build-release/
 ```
