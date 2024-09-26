@@ -49,6 +49,7 @@ for _PASS in install live; do
 	fi
 done
 
+lb chroot_librefirmware "${@}"
 lb chroot_includes_after_packages "${@}"
 lb chroot_hooks "${@}"
 lb chroot_hacks "${@}"
